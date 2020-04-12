@@ -1,5 +1,6 @@
 dependencies:
   express: 4.17.1
+  lowdb: 1.0.0
 packages:
   /accepts/1.3.7:
     dependencies:
@@ -160,6 +161,10 @@ packages:
       node: '>= 0.6'
     resolution:
       integrity: sha1-PYyt2Q2XZWn6g1qx+OSyOhBWBac=
+  /graceful-fs/4.2.3:
+    dev: false
+    resolution:
+      integrity: sha512-a30VEBm4PEdx1dRB7MFK7BejejvCvBronbLjht+sHuGYj8PHs7M/5Z+rt5lw551vZ7yfTCj4Vuyy3mSJytDWRQ==
   /http-errors/1.7.2:
     dependencies:
       depd: 1.1.2
@@ -206,6 +211,26 @@ packages:
       node: '>= 0.10'
     resolution:
       integrity: sha512-M4Sjn6N/+O6/IXSJseKqHoFc+5FdGJ22sXqnjTpdZweHK64MzEPAyQZyEU3R/KRv2GLoa7nNtg/C2Ev6m7z+eA==
+  /is-promise/2.1.0:
+    dev: false
+    resolution:
+      integrity: sha1-eaKp7OfwlugPNtKy87wWwf9L8/o=
+  /lodash/4.17.15:
+    dev: false
+    resolution:
+      integrity: sha512-8xOcRHvCjnocdS5cpwXQXVzmmh5e5+saE2QGoeQmbKmRS6J3VQppPOIt0MnmE+4xlZoumy0GPG0D0MVIQbNA1A==
+  /lowdb/1.0.0:
+    dependencies:
+      graceful-fs: 4.2.3
+      is-promise: 2.1.0
+      lodash: 4.17.15
+      pify: 3.0.0
+      steno: 0.4.4
+    dev: false
+    engines:
+      node: '>=4'
+    resolution:
+      integrity: sha512-2+x8esE/Wb9SQ1F9IHaYWfsC9FIecLOPrK4g17FGEayjUWH172H6nwicRovGvSE2CPZouc2MCIqCI7h9d+GftQ==
   /media-typer/0.3.0:
     dev: false
     engines:
@@ -275,6 +300,12 @@ packages:
     dev: false
     resolution:
       integrity: sha1-32BBeABfUi8V60SQ5yR6G/qmf4w=
+  /pify/3.0.0:
+    dev: false
+    engines:
+      node: '>=4'
+    resolution:
+      integrity: sha1-5aSs0sEB/fPZpNB/DbxNtJ3SgXY=
   /proxy-addr/2.0.5:
     dependencies:
       forwarded: 0.1.2
@@ -356,6 +387,12 @@ packages:
       node: '>= 0.6'
     resolution:
       integrity: sha1-Fhx9rBd2Wf2YEfQ3cfqZOBR4Yow=
+  /steno/0.4.4:
+    dependencies:
+      graceful-fs: 4.2.3
+    dev: false
+    resolution:
+      integrity: sha1-BxEFvfwobmYVwEA8J+nXtdy4Vcs=
   /toidentifier/1.0.0:
     dev: false
     engines:
@@ -394,3 +431,4 @@ shrinkwrapMinorVersion: 9
 shrinkwrapVersion: 3
 specifiers:
   express: ^4.17.1
+  lowdb: 1.x
