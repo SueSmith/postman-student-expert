@@ -4,7 +4,10 @@
 // we've started you off with Express (https://expressjs.com/)
 // but feel free to use whatever libraries or frameworks you'd like through `package.json`.
 const express = require("express");
+var bodyParser = require("body-parser");
 const app = express();
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({extended: true}));
 
 // our default array of dreams
 const dreams = [
@@ -29,8 +32,9 @@ app.get("/dreams", (request, response) => {
 });
 
 //receive new dream
-app.post("/dream", (request, response) => { console.log(request.body);
-  if(request.body.dream) dreams.push(request.body.dream);
+app.post("/dream", (request, response) => { 
+  if(request.get('secret')!==process.env.SECRET) response.json("nope");
+  else if(request.body.dream) dreams.push(request.body.dream);
   response.json(dreams);
 });
 
