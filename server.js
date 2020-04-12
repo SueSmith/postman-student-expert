@@ -9,7 +9,8 @@ const app = express();
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: true}));
 
-//TODO require auth for db operations
+//TODO require auth for db operations - see gh to protect following routes
+//TODO include remix instructions for db init - works without calling any setup routes
 
 // setup a new database
 // persisted using async file storage
@@ -94,15 +95,6 @@ const dreams = [
   "Climb a really tall mountain",
   "Wash the dishes"
 ];
-
-// make all the files in 'public' available
-// https://expressjs.com/en/starter/static-files.html
-app.use(express.static("public"));
-
-// https://expressjs.com/en/starter/basic-routing.html
-app.get("/", (request, response) => {
-  response.sendFile(__dirname + "/views/index.html");
-});
 
 // send the default array of dreams to the webpage
 app.get("/dreams", (request, response) => {
