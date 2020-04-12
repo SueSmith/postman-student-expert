@@ -33,9 +33,12 @@ app.get("/dreams", (request, response) => {
 
 //receive new dream
 app.post("/dream", (request, response) => { 
-  if(request.get('secret')!==process.env.SECRET) response.json("nope");
-  else if(request.body.dream) dreams.push(request.body.dream);
-  response.json(dreams);
+  if(request.get('secret')!==process.env.SECRET) 
+    response.status(401).json({error: "Unauthorized - your secret needs to match the one on the server!"});
+  else if(request.body.dream) {
+    dreams.push(request.body.dream);
+    response.json(dreams);
+  }
 });
 
 // listen for requests :)
