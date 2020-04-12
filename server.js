@@ -28,6 +28,12 @@ app.get("/dreams", (request, response) => {
   response.json(dreams);
 });
 
+//receive new dream
+app.post("/dream", (request, response) => { console.log(request.body);
+  if(request.body.dream) dreams.push(request.body.dream);
+  response.json(dreams);
+});
+
 // listen for requests :)
 const listener = app.listen(process.env.PORT, () => {
   console.log("Your app is listening on port " + listener.address().port);
