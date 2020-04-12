@@ -35,7 +35,7 @@ app.get("/dreams", (request, response) => {
 app.post("/dream", (request, response) => { 
   if(request.get('secret')!==process.env.SECRET) 
     response.status(401).json({error: "Unauthorized - your secret needs to match the one on the server!"});
-  else if(request.body.dream && request.body.dream!=null && request.body.dream.length>0) {
+  else if(request.body.dream){
       dreams.push(request.body.dream);
       response.status(201).json({status: "Dream added", "dream": request.body.dream});
   }
