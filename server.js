@@ -48,14 +48,29 @@ app.get("/cats", (request, response) => {
   response.send(dbCats); // sends dbUsers back to the page
 });
 
-// creates a new entry in the users collection with the submitted values
-app.post("/cats", (request, response) => {
-  db.get('cats')
-    .push({ name: request.query.cName, age: request.query.cAge })
-    .write()
-  console.log("New cat inserted in the database");
-  response.sendStatus(200);
+// our default array of dreams
+const dreams = [
+  "Find and count some sheep",
+  "Climb a really tall mountain",
+  "Wash the dishes"
+];
+
+// send the default array of dreams to the webpage
+app.get("/dreams", (request, response) => {
+  // express helps us take JS objects and send them as JSON
+  response.json(dreams);
 });
+
+//protect everything after this
+app.use((req, res, next) => {
+  const apiSecret = req.get('secret');
+  if (!apiSecret || apiSecret !== process.env.SECRET) {
+    res.status(401).json({error: 'Unauthorized - your secret needs to match the one on the server!'});
+  } else {
+    next();
+  }
+});
+
 
 // removes entries from users and populates it with default users
 app.get("/reset", (request, response) => {
@@ -91,29 +106,17 @@ app.get("/clear", (request, response) => {
   response.redirect("/");
 });
 
-// our default array of dreams
-const dreams = [
-  "Find and count some sheep",
-  "Climb a really tall mountain",
-  "Wash the dishes"
-];
-
-// send the default array of dreams to the webpage
-app.get("/dreams", (request, response) => {
-  // express helps us take JS objects and send them as JSON
-  response.json(dreams);
-});
-
-//receive new dream
-app.post("/dream", (request, response) => { 
-  if(request.get('secret')!==process.env.SECRET) 
-    response.status(401).json({error: "Unauthorized - your secret needs to match the one on the server!"});
-  else if(request.body.dream){
-      dreams.push(request.body.dream);
-      response.status(201).json({status: "Dream added", "dream": request.body.dream});
+// creates a new entry in the users collection with the submitted values
+app.post("/cats", (request, response) => {
+  if(request.body.name && request.body.humans){
+    db.get('cats')
+      .push({ name: request.body.name, humans: request.body.humans })
+      .write()
+    console.log("New cat inserted in the database");
+    response.status(200).json({status: "Cat added", "dream": request.body});
   }
   else
-    response.status(400).json({error: "Bad request - please check your dream body data!"});
+    response.status(400).json({error: "Bad request - please check your cat body data!"});
 });
 
 // listen for requests :)
