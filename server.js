@@ -112,6 +112,19 @@ app.post("/cat", (request, response) => {
     response.status(400).json({error: "Bad request - please check your cat body data!"});
 });
 
+//update cat fields
+app.patch("/cat", (request, response) => {
+  if(request.query.name && request.body.humans){
+    db.get('cats')
+  .find({ name: request.query.name })
+  .assign({ humans: request.body.humans})
+  .write();
+    response.status(201).json({status: "Updated", cat: db('cats').find({ name: request.query.name })});
+  }
+  else
+    response.status(400).json({error: "Bad request - please check your data!"});
+});
+
 // listen for requests :)
 const listener = app.listen(process.env.PORT, () => {
   console.log("Your app is listening on port " + listener.address().port);
