@@ -9,7 +9,6 @@ const app = express();
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: true}));
 
-//TODO require auth for db operations - see gh to protect following routes
 //TODO include remix instructions for db init - works without calling any setup routes
 //TODO people might arrive from glitch app, collection docs in browser, collection in pm
 //TODO tip in first response, turn on save requests in history
@@ -48,20 +47,7 @@ app.get("/cats", (request, response) => {
   response.send(dbCats); // sends dbUsers back to the page
 });
 
-// our default array of dreams
-const dreams = [
-  "Find and count some sheep",
-  "Climb a really tall mountain",
-  "Wash the dishes"
-];
-
-// send the default array of dreams to the webpage
-app.get("/dreams", (request, response) => {
-  // express helps us take JS objects and send them as JSON
-  response.json(dreams);
-});
-
-//protect everything after this
+//protect everything after this by checking for the secret
 app.use((req, res, next) => {
   const apiSecret = req.get('secret');
   if (!apiSecret || apiSecret !== process.env.SECRET) {
@@ -70,7 +56,6 @@ app.use((req, res, next) => {
     next();
   }
 });
-
 
 // removes entries from users and populates it with default users
 app.get("/reset", (request, response) => {
@@ -107,13 +92,13 @@ app.get("/clear", (request, response) => {
 });
 
 // creates a new entry in the users collection with the submitted values
-app.post("/cats", (request, response) => {
+app.post("/cat", (request, response) => {
   if(request.body.name && request.body.humans){
     db.get('cats')
       .push({ name: request.body.name, humans: request.body.humans })
       .write()
     console.log("New cat inserted in the database");
-    response.status(200).json({status: "Cat added", "dream": request.body});
+    response.status(200).json({status: "Cat added", cat: request.body});
   }
   else
     response.status(400).json({error: "Bad request - please check your cat body data!"});
