@@ -38,8 +38,12 @@ app.get("/", (request, response) => {
   response.sendFile(__dirname + '/views/index.html');
 });
 
-//ge random cat
-app.get("/cat", (request, response))
+//get random cat
+app.get("/cat", (request, response) => {
+  var dbCats=[];
+  var cats = db.get('cats').value(); // Find all cats in the collection
+  response.send(cats[Math.floor(Math.random() * cats.length)]); 
+});
 
 app.get("/cats", (request, response) => {
   var dbCats=[];
@@ -48,7 +52,7 @@ app.get("/cats", (request, response) => {
   /*cats.forEach(function(cat) {
     dbCats.push({"name":cat.name,"humans":cat.humans}); // adds their info to the dbCats value
   });*/
-  response.send(cats); // sends dbUsers back to the page
+  response.send(cats); 
 });
 
 //protect everything after this by checking for the secret
