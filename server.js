@@ -112,14 +112,39 @@ app.post("/cat", (request, response) => {
     response.status(400).json({error: "Bad request - please check your cat body data!"});
 });
 
-//update cat fields
+//update cat human field
 app.patch("/cat", (request, response) => {
   if(request.query.name && request.body.humans){
     db.get('cats')
-  .find({ name: request.query.name })
-  .assign({ humans: request.body.humans})
-  .write();
-    response.status(201).json({status: "Updated", cat: db('cats').find({ name: request.query.name })});
+      .find({ name: request.query.name })
+      .assign({ humans: request.body.humans})
+      .write()
+    response.status(201).json({status: "Updated", cat: request.query.name, humans: request.body.humans });
+  }
+  else
+    response.status(400).json({error: "Bad request - please check your data!"});
+});
+
+//update entire cat
+app.put("/cat", (request, response) => {
+  if(request.query.current_name && request.body.humans && request.body.new_name){
+    db.get('cats')
+      .find({ name: request.query.current_name })
+      .assign({ name: request.body.new_name, humans: request.body.humans})
+      .write()
+    response.status(201).json({status: "Updated", cat: request.query.new_name, humans: request.body.humans });
+  }
+  else
+    response.status(400).json({error: "Bad request - please check your data!"});
+});
+
+//delete cat
+app.delete("/cat", (request, response) => {
+  if(request.query.name){
+    db.get('cats')
+  .remove({ name: request.query.name })
+  .write()
+    response.status(204).json({status: "Deleted", cat: request.query.name });
   }
   else
     response.status(400).json({error: "Bad request - please check your data!"});
