@@ -11,6 +11,8 @@ app.use(bodyParser.urlencoded({extended: true}));
 
 //TODO require auth for db operations - see gh to protect following routes
 //TODO include remix instructions for db init - works without calling any setup routes
+//TODO people might arrive from glitch app, collection docs in browser, collection in pm
+//TODO tip in first response, turn on save requests in history
 
 // setup a new database
 // persisted using async file storage
@@ -23,9 +25,9 @@ var db = low(adapter);
 
 // default cat list
 db.defaults({ cats: [
-      {"name":"John", "age":"7"},
-      {"name":"Liz",  "age":"3"},
-      {"name":"Ahmed","age":"8"}
+      {"name":"Syd", "humans":17},
+      {"name":"Hamish",  "humans":3},
+      {"name":"Peggy","humans":5}
     ]
   }).write();
 
@@ -41,7 +43,7 @@ app.get("/cats", (request, response) => {
   var dbCats=[];
   var cats = db.get('cats').value() // Find all users in the collection
   cats.forEach(function(cat) {
-    dbCats.push([cat.name,cat.age]); // adds their info to the dbUsers value
+    dbCats.push({"name":cat.name,"humans":cat.humans}); // adds their info to the dbUsers value
   });
   response.send(dbCats); // sends dbUsers back to the page
 });
@@ -65,14 +67,14 @@ app.get("/reset", (request, response) => {
   
   // default users inserted in the database
   var cats= [
-      {"name":"John", "age":"7"},
-      {"name":"Liz",  "age":"3"},
-      {"name":"Ahmed","age":"8"}
+      {"name":"Syd", "humans":17},
+      {"name":"Hamish",  "humans":3},
+      {"name":"Peggy","humans":5}
   ];
   
-  cats.forEach((user)=>{
+  cats.forEach((cat)=>{
     db.get('cats')
-      .push({ name: user.name, age: user.age })
+      .push({ name: cat.name, humans: cat.humans })
       .write()
   });
   console.log("Default cats added");
