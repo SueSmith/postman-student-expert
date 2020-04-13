@@ -49,9 +49,6 @@ app.get("/cats", (request, response) => {
   var dbCats=[];
   var cats = db.get('cats').value(); // Find all cats in the collection
   console.log(cats);
-  /*cats.forEach(function(cat) {
-    dbCats.push({"name":cat.name,"humans":cat.humans}); // adds their info to the dbCats value
-  });*/
   response.send(cats); 
 });
 
@@ -142,9 +139,9 @@ app.put("/cat", (request, response) => {
 app.delete("/cat", (request, response) => {
   if(request.query.name){
     db.get('cats')
-  .remove({ name: request.query.name })
-  .write()
-    response.status(204).json({status: "Deleted", cat: request.query.name });
+      .remove({ name: request.query.name })
+      .write()
+    response.status(200).json({status: "Deleted", cat: request.query.name });
   }
   else
     response.status(400).json({error: "Bad request - please check your data!"});
