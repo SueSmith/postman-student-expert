@@ -1,6 +1,6 @@
 # Learn by API
 
-Remix this API to try out different types of endpoint.
+[Remix the API and import it into Postman to learn all about making requests](https://glitch.com/~learn-by-api)
 
 ## Credits
 
