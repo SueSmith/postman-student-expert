@@ -42,9 +42,10 @@ app.get("/", (request, response) => {
 //intro
 app.get("/intro", function(req, res) {
   return res.send({
-    title: "Welcome to the Postman APIs course!",
+    title:
+      "Welcome to the Learn by API course! The requests will walk you through learning about APIs inside Postman.",
     json_intro:
-      "You've just sent an API request! 🎉 This is the JSON response. Click Visualize above this section. ",
+      "You already sent an API request! 🎉 This is the JSON response. Click Visualize above this section. ",
     info: [
       {
         note:
@@ -62,6 +63,59 @@ app.get("/intro", function(req, res) {
   });
 });
 
+//from other project
+
+app.get("/info", function(req, res) {
+  if (req.query.id)
+    return res.send({
+      message:
+        "You sent a query string parameter! It indicates you want some data associated with an id of 1.",
+      next:
+        "Now try adding a path parameter. Enter /:category before /info in the address. " +
+        "In Params, enter a value for the category row (e.g. 'hats' and click Send again."
+    });
+  else
+    return res.send({
+      message: "You sent a request!!!",
+      next:
+        "Now try a parameter - add ?id=1 to the end of the address after /info and click Send again."
+    });
+});
+app.get("/:category/info", function(req, res) {
+  return res.send({
+    message: "You sent a path parameter!",
+    next:
+      "Now try changing the method - currently GET before the addresss - change it to POST and click Send again."
+  });
+});
+app.post("/:category/info", function(req, res) {
+  if (req.body.message)
+    return res.send({ message: "You sent body data!", next: "Now try... " });
+  else {
+    return res.send({
+      message:
+        "You sent a post request! Post requests let you pass data to the API.",
+      next:
+        "Now try adding some data. " +
+        "Select this data - all of the content inside the Pretty tab and copy it, from { to }. " +
+        "Open the Body tab under the address, select Raw, and paste what you copied " +
+        "into the empty pane, making sure JSON is selected from the dropdown."
+    });
+  }
+});
+app.get("/lesson", function(req, res) {
+  let responseData = new Object();
+  responseData["message"] =
+    "This response includes an array. Copy the content of the 'code' field below - everything inside the quotes, from 'var' to  'people});' Paste it into the Tests tab above, " +
+    "send the request again, and click Visualize!";
+  responseData["code"] =
+    "var template = `<table bgcolor='#FFFFFF'><tr><th>Name</th><th>ID</th></tr>{{#each response}}<tr><td>{{name}}</td><td>{{id}}</td></tr>{{/each}}</table>`; pm.visualizer.set(template, {response: pm.response.json().people});";
+  responseData["people"] = [{ name: "sue", id: 1 }, { name: "jim", id: 2 }];
+  return res.send(responseData);
+});
+
+//---
+
 //get random cat
 app.get("/cat", (request, response) => {
   var dbCats = [];
@@ -72,6 +126,7 @@ app.get("/cat", (request, response) => {
   });
 });
 
+//get all cats
 app.get("/cats", (request, response) => {
   var dbCats = [];
   var cats = db.get("cats").value(); // Find all cats in the collection
