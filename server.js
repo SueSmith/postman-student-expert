@@ -53,10 +53,13 @@ app.get("/intro", (request, response) => {
   } else {
     response.status(200).json({
       title:
-        "Welcome to the Learn by API course! The requests will walk you through learning about APIs inside Postman.",
-      json_intro:
-        "You already sent an API request! 🎉 This is the JSON response. Click Visualize above this section. ",
+        "Welcome to the Learn by API course!",
+      intro:
+        "The requests will walk you through learning about APIs inside Postman. Click **Visualize** above this section. ",
       info: [
+        {
+          note: "You already sent an API request! 🎉 This is the JSON response."
+        },
         {
           note:
             "Above you'll see the details of the request you sent. The address includes a base URL and a path '/course' " +
@@ -120,7 +123,8 @@ app.get("/cats", (request, response) => {
   var dbCats = [];
   var cats = db.get("cats").value(); // Find all cats in the collection
   console.log(cats);
-  response.status(200).json({message: "cats: cats});
+  response.status(200).json({message: "This response includes an array—click Visualize above and then scroll to see it displayed as a chart", 
+                             cats: cats});
 });
 
 //protect everything after this by checking for the secret
