@@ -39,67 +39,63 @@ app.get("/", (request, response) => {
   response.sendFile(__dirname + "/views/index.html");
 });
 
-//intro
+//intro to course
 app.get("/intro", (request, response) => {
-  if(request.query.id){
-    response.status(200).json({message: "You sent a request with a query parameter!", 
-                               );
+  if (request.query.id) {
+    response
+      .status(200)
+      .json({
+        message: "You sent a request with a query parameter!",
+        next:
+          "Now try adding a path parameter. Enter /:category before /info in the address. " +
+          "In Params, enter a value for the category row (e.g. 'hats' and click Send again."
+      });
+  } else {
+    response.status(200).json({
+      title:
+        "Welcome to the Learn by API course! The requests will walk you through learning about APIs inside Postman.",
+      json_intro:
+        "You already sent an API request! 🎉 This is the JSON response. Click Visualize above this section. ",
+      info: [
+        {
+          note:
+            "Above you'll see the details of the request you sent. The address includes a base URL and a path '/course' " +
+            "- you made a request to the _endpoint_ at this location."
+        },
+        {
+          note:
+            "Notice to the right and above the response here that the API returned a **200 OK** status code - hover over it for more detail."
+        }
+      ],
+      next:
+        "Now try a parameter - add ?id=1 to the end of the address after /info and click Send again."
+    });
   }
-  else {
+});
+
+//get with path
+app.get("/:category/info", (request, response) => {
   response.status(200).json({
-    title:
-      "Welcome to the Learn by API course! The requests will walk you through learning about APIs inside Postman.",
-    json_intro:
-      "You already sent an API request! 🎉 This is the JSON response. Click Visualize above this section. ",
-    info: [
-      {
-        note:
-          "Above you'll see the details of the request you sent. The address includes a base URL and a path '/course' " +
-          "- you made a request to the _endpoint_ at this location."
-      },
-      {
-        note:
-          "Notice to the right and above the response here that the API returned a **200 OK** status code - hover over it for more detail."
-      }
-    ],
-    next:
-        "Now try a parameter - add ?id=1 to the end of the address after /info and click Send again."
-  });
-  }
-});
-
-//from other project
-
-app.get("/info", function(req, res) {
-  if (req.query.id)
-    return res.send({
-      message:
-        "You sent a query string parameter! It indicates you want some data associated with an id of 1.",
-      next:
-        "Now try adding a path parameter. Enter /:category before /info in the address. " +
-        "In Params, enter a value for the category row (e.g. 'hats' and click Send again."
-    });
-  else
-    return res.send({
-      message: "You sent a request!!!",
-      next:
-        "Now try a parameter - add ?id=1 to the end of the address after /info and click Send again."
-    });
-});
-app.get("/:category/info", function(req, res) {
-  return res.send({
     message: "You sent a path parameter!",
     next:
-      "Now try changing the method - currently GET before the addresss - change it to POST and click Send again."
+      "Now change the method. Above, to the left of the address, click the drop-down to change GET to POST, " +
+      "then click Send again."
   });
 });
-app.post("/:category/info", function(req, res) {
-  if (req.body.message)
-    return res.send({ message: "You sent body data!", next: "Now try... " });
+
+//post to path
+app.post("/:category/info", (request, response) => {
+  if (request.body.message)
+    response
+      .status(201)
+      .json({
+        message: "You sent body data!",
+        next: "Now try opening the Manage Cats folder."
+      });
   else {
-    return res.send({
+    response.status(400).json({
       message:
-        "You sent a post request! Post requests let you pass data to the API.",
+        "You sent a post request! Post requests let you pass data to the API. Notice that the status code is 400, this is because your data is not yet complete",
       next:
         "Now try adding some data. " +
         "Select this data - all of the content inside the Pretty tab and copy it, from { to }. " +
@@ -108,18 +104,6 @@ app.post("/:category/info", function(req, res) {
     });
   }
 });
-app.get("/lesson", function(req, res) {
-  let responseData = new Object();
-  responseData["message"] =
-    "This response includes an array. Copy the content of the 'code' field below - everything inside the quotes, from 'var' to  'people});' Paste it into the Tests tab above, " +
-    "send the request again, and click Visualize!";
-  responseData["code"] =
-    "var template = `<table bgcolor='#FFFFFF'><tr><th>Name</th><th>ID</th></tr>{{#each response}}<tr><td>{{name}}</td><td>{{id}}</td></tr>{{/each}}</table>`; pm.visualizer.set(template, {response: pm.response.json().people});";
-  responseData["people"] = [{ name: "sue", id: 1 }, { name: "jim", id: 2 }];
-  return res.send(responseData);
-});
-
-//---
 
 //get a single random cat
 app.get("/cat", (request, response) => {
@@ -136,7 +120,7 @@ app.get("/cats", (request, response) => {
   var dbCats = [];
   var cats = db.get("cats").value(); // Find all cats in the collection
   console.log(cats);
-  response.send(cats);
+  response.status(200).json({message: "cats: cats});
 });
 
 //protect everything after this by checking for the secret
