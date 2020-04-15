@@ -7,7 +7,7 @@ const express = require("express");
 var bodyParser = require("body-parser");
 const app = express();
 app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({extended: true}));
+app.use(bodyParser.urlencoded({ extended: true }));
 
 //TODO include remix instructions for db init - works without calling any setup routes
 //TODO people might arrive from glitch app, collection docs in browser, collection in pm
@@ -17,46 +17,75 @@ app.use(bodyParser.urlencoded({extended: true}));
 // persisted using async file storage
 // Security note: the database is saved to the file `db.json` on the local filesystem.
 // It's deliberately placed in the `.data` directory which doesn't get copied if someone remixes the project.
-var low = require('lowdb');
-var FileSync = require('lowdb/adapters/FileSync');
-var adapter = new FileSync('.data/db.json');
+var low = require("lowdb");
+var FileSync = require("lowdb/adapters/FileSync");
+var adapter = new FileSync(".data/db.json");
 var db = low(adapter);
 
 // default cat list
-db.defaults({ cats: [
-      {"name":"Syd", "humans":17},
-      {"name":"Hamish",  "humans":3},
-      {"name":"Peggy","humans":5}
-    ]
-  }).write();
+db.defaults({
+  cats: [
+    { name: "Syd", humans: 17 },
+    { name: "Hamish", humans: 3 },
+    { name: "Peggy", humans: 5 }
+  ]
+}).write();
 
 // http://expressjs.com/en/starter/static-files.html
-app.use(express.static('public'));
+app.use(express.static("public"));
 
 // http://expressjs.com/en/starter/basic-routing.html
 app.get("/", (request, response) => {
-  response.sendFile(__dirname + '/views/index.html');
+  response.sendFile(__dirname + "/views/index.html");
+});
+
+//intro
+app.get("/intro", function(req, res) {
+  return res.send({
+    title: "Welcome to the Postman APIs course!",
+    json_intro:
+      "You've just sent an API request! 🎉 This is the JSON response. Click Visualize above this section. ",
+    info: [
+      {
+        note:
+          "Above you'll see the details of the request you sent. The address includes a base URL and a path '/course' " +
+          "- you made a request to the _endpoint_ at this location."
+      },
+      {
+        note:
+          "Notice to the right and above the response here that the API returned a **200 OK** status code - hover over it for more detail."
+      }
+    ],
+    next:
+      "Now change the method. Above, to the left of the address, click the drop-down to change GET to POST, " +
+      "then click Send again."
+  });
 });
 
 //get random cat
 app.get("/cat", (request, response) => {
-  var dbCats=[];
-  var cats = db.get('cats').value(); // Find all cats in the collection
-  response.status(200).json({info: 'You made a GET request! The API responded with the following data:', cat:cats[Math.floor(Math.random() * cats.length)]}); 
+  var dbCats = [];
+  var cats = db.get("cats").value(); // Find all cats in the collection
+  response.status(200).json({
+    info: "You made a GET request! The API responded with the following data:",
+    cat: cats[Math.floor(Math.random() * cats.length)]
+  });
 });
 
 app.get("/cats", (request, response) => {
-  var dbCats=[];
-  var cats = db.get('cats').value(); // Find all cats in the collection
+  var dbCats = [];
+  var cats = db.get("cats").value(); // Find all cats in the collection
   console.log(cats);
-  response.send(cats); 
+  response.send(cats);
 });
 
 //protect everything after this by checking for the secret
 app.use((req, res, next) => {
-  const apiSecret = req.get('secret');
+  const apiSecret = req.get("secret");
   if (!apiSecret || apiSecret !== process.env.SECRET) {
-    res.status(401).json({error: 'Unauthorized - your secret needs to match the one on the server!'});
+    res.status(401).json({
+      error: "Unauthorized - your secret needs to match the one on the server!"
+    });
   } else {
     next();
   }
@@ -65,22 +94,22 @@ app.use((req, res, next) => {
 // removes entries from users and populates it with default users
 app.get("/reset", (request, response) => {
   // removes all entries from the collection
-  db.get('cats')
-  .remove()
-  .write()
+  db.get("cats")
+    .remove()
+    .write();
   console.log("Database cleared");
-  
+
   // default users inserted in the database
-  var cats= [
-      {"name":"Syd", "humans":17},
-      {"name":"Hamish",  "humans":3},
-      {"name":"Peggy","humans":5}
+  var cats = [
+    { name: "Syd", humans: 17 },
+    { name: "Hamish", humans: 3 },
+    { name: "Peggy", humans: 5 }
   ];
-  
-  cats.forEach((cat)=>{
-    db.get('cats')
+
+  cats.forEach(cat => {
+    db.get("cats")
       .push({ name: cat.name, humans: cat.humans })
-      .write()
+      .write();
   });
   console.log("Default cats added");
   response.redirect("/");
@@ -89,62 +118,78 @@ app.get("/reset", (request, response) => {
 // removes all entries from the collection
 app.get("/clear", (request, response) => {
   // removes all entries from the collection
-  db.get('cats')
-  .remove()
-  .write()
+  db.get("cats")
+    .remove()
+    .write();
   console.log("Database cleared");
   response.redirect("/");
 });
 
 // creates a new entry in the users collection with the submitted values
 app.post("/cat", (request, response) => {
-  if(request.body.name && request.body.humans){
-    db.get('cats')
+  if (request.body.name && request.body.humans) {
+    db.get("cats")
       .push({ name: request.body.name, humans: request.body.humans })
-      .write()
+      .write();
     console.log("New cat inserted in the database");
-    response.status(200).json({status: "Cat added", cat: request.body});
-  }
-  else
-    response.status(400).json({error: "Bad request - please check your cat body data!"});
+    response.status(200).json({ status: "Cat added", cat: request.body });
+  } else
+    response
+      .status(400)
+      .json({ error: "Bad request - please check your cat body data!" });
 });
 
 //update cat human field
 app.patch("/cat", (request, response) => {
-  if(request.query.name && request.body.humans){
-    db.get('cats')
+  if (request.query.name && request.body.humans) {
+    db.get("cats")
       .find({ name: request.query.name })
-      .assign({ humans: request.body.humans})
-      .write()
-    response.status(201).json({status: "Updated", cat: request.query.name, humans: request.body.humans });
-  }
-  else
-    response.status(400).json({error: "Bad request - please check your data!"});
+      .assign({ humans: request.body.humans })
+      .write();
+    response.status(201).json({
+      status: "Updated",
+      cat: request.query.name,
+      humans: request.body.humans
+    });
+  } else
+    response
+      .status(400)
+      .json({ error: "Bad request - please check your data!" });
 });
 
 //update entire cat
 app.put("/cat", (request, response) => {
-  if(request.query.current_name && request.body.humans && request.body.new_name){
-    db.get('cats')
+  if (
+    request.query.current_name &&
+    request.body.humans &&
+    request.body.new_name
+  ) {
+    db.get("cats")
       .find({ name: request.query.current_name })
-      .assign({ name: request.body.new_name, humans: request.body.humans})
-      .write()
-    response.status(201).json({status: "Updated", cat: request.query.new_name, humans: request.body.humans });
-  }
-  else
-    response.status(400).json({error: "Bad request - please check your data!"});
+      .assign({ name: request.body.new_name, humans: request.body.humans })
+      .write();
+    response.status(201).json({
+      status: "Updated",
+      cat: request.query.new_name,
+      humans: request.body.humans
+    });
+  } else
+    response
+      .status(400)
+      .json({ error: "Bad request - please check your data!" });
 });
 
 //delete cat
 app.delete("/cat", (request, response) => {
-  if(request.query.name){
-    db.get('cats')
+  if (request.query.name) {
+    db.get("cats")
       .remove({ name: request.query.name })
-      .write()
-    response.status(200).json({status: "Deleted", cat: request.query.name });
-  }
-  else
-    response.status(400).json({error: "Bad request - please check your data!"});
+      .write();
+    response.status(200).json({ status: "Deleted", cat: request.query.name });
+  } else
+    response
+      .status(400)
+      .json({ error: "Bad request - please check your data!" });
 });
 
 // listen for requests :)
