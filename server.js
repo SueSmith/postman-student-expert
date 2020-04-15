@@ -40,8 +40,13 @@ app.get("/", (request, response) => {
 });
 
 //intro
-app.get("/intro", function(req, res) {
-  return res.send({
+app.get("/intro", (request, response) => {
+  if(request.query.id){
+    response.status(200).json({message: "You sent a request with a query parameter!", 
+                               );
+  }
+  else {
+  response.status(200).json({
     title:
       "Welcome to the Learn by API course! The requests will walk you through learning about APIs inside Postman.",
     json_intro:
@@ -58,9 +63,9 @@ app.get("/intro", function(req, res) {
       }
     ],
     next:
-      "Now change the method. Above, to the left of the address, click the drop-down to change GET to POST, " +
-      "then click Send again."
+        "Now try a parameter - add ?id=1 to the end of the address after /info and click Send again."
   });
+  }
 });
 
 //from other project
@@ -116,7 +121,7 @@ app.get("/lesson", function(req, res) {
 
 //---
 
-//get random cat
+//get a single random cat
 app.get("/cat", (request, response) => {
   var dbCats = [];
   var cats = db.get("cats").value(); // Find all cats in the collection
