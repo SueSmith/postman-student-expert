@@ -42,7 +42,7 @@ app.get("/", (request, response) => {
 app.get("/cat", (request, response) => {
   var dbCats=[];
   var cats = db.get('cats').value(); // Find all cats in the collection
-  response.send("{"+"'info': 'here is the info'"cats[Math.floor(Math.random() * cats.length)]+"}"); 
+  response.status(200).json({info: 'here is the info', cat:cats[Math.floor(Math.random() * cats.length)]}); 
 });
 
 app.get("/cats", (request, response) => {
