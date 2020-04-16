@@ -118,7 +118,7 @@ app.get("/:category/intro", (request, response) => {
 
 //post to path
 app.post("/:category/intro", (request, response) => {
-  if (request.body.message)
+  if (request.body.name)
     response.status(201).json({
       title: "You sent body data!",
       next: "Now try opening the Manage Cats folder."
@@ -141,7 +141,7 @@ app.post("/:category/intro", (request, response) => {
       next:
         "Now try adding some body data. In **Body** under the request address, select **raw**, "+
         "choose **JSON** from the drop-down list on the right. " +
-        "Enter {'name':'mary'} into the text field."
+        "Enter "+{name:"mary"}+" (including the curly brackets) into the text field and click **Send**."
     });
   }
 });
