@@ -141,7 +141,8 @@ app.post("/:category/intro", (request, response) => {
       next:
         "Now try adding some body data. In **Body** under the request address, select **raw**, "+
         "choose **JSON** from the drop-down list on the right. " +
-        "Enter "+{name:"mary"}+" (including the curly brackets) into the text field and click **Send**."
+        "Enter the following (including the curly brackets) into the text field and click **Send**:",
+      json_content: {name: "mary"}
     });
   }
 });
