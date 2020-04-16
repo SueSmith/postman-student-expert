@@ -45,39 +45,54 @@ app.get("/intro", (request, response) => {
     response
       .status(200)
       .json({
-        message: "You sent a request with a query parameter!",
+        title: "You sent a request with a query parameter!",
+        info: [
+          {
+            note: "Your query parameter indicates that you want to retrieve some information with an id value of "+request.query.id+"."
+          },
+          {
+            note: "You would use this to retrieve a particular piece of information from the API, for example a customer using their unique id."
+          },
+          {
+            note: "Query parameters are included in the request address and allow you to request more specific information and services."
+          }
+        ],
         next:
-          "Now try adding a path parameter. Enter /:category before /info in the address. " +
-          "In Params, enter a value for the category row (e.g. 'hats' and click Send again."
+          "Now try adding a path parameter. In the address, enter /:category before /intro then " +
+          "in **Params**, enter a **Value** for the 'category' row e.g. 'hats' (without the quotes) and click **Send** again."
       });
   } else {
     response.status(200).json({
       title:
         "Welcome to the Learn by API course!",
       intro:
-        "The requests will walk you through learning about APIs inside Postman. Click **Visualize** above this section. ",
+        "The requests will walk you through learning about APIs inside Postman. Click **Visualize** above this section to continue learning.",
       info: [
         {
           note: "You already sent an API request! 🎉 This is the JSON response."
         },
         {
           note:
-            "Above you'll see the details of the request you sent. The address includes a base URL and a path '/course' " +
+            "Above you'll see the details of the request you sent. The address includes a base URL and a path '/intro' " +
             "- you made a request to the _endpoint_ at this location."
         },
         {
           note:
             "Notice to the right and above the response here that the API returned a **200 OK** status code - hover over it for more detail."
+        },
+        {
+          note:
+            "**Before you continue, in History on the left, switch on Save Responses so that you can look back at all of your requests.**"
         }
       ],
       next:
-        "Now try a parameter - add ?id=1 to the end of the address after /info and click Send again."
+        "Now try a parameter - add ?id=1 to the end of the request address after /intro and click Send again."
     });
   }
 });
 
 //get with path
-app.get("/:category/info", (request, response) => {
+app.get("/:category/intro", (request, response) => {
   response.status(200).json({
     message: "You sent a path parameter!",
     next:
@@ -108,6 +123,8 @@ app.post("/:category/info", (request, response) => {
   }
 });
 
+//now in collections tab open learn by api and open cats
+
 //get a single random cat
 app.get("/cat", (request, response) => {
   var dbCats = [];
@@ -126,6 +143,8 @@ app.get("/cats", (request, response) => {
   response.status(200).json({message: "This response includes an array—click Visualize above and then scroll to see it displayed as a chart", 
                              cats: cats});
 });
+
+//TODO make sure there are other error responses e.g. if request isn't matched
 
 //protect everything after this by checking for the secret
 app.use((req, res, next) => {
