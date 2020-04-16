@@ -42,29 +42,31 @@ app.get("/", (request, response) => {
 //intro to course
 app.get("/intro", (request, response) => {
   if (request.query.id) {
-    response
-      .status(200)
-      .json({
-        title: "You sent a request with a query parameter!",
-        info: [
-          {
-            note: "Your query parameter indicates that you want to retrieve some information with an id value of "+request.query.id+"."
-          },
-          {
-            note: "You would use this to retrieve a particular piece of information from the API, for example a customer using their unique id."
-          },
-          {
-            note: "Query parameters are included in the request address and allow you to request more specific information and services."
-          }
-        ],
-        next:
-          "Now try adding a path parameter. In the address, enter /:category before /intro then " +
-          "in **Params**, enter a **Value** for the 'category' row e.g. 'hats' (without the quotes) and click **Send** again."
-      });
+    response.status(200).json({
+      title: "You sent a request with a query parameter!",
+      info: [
+        {
+          note:
+            "Your query parameter indicates that you want to retrieve some information with an id value of " +
+            request.query.id +
+            "."
+        },
+        {
+          note:
+            "You would use this to retrieve a particular piece of information from the API, for example a customer using their unique id."
+        },
+        {
+          note:
+            "Query parameters are included in the request address 'query string' and allow you to request specific information / services."
+        }
+      ],
+      next:
+        "Now try adding a path parameter. In the address, enter /:category before /intro then " +
+        "in **Params**, enter a **Value** for the 'category' row e.g. 'hats' (without the quotes) and click **Send** again."
+    });
   } else {
     response.status(200).json({
-      title:
-        "Welcome to the Learn by API course!",
+      title: "Welcome to the Learn by API course!",
       intro:
         "The requests will walk you through learning about APIs inside Postman. Click **Visualize** above this section to continue learning.",
       info: [
@@ -94,31 +96,52 @@ app.get("/intro", (request, response) => {
 //get with path
 app.get("/:category/intro", (request, response) => {
   response.status(200).json({
-    message: "You sent a path parameter!",
+    title: "You sent a path parameter!",
+    info: [
+      {
+        note: "Path parameters form part of the request URL."
+      },
+      {
+        note:
+          "Anything you add in your address with a colon ':' in front of it will be treated as a path parameter in Postman."
+      },
+      {
+        note:
+          "Path parameters are similar to query string parameters in that you can use them to make requests for specific resources."
+      }
+    ],
     next:
-      "Now change the method. Above, to the left of the address, click the drop-down to change GET to POST, " +
-      "then click Send again."
+      "Now change the method. Above, to the left of the address, click the drop-down to change **GET** to **POST**, " +
+      "then click **Send** again."
   });
 });
 
 //post to path
-app.post("/:category/info", (request, response) => {
+app.post("/:category/intro", (request, response) => {
   if (request.body.message)
-    response
-      .status(201)
-      .json({
-        message: "You sent body data!",
-        next: "Now try opening the Manage Cats folder."
-      });
+    response.status(201).json({
+      title: "You sent body data!",
+      next: "Now try opening the Manage Cats folder."
+    });
   else {
     response.status(400).json({
-      message:
-        "You sent a post request! Post requests let you pass data to the API. Notice that the status code is 400, this is because your data is not yet complete",
+      title: "You sent a post request!",
+      info: [
+        {
+          note:
+            "Post requests let you send data to the API, for example to add a new customer record for an online shop."
+        },
+        {
+          note: "Post requests normally include body data indicating the information you want to add via the API, formatted in JSON or XML."
+        },
+        {
+          note: "Notice that the status code is 400, this is because your body data is not yet complete."
+        }
+      ],
       next:
-        "Now try adding some data. " +
-        "Select this data - all of the content inside the Pretty tab and copy it, from { to }. " +
-        "Open the Body tab under the address, select Raw, and paste what you copied " +
-        "into the empty pane, making sure JSON is selected from the dropdown."
+        "Now try adding some body data. In **Body** under the request address, select **raw**, "+
+        "choose **JSON** from the drop-down list on the right. " +
+        "Enter {'name':'mary'} into the text field."
     });
   }
 });
@@ -140,8 +163,13 @@ app.get("/cats", (request, response) => {
   var dbCats = [];
   var cats = db.get("cats").value(); // Find all cats in the collection
   console.log(cats);
-  response.status(200).json({message: "This response includes an array—click Visualize above and then scroll to see it displayed as a chart", 
-                             cats: cats});
+  response
+    .status(200)
+    .json({
+      message:
+        "This response includes an array—click Visualize above and then scroll to see it displayed as a chart",
+      cats: cats
+    });
 });
 
 //TODO make sure there are other error responses e.g. if request isn't matched
