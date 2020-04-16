@@ -143,7 +143,7 @@ app.post("/:category/intro", (request, response) => {
         "choose **JSON** from the drop-down list on the right. " +
         "Enter the the following object (a name and value, including one set of curly brackets) into the text field and click **Send**:",
       json_content: {name: "mary"},
-      pic: "https://assets.postman.com/postman-docs/soap-body-xml.jpg"
+      pic: "https://assets.postman.com/postman-docs/learn-by-api-enter-body-data.jpg"
     });
   }
 });
