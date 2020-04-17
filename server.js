@@ -88,7 +88,9 @@ app.get("/intro", (request, response) => {
         }
       ],
       next:
-        "Now try a parameter - add ?id=1 to the end of the request address after /intro and click Send again."
+        "Now try a query string parameter - add ?id=1 to the end of the request address after /intro. The URL query string begins with a "
+        +" question mark '?' then the name, equals, and the parameter value. If you have more than one parameter they will be separated by '&'"
+        +"The **Key** and **Value** will also appear in **Params**. Click **Send** again."
     });
   }
 });
@@ -129,10 +131,11 @@ app.post("/:category/intro", (request, response) => {
           note: "The status code is 201 to indicate that a resource was created."
         },
         {
-          note: "The API to add a new record to a data source such as a database."
+          note: "The API would use the posted data to add a new record to a data source such as a database."
         }
       ],
-      next: "Now in **Collections** on the left open the **Learn by API** collection then open the **Manage Cats** folder."
+      next: "You've completed the first stage of the course! 🏆 Now in **Collections** on the left, open the **Learn by API** "
+      +"collection then open the **Manage Cats** folder. Click the 'Get one cat' request to open it and click **Send**."
     });
   else {
     response.status(400).json({
