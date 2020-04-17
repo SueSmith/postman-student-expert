@@ -121,6 +121,17 @@ app.post("/:category/intro", (request, response) => {
   if (request.body.name)
     response.status(201).json({
       title: "You sent body data!",
+      info: [
+        {
+          note: "The data you sent included a field called 'name' with a value of '"+request.body.name+"'."
+        },
+        {
+          note: "The status code is 201 to indicate that a resource was created."
+        },
+        {
+          note: "The API to add a new record to a data source such as a database."
+        }
+      ],
       next: "Now in **Collections** on the left open the **Learn by API** collection then open the **Manage Cats** folder."
     });
   else {
