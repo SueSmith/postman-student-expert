@@ -61,8 +61,9 @@ app.get("/intro", (request, response) => {
         }
       ],
       next:
-        "Now try adding a path parameter. In the address, enter /:category before /intro then " +
-        "in **Params**, enter a **Value** for the 'category' row e.g. 'hats' (without the quotes) and click **Send** again."
+        "Now try adding a path parameter, this time by editing the URL directly. In the address, enter _/:category_ before _/intro_ then " +
+        "in **Params**, enter a **Value** for the 'category' row e.g. _hats_ and click **Send** again.",
+      pic: "https://assets.postman.com/postman-docs/learn-by-api-add-path-param.jpg"
     });
   } else {
     response.status(200).json({
