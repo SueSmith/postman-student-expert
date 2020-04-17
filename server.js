@@ -121,7 +121,7 @@ app.post("/:category/intro", (request, response) => {
   if (request.body.name)
     response.status(201).json({
       title: "You sent body data!",
-      next: "Now try opening the Manage Cats folder."
+      next: "Now in **Collections** on the left open the **Learn by API** collection then open the **Manage Cats** folder."
     });
   else {
     response.status(400).json({
@@ -147,8 +147,6 @@ app.post("/:category/intro", (request, response) => {
     });
   }
 });
-
-//now in collections tab open learn by api and open cats
 
 //get a single random cat
 app.get("/cat", (request, response) => {
