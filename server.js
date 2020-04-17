@@ -173,10 +173,10 @@ app.get("/cat", (request, response) => {
   var randCat = cats[Math.floor(Math.random() * cats.length)];console.log(randCat);
   response.status(200).json({
     title: "Welcome to phase two!",
+    json_content: {cat: randCat},
     info: [
       {
-        note: "The requests in this The API responded with the following data:",
-        cat: randCat
+        note: "The requests in this The API responded with the cat data.",
       }
     ]
   });
