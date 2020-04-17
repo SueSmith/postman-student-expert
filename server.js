@@ -88,9 +88,10 @@ app.get("/intro", (request, response) => {
         }
       ],
       next:
-        "Now try a query string parameter - add ?id=1 to the end of the request address after /intro. The URL query string begins with a "
-        +" question mark '?' then the name, equals, and the parameter value. If you have more than one parameter they will be separated by '&'"
-        +"The **Key** and **Value** will also appear in **Params**. Click **Send** again."
+        "Now try a query string parameter. In **Params** enter _id_ in the **Key** field, and _1_ as the **Value**. You will see '?id=1' "
+        +" appear at the end of the request address after _/intro_. If you have more than one parameter they will be separated by _&_. "
+        +"Click **Send** again.",
+      pic: "https://assets.postman.com/postman-docs/learn-by-api-add-query-string.jpg"
     });
   }
 });
