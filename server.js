@@ -176,7 +176,7 @@ app.get("/cat", (request, response) => {
     info: [
       {
         note: "The requests in this The API responded with the following data:",
-    json_content: {cat: randCat}
+        cat: randCat
       }
     ]
   });
