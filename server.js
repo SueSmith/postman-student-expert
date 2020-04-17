@@ -170,12 +170,13 @@ app.post("/:category/intro", (request, response) => {
 app.get("/cat", (request, response) => {
   var dbCats = [];
   var cats = db.get("cats").value(); // Find all cats in the collection
+  var randCat = cats[Math.floor(Math.random() * cats.length)];console.log(randCat);
   response.status(200).json({
     title: "Welcome to phase two!",
     info: [
       {
         note: "The requests in this The API responded with the following data:",
-    json_content: {cat: cats[Math.floor(Math.random() * cats.length)]}
+    json_content: {cat: randCat}
       }
     ]
   });
