@@ -103,11 +103,11 @@ app.get("/:category/intro", (request, response) => {
     title: "You sent a path parameter!",
     info: [
       {
-        note: "Path parameters form part of the request URL."
+        note: "Path parameters form part of the request URL, with the value passed in from Postman when the request runs."
       },
       {
         note:
-          "Anything you add in your address with a colon ':' in front of it will be treated as a path parameter in Postman."
+          "Anything you add in your address with a colon ':' in front of it will be treated as a path parameter."
       },
       {
         note:
@@ -116,7 +116,8 @@ app.get("/:category/intro", (request, response) => {
     ],
     next:
       "Now change the method. Above, to the left of the address, click the drop-down to change **GET** to **POST**, " +
-      "then click **Send** again."
+      "then click **Send** again.",
+    pic: "https://assets.postman.com/postman-docs/learn-by-api-select-post-method.jpg"
   });
 });
 
@@ -137,7 +138,8 @@ app.post("/:category/intro", (request, response) => {
         }
       ],
       next: "You've completed the first stage of the course! 🏆 Now in **Collections** on the left, open the **Learn by API** "
-      +"collection then open the **Manage Cats** folder. Click the 'Get one cat' request to open it and click **Send**."
+      +"collection then open the **Manage Cats** folder. Click the 'Get one cat' request to open it and click **Send**.",
+      pic: "https://assets.postman.com/postman-docs/learn-by-api-open-phase-two.jpg"
     });
   else {
     response.status(400).json({
@@ -169,8 +171,13 @@ app.get("/cat", (request, response) => {
   var dbCats = [];
   var cats = db.get("cats").value(); // Find all cats in the collection
   response.status(200).json({
-    info: "You made a GET request! The API responded with the following data:",
-    cat: cats[Math.floor(Math.random() * cats.length)]
+    title: "Welcome to phase two!",
+    info: [
+      {
+        note: "The requests in this The API responded with the following data:",
+    json_content: {cat: cats[Math.floor(Math.random() * cats.length)]}
+      }
+    ]
   });
 });
 
