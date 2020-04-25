@@ -37,30 +37,26 @@ app.get("/", (request, response) => {
 
 //get a single random cat
 app.get("/cat", (request, response) => {
-  if(request.query.min_humans){
-    let paramValue = parseInt(request.query.min_humans);
-    //if value is NaN is won't be equal to itself :)
-    if(paramValue === paramValue){
-      var dbCats = [];
-      var cats = db.get("cats").value();
-      response.status(200).json({cats: cats});
-    }
-    else{
-      response.status(400).json({error: "Oops! Check your min_humans query parameter value—it should be a number."});
-    }
-  }
-  else{
-  var cats = db.get("cats").value(); // Find all cats in the collection
-  var randCat = cats[Math.floor(Math.random() * cats.length)];
-  response.status(200).json({
-    title: "Welcome to the api starter collection!",
-    json_content: {cat: randCat},
-    info: [
-      {
-        note: "The requests in this The API responded with the data for a random cat",
-      }
-    ]
-  });
+  if (request.query.most) {
+    //send back cat with most humans
+    var cats = db
+      .get("cats")
+      .sortBy("humans")
+      .value();
+    response.status(200).json({ cat: cats[cats.length - 1] });
+  } else {
+    var cats = db.get("cats").value(); // Find all cats in the collection
+    var randCat = cats[Math.floor(Math.random() * cats.length)];
+    response.status(200).json({
+      title: "Welcome to the api starter collection!",
+      json_content: { cat: randCat },
+      info: [
+        {
+          note:
+            "The requests in this The API responded with the data for a random cat"
+        }
+      ]
+    });
   }
 });
 
@@ -69,13 +65,11 @@ app.get("/cats", (request, response) => {
   var dbCats = [];
   var cats = db.get("cats").value(); // Find all cats in the collection
   console.log(cats);
-  response
-    .status(200)
-    .json({
-      message:
-        "This response includes an array—click Visualize above and then scroll to see it displayed as a chart",
-      cats: cats
-    });
+  response.status(200).json({
+    message:
+      "This response includes an array—click Visualize above and then scroll to see it displayed as a chart",
+    cats: cats
+  });
 });
 
 //protect everything after this by checking for the secret
