@@ -65,10 +65,12 @@ app.get("/cat", (request, response) => {
       info: [
         {
           note:
-            "You sent a request to retrieve a single cat from the database."
+            "You sent a request to retrieve a single cat from the database. "+
+            "The API returned a random cat, including its name and the number of humans it has, like this:",
+          json_content: {cat: randCat}
         },
         {
-          note: "The API returned a random cat, including its name and the number of humans it has."
+          note: ""
         },
         {
           note: ""
@@ -76,7 +78,8 @@ app.get("/cat", (request, response) => {
       ],
       next: "In your Glitch app, open the server.js file. "+
         "This is the app.get('/cat') request, which you'll see has an if...else inside it."+
-        " The if part checks to see if you sent a query parameter named 'humans' but in this case you didn't, "so it returned what's."
+        " The if part checks to see if you sent a query parameter named 'humans' but in this case you didn't, "+
+      "so it returned what's in the else. Next try adding the query param."
     });
   }
 });
