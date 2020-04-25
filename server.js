@@ -37,13 +37,25 @@ app.get("/", (request, response) => {
 
 //get a single random cat
 app.get("/cat", (request, response) => {
-  if (request.query.most) {
+  if (request.query.humans) {
     //send back cat with most humans
     var cats = db
       .get("cats")
       .sortBy("humans")
       .value();
-    response.status(200).json({ cat: cats[cats.length - 1] });
+    if (request.query.humans === "most")
+      response.status(200).json({ leading_cat: cats[cats.length - 1] });
+    else if (request.query.humans === "least")
+      response.status(200).json({ trailing_cat: cats[0] });
+    else
+      response
+        .status(400)
+        .json({
+          error:
+            "Oops! Check your 'humans' query parameter value—you passed '" +
+            request.query.humans +
+            "' but it should be either most or least."
+        });
   } else {
     var cats = db.get("cats").value(); // Find all cats in the collection
     var randCat = cats[Math.floor(Math.random() * cats.length)];
@@ -183,6 +195,44 @@ app.delete("/cat", (request, response) => {
     response
       .status(400)
       .json({ error: "Bad request - please check your data!" });
+});
+
+
+//errors
+app.get("/*", (request, response) => {
+  response.status(400).json({
+    error:
+      "Oops this isn't a valid endpoint! Try undoing your changes or closing the request without saving and opening it from the collection back to the start by changing the address to " +
+      "learn-by-api.glitch.me/intro with GET method."
+  });
+});
+app.post("/*", (request, response) => {
+  response.status(400).json({
+    error:
+      "Oops this isn't a valid endpoint! Try going back to the start by changing the address to " +
+      "learn-by-api.glitch.me/intro with GET method."
+  });
+});
+app.put("/*", (request, response) => {
+  response.status(400).json({
+    error:
+      "Oops this isn't a valid endpoint! Try going back to the start by changing the address to " +
+      "learn-by-api.glitch.me/intro with GET method."
+  });
+});
+app.patch("/*", (request, response) => {
+  response.status(400).json({
+    error:
+      "Oops this isn't a valid endpoint! Try going back to the start by changing the address to " +
+      "learn-by-api.glitch.me/intro with GET method."
+  });
+});
+app.delete("/*", (request, response) => {
+  response.status(400).json({
+    error:
+      "Oops this isn't a valid endpoint! Try going back to the start by changing the address to " +
+      "learn-by-api.glitch.me/intro with GET method."
+  });
 });
 
 // listen for requests :)
