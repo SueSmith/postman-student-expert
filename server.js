@@ -9,9 +9,6 @@ const app = express();
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
-//TODO include remix instructions for db init - works without calling any setup routes
-//TODO people might arrive from glitch app, collection docs in browser, collection in pm
-
 // setup a new database
 // persisted using async file storage
 // Security note: the database is saved to the file `db.json` on the local filesystem.
@@ -67,8 +64,6 @@ app.get("/cats", (request, response) => {
       cats: cats
     });
 });
-
-//TODO make sure there are other error responses e.g. if request isn't matched
 
 //protect everything after this by checking for the secret
 app.use((req, res, next) => {
