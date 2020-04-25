@@ -61,13 +61,22 @@ app.get("/cat", (request, response) => {
     var randCat = cats[Math.floor(Math.random() * cats.length)];
     response.status(200).json({
       title: "Welcome to the api starter collection!",
-      json_content: { cat: randCat },
+      intro: "If you're using the API Starter template inside Postman - click **Visualize** for a much more informative view of this info!",
       info: [
         {
           note:
-            "The requests in this The API responded with the data for a random cat"
+            "You sent a request to retrieve a single cat from the database."
+        },
+        {
+          note: "The API returned a random cat, including its name and the number of humans it has."
+        },
+        {
+          note: ""
         }
-      ]
+      ],
+      next: "In your Glitch app, open the server.js file. "+
+        "This is the app.get('/cat') request, which you'll see has an if...else inside it."+
+        " The if part checks to see if you sent a query parameter named 'humans' but in this case you didn't, "so it returned what's."
     });
   }
 });
@@ -81,6 +90,15 @@ app.get("/cats", (request, response) => {
     message:
       "This response includes an array—click Visualize above and then scroll to see it displayed as a chart",
     cats: cats
+  });
+});
+
+//generic get error
+app.get("/*", (request, response) => {
+  response.status(400).json({
+    error:
+      "Oops this isn't a valid endpoint! "+
+      "Try undoing your changes or closing the request without saving and opening it again from the collection on the left."
   });
 });
 
@@ -197,41 +215,33 @@ app.delete("/cat", (request, response) => {
       .json({ error: "Bad request - please check your data!" });
 });
 
-
 //errors
-app.get("/*", (request, response) => {
-  response.status(400).json({
-    error:
-      "Oops this isn't a valid endpoint! Try undoing your changes or closing the request without saving and opening it from the collection back to the start by changing the address to " +
-      "learn-by-api.glitch.me/intro with GET method."
-  });
-});
 app.post("/*", (request, response) => {
   response.status(400).json({
     error:
-      "Oops this isn't a valid endpoint! Try going back to the start by changing the address to " +
-      "learn-by-api.glitch.me/intro with GET method."
+      "Oops this isn't a valid endpoint! "+
+      "Try undoing your changes or closing the request without saving and opening it again from the collection on the left."
   });
 });
 app.put("/*", (request, response) => {
   response.status(400).json({
     error:
-      "Oops this isn't a valid endpoint! Try going back to the start by changing the address to " +
-      "learn-by-api.glitch.me/intro with GET method."
+      "Oops this isn't a valid endpoint! "+
+      "Try undoing your changes or closing the request without saving and opening it again from the collection on the left."
   });
 });
 app.patch("/*", (request, response) => {
   response.status(400).json({
     error:
-      "Oops this isn't a valid endpoint! Try going back to the start by changing the address to " +
-      "learn-by-api.glitch.me/intro with GET method."
+      "Oops this isn't a valid endpoint! "+
+      "Try undoing your changes or closing the request without saving and opening it again from the collection on the left."
   });
 });
 app.delete("/*", (request, response) => {
   response.status(400).json({
     error:
-      "Oops this isn't a valid endpoint! Try going back to the start by changing the address to " +
-      "learn-by-api.glitch.me/intro with GET method."
+      "Oops this isn't a valid endpoint! "+
+      "Try undoing your changes or closing the request without saving and opening it again from the collection on the left."
   });
 });
 
