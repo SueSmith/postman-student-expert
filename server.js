@@ -37,7 +37,10 @@ app.get("/", (request, response) => {
 
 //get a single random cat
 app.get("/cat", (request, response) => {
-  var dbCats = [];
+  if(request.query.min_humans){
+    if(parseInt(request.query.min_humans)
+  }
+  else{
   var cats = db.get("cats").value(); // Find all cats in the collection
   var randCat = cats[Math.floor(Math.random() * cats.length)];
   response.status(200).json({
@@ -49,6 +52,7 @@ app.get("/cat", (request, response) => {
       }
     ]
   });
+  }
 });
 
 //get all cats
