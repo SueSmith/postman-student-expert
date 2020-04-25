@@ -39,9 +39,9 @@ app.get("/", (request, response) => {
 app.get("/cat", (request, response) => {
   var dbCats = [];
   var cats = db.get("cats").value(); // Find all cats in the collection
-  var randCat = cats[Math.floor(Math.random() * cats.length)];console.log(randCat);
+  var randCat = cats[Math.floor(Math.random() * cats.length)];
   response.status(200).json({
-    title: "Welcome to phase two!",
+    title: "Welcome to the api starter collection!",
     json_content: {cat: randCat},
     info: [
       {
@@ -67,7 +67,7 @@ app.get("/cats", (request, response) => {
 
 //protect everything after this by checking for the secret
 app.use((req, res, next) => {
-  const apiSecret = req.get("secret");
+  const apiSecret = req.get("cat_key");
   if (!apiSecret || apiSecret !== process.env.SECRET) {
     res.status(401).json({
       error: "Unauthorized - your secret needs to match the one on the server!"
