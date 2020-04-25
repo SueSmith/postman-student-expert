@@ -38,7 +38,16 @@ app.get("/", (request, response) => {
 //get a single random cat
 app.get("/cat", (request, response) => {
   if(request.query.min_humans){
-    if(parseInt(request.query.min_humans)
+    let paramValue = parseInt(request.query.min_humans);
+    //if value is NaN is won't be equal to itself :)
+    if(paramValue === paramValue){
+      var dbCats = [];
+      var cats = db.get("cats").value();
+      response.status(200).json({cats: cats});
+    }
+    else{
+      response.status(400).json({error: "Oops! Check your min_humans query parameter value—it should be a number."});
+    }
   }
   else{
   var cats = db.get("cats").value(); // Find all cats in the collection
@@ -48,7 +57,7 @@ app.get("/cat", (request, response) => {
     json_content: {cat: randCat},
     info: [
       {
-        note: "The requests in this The API responded with the cat data.",
+        note: "The requests in this The API responded with the data for a random cat",
       }
     ]
   });
