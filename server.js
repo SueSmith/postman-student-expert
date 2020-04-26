@@ -79,9 +79,9 @@ app.get("/cat", (request, response) => {
             "You can also see the response time and size—hover over them for more detail."
         },
         {
-          note: "Before you continue, in the left, open **History** and make sure you have **Save Responses** switched on—"+
+          note: "🔖Before you continue, in the left, open **History** and make sure you have **Save Responses** switched on—"+
             "this will let you look back through your requests later. "+
-            "**Save** your edits as you work on the requests using the button to the top right—"+
+            "💾**Save** your edits as you work on the requests using the button to the top right—"+
             "_you can import the collection again if you want to start over_."
         }
       ],
