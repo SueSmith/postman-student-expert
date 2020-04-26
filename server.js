@@ -52,7 +52,7 @@ app.get("/cat", (request, response) => {
         .status(400)
         .json({
           error:
-            "Oops! Check your 'humans' query parameter value—you passed '" +
+            "🚧Oops! Check your 'humans' query parameter value—you passed '" +
             request.query.humans +
             "' but it should be either most or least."
         });
@@ -109,7 +109,7 @@ app.get("/cats", (request, response) => {
 app.get("/*", (request, response) => {
   response.status(400).json({
     error:
-      "Oops this isn't a valid endpoint! "+
+      "🚧Oops this isn't a valid endpoint! "+
       "Try undoing your changes or closing the request without saving and opening it again from the collection on the left."
   });
 });
@@ -119,7 +119,7 @@ app.use((req, res, next) => {
   const apiSecret = req.get("cat_key");
   if (!apiSecret || apiSecret !== process.env.SECRET) {
     res.status(401).json({
-      error: "Unauthorized - your secret needs to match the one on the server!"
+      error: "🚫Unauthorized - your secret needs to match the one on the server!"
     });
   } else {
     next();
@@ -171,7 +171,7 @@ app.post("/cat", (request, response) => {
   } else
     response
       .status(400)
-      .json({ error: "Bad request - please check your cat body data!" });
+      .json({ error: "🚧Bad request - please check your cat body data!" });
 });
 
 //update cat human field
@@ -189,7 +189,7 @@ app.patch("/cat", (request, response) => {
   } else
     response
       .status(400)
-      .json({ error: "Bad request - please check your data!" });
+      .json({ error: "🚧Bad request - please check your data!" });
 });
 
 //update entire cat
@@ -211,7 +211,7 @@ app.put("/cat", (request, response) => {
   } else
     response
       .status(400)
-      .json({ error: "Bad request - please check your data!" });
+      .json({ error: "🚧Bad request - please check your data!" });
 });
 
 //delete cat
@@ -224,35 +224,35 @@ app.delete("/cat", (request, response) => {
   } else
     response
       .status(400)
-      .json({ error: "Bad request - please check your data!" });
+      .json({ error: "🚧Bad request - please check your data!" });
 });
 
 //errors
 app.post("/*", (request, response) => {
   response.status(400).json({
     error:
-      "Oops this isn't a valid endpoint! "+
+      "🚧Oops this isn't a valid endpoint! "+
       "Try undoing your changes or closing the request without saving and opening it again from the collection on the left."
   });
 });
 app.put("/*", (request, response) => {
   response.status(400).json({
     error:
-      "Oops this isn't a valid endpoint! "+
+      "🚧Oops this isn't a valid endpoint! "+
       "Try undoing your changes or closing the request without saving and opening it again from the collection on the left."
   });
 });
 app.patch("/*", (request, response) => {
   response.status(400).json({
     error:
-      "Oops this isn't a valid endpoint! "+
+      "🚧Oops this isn't a valid endpoint! "+
       "Try undoing your changes or closing the request without saving and opening it again from the collection on the left."
   });
 });
 app.delete("/*", (request, response) => {
   response.status(400).json({
     error:
-      "Oops this isn't a valid endpoint! "+
+      "🚧Oops this isn't a valid endpoint! "+
       "Try undoing your changes or closing the request without saving and opening it again from the collection on the left."
   });
 });
