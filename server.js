@@ -60,8 +60,9 @@ app.get("/cat", (request, response) => {
     var cats = db.get("cats").value(); // Find all cats in the collection
     var randCat = cats[Math.floor(Math.random() * cats.length)];
     response.status(200).json({
-      title: "Welcome to the API Starter collection! 🎉",
-      intro: "If you're using the API Starter template inside Postman - click **Visualize** for a much more informative view of this info!",
+      title: "Welcome to the API Starter collection! 🎓🚀",
+      init_note: "If you're using the API Starter template inside Postman - click **Visualize** for a much more informative view of this info!",
+      intro: "This collection will walk you through the proces ",
       info: [
         {
           note:
