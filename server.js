@@ -70,10 +70,15 @@ app.get("/cat", (request, response) => {
           json_content: {cat: randCat}
         },
         {
-          note: "Notice above and to the right in Postman that the response returned a **200 OK** response."
+          note: "Notice above and to the right in Postman that the response returned a **200 OK** response. "+
+            "You can also see the response time and size—hover over them for more detail."
         },
         {
-          note: ""
+          note: "Before you continue, in the left, open **History** and make sure you have **Save Responses** switched on—"+
+            "this will let you look back through your requests so that you can refer back to them later. "+
+            "You can also save your changes to the requests using the **Save** button to the top right—"+
+            "this will overwrite the collection as it was when you downloaded it "+
+            "(if you want to rever to the original version you can just import it again)."
         }
       ],
       next: "In your Glitch app, open the server.js file. "+
