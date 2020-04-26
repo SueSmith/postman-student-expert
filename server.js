@@ -70,14 +70,14 @@ app.get("/cat", (request, response) => {
           json_content: {cat: randCat}
         },
         {
-          note: ""
+          note: "Notice above and to the right in Postman that the response returned a **200 OK** response."
         },
         {
           note: ""
         }
       ],
       next: "In your Glitch app, open the server.js file. "+
-        "This is the app.get('/cat') request, which you'll see has an if...else inside it."+
+        "This is the app.get('/cat') request, which you'll see has an _if...else_ inside it."+
         " The if part checks to see if you sent a query parameter named 'humans' but in this case you didn't, "+
       "so it returned what's in the else. Next try adding the query param."
     });
