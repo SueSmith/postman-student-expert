@@ -36,7 +36,9 @@ app.get("/", (request, response) => {
 });
 
 //setup backend
-app.get("/setup", (request, respon))
+app.get("/setup", (request, response) => {
+  response.status(200).json({"title": "API Starter"});
+});
 
 //get a single random cat
 app.get("/cat", (request, response) => {
