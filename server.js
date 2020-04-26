@@ -35,6 +35,9 @@ app.get("/", (request, response) => {
   response.sendFile(__dirname + "/views/index.html");
 });
 
+//setup backend
+app.get("/setup", (request, respon))
+
 //get a single random cat
 app.get("/cat", (request, response) => {
   if (request.query.humans) {
