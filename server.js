@@ -2,7 +2,9 @@
 POSTMAN API STARTER
 
 This API works in conjunction with the API Starter collecction in Postman to walk you through API basics.
-Follow the instruct
+Import the collection into Postman and send a request to the setup endpoint to begin.
+
+This Glitch app is based on hello-express and low-db.
 */
 
 // server.js
