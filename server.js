@@ -1,3 +1,10 @@
+/*
+POSTMAN API STARTER
+
+This API works in conjunction with the API Starter collecction in Postman to walk you through API basics.
+Follow the instruct
+*/
+
 // server.js
 // where your node app starts
 
@@ -35,11 +42,14 @@ app.get("/", (request, response) => {
   response.sendFile(__dirname + "/views/index.html");
 });
 
-//setup backend
+//setup collection - swap your api url and secret into the collection variables
 app.get("/setup", (request, response) => {
-  response.status(200).json({"title": "API Starter"});
+  response.status(200).json(
+    {
+      title: "API Starter - Setup",
+      intro: "Click **Visualize** in Postman!"
+    });
 });
-
 //get a single random cat
 app.get("/cat", (request, response) => {
   if (request.query.humans) {
@@ -266,3 +276,4 @@ app.delete("/*", (request, response) => {
 const listener = app.listen(process.env.PORT, () => {
   console.log("Your app is listening on port " + listener.address().port);
 });
+ 
