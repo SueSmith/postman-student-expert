@@ -56,9 +56,12 @@ app.get("/setup", (request, response) => {
       info: [
         {
           note: "Make sure you are using the **API Starter** template in Postman. If you aren't, in Postman click __New__ &gt; __Templates__, "+
-          "search for 'api starter', select the template and click **Run in Postman**."+
-          " Open the collection on the left, select this request again (`GET` 0. Setup API) and click **Send**, select **Visualize** "+
-          " then proceed to the next step:"
+          "search for 'api starter', select the template and click **Run in Postman**. _Alternatively visit `tbc` in your web browser_.",
+          pic: "tbc"
+        },
+        {
+          note: "Open the collection in __Collections__ on the left of the Postman app, select this request again (`GET` 0. Setup API) "+
+          "and click **Send**, select **Visualize** then proceed to the next step:"
         },
         {
           note: "Visit the **Postman API Starter** app on Glitch—open `https://glitch.com/~postman-api-starter` in your web browser and **Remix** "+
@@ -66,7 +69,7 @@ app.get("/setup", (request, response) => {
           pic: "tbc"
         },
         {
-          note: "The Postman collection sends requests to the original API, but you can edit it to use your remix. Find the URL for your"+
+          note: "The Postman collection sends requests to the original API, but you can edit it to use your remix. Find the URL for your "+
           "Glitch remix by clicking __Show__ &gt; __In new window__. Copy it from the address bar in your web browser—"+
           "it should have the format `your-app-name.glitch.me`).",
           pic: "tbc"
@@ -77,16 +80,24 @@ app.get("/setup", (request, response) => {
         },
         {
           note: "Select __Variables__ and update the `url` variable values (both initial and current) to match your own Glitch app location. "+
-          In Postman, __Update__ your collection to save the variable."
+          "__Update__ your collection to save the variable.",
+          pic: ""
         },
         {
-          note: "In the __API Starter__ folder, click the first request `GET` __Get one cat__ and click __Send__. The __Response__ will guide "+
-          "you through the next steps in the __Body__ tab!"
+          note: "In the request address, you will see `{{url}}`—this is a variable reference, hover over it and you should see the address "+
+          "for your own Glitch app remix. Try sending this request again to make sure it works, you should see the same response.",
+          pic: ""
+        },
+        {
+          note: "Now you're ready to go! In the collection, click the first request `GET` __1. Get one cat__ and click __Send__. "+
+          "The __Response__ will guide you through the next steps in the __Body__ tab &gt; __Visualize__! 🚀",
+          pic: "tbc"
         }
       ]
     });
   //TODO add postman explore or docs link
   //TODO add glitch images where tbc
+  //TODO tell update secret later in pm and g
 });
 
 //get a single random cat
