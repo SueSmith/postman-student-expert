@@ -49,8 +49,18 @@ app.get("/setup", (request, response) => {
   response.status(200).json(
     {
       title: "API Starter - Setup",
-      intro: "Click **Visualize** in Postman!"
+      init_note: "If you're using the API Starter template in Postman, click **Visualize**!",
+      intro: "This collection will walk you through learning the basics of API operations. "+
+      "You will call your own API in Postman and make changes to the API code itself on Glitch. Make sure you are using the API Starter "+
+      "in Postman."+
+      "Carry out the setup steps to get learning and leave with a starter project you can continue developing! 🏗️",
+      info: [
+        {
+          note: ""
+        }
+      ]
     });
+  //TODO add postman explore or docs link to intro
 });
 //get a single random cat
 app.get("/cat", (request, response) => {
@@ -80,10 +90,7 @@ app.get("/cat", (request, response) => {
     response.status(200).json({
       title: "Welcome to the API Starter collection! 🎓🚀",
       init_note: "If you're using the API Starter template inside Postman - click **Visualize** for a much more informative view of this info!",
-      intro: "This collection will walk you through learning the basics of API operations. You will call your API in Postman and make changes "+
-      "to the API code itself on Glitch. **Before you start, make sure you have remixed the app on Glitch, imported the collection into "+
-      "Postman, and updated your collection variables by "+
-      "[following the instructions in the docs](https://explore.postman.com/templates/7499/learn-by-api).**",
+      intro: "This is the first request in the cats collection!",
       info: [
         {
           note:
