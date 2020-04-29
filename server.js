@@ -62,15 +62,22 @@ app.get("/setup", (request, response) => {
         },
         {
           note: "Visit the **Postman API Starter** app on Glitch—open `https://glitch.com/~postman-api-starter` in your web browser and **Remix** "+
-          "the project. _Sign up for a Glitch account to save your work for later. Having a Postman account will also let you save your changes"+
-          " to the collection._",
-          pic: "https://assets.postman.com/postman-docs/learn-by-api-add-query-string.jpg"
+          "the project. _Sign up for a Glitch account to save your work for later._",
+          pic: "tbc"
         },
         {
-          note: "Find __API Starter__ in __Collections__ on the left, click __...__ &gt; __Edit__ &gt; __Variables__ "+
-          "and update the `url` variable values (both initial and current) to match your own Glitch app location (to find it in Glitch, "+
-          "click __Show__ &gt; __In new window__ and copy it from the address bar in your web browser—it should have the format "+
-          "`your-app-name.glitch.me`). In Postman, __Update__ your collection to save the variable."
+          note: "The Postman collection sends requests to the original API, but you can edit it to use your remix. Find the URL for your"+
+          "Glitch remix by clicking __Show__ &gt; __In new window__. Copy it from the address bar in your web browser—"+
+          "it should have the format `your-app-name.glitch.me`).",
+          pic: "tbc"
+        },
+        {
+          note: "Back in Postman, find the __API Starter__ in __Collections__ on the left again, click __...__ &gt; __Edit__.",
+          pic: "tbc"
+        },
+        {
+          note: "Select __Variables__ and update the `url` variable values (both initial and current) to match your own Glitch app location. "+
+          In Postman, __Update__ your collection to save the variable."
         },
         {
           note: "In the __API Starter__ folder, click the first request `GET` __Get one cat__ and click __Send__. The __Response__ will guide "+
@@ -79,8 +86,11 @@ app.get("/setup", (request, response) => {
       ]
     });
   //TODO add postman explore or docs link
+  //TODO add glitch images where tbc
 });
+
 //get a single random cat
+//TODO add Having a Postman account will also let you save your changes to the collection.
 app.get("/cat", (request, response) => {
   if (request.query.humans) {
     //send back cat with most humans
