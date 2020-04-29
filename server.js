@@ -63,7 +63,8 @@ app.get("/setup", (request, response) => {
         {
           note: "Visit the **Postman API Starter** app on Glitch—open `https://glitch.com/~postman-api-starter` in your web browser and **Remix** "+
           "the project. _Sign up for a Glitch account to save your work for later. Having a Postman account will also let you save your changes"+
-          " to the collection._"
+          " to the collection._",
+          pic: "https://assets.postman.com/postman-docs/learn-by-api-add-query-string.jpg"
         },
         {
           note: "Find __API Starter__ in __Collections__ on the left, click __...__ &gt; __Edit__ &gt; __Variables__ "+
