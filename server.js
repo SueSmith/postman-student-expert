@@ -55,11 +55,25 @@ app.get("/setup", (request, response) => {
       "Carry out the setup steps to get learning and leave with a starter project you can continue developing! 🏗️",
       info: [
         {
-          note: "Make sure you are using the **API Starter** template in Postman. If you aren't, visit the template, click **Run in Postman**"+
-          " to import it into your app and **Send** this request (`GET` 0. Setup API) again to get started."
+          note: "Make sure you are using the **API Starter** template in Postman. If you aren't, in Postman click __New__ &gt; __Templates__, "+
+          "search for 'api starter', select the template and click **Run in Postman**."+
+          " Open the collection on the left, select this request again (`GET` 0. Setup API) and click **Send**, select **Visualize** "+
+          " then proceed to the next step:"
         },
         {
-          note: "Visit the postman-api-starter app in Glitch"
+          note: "Visit the **Postman API Starter** app on Glitch—open `https://glitch.com/~postman-api-starter` in your web browser and **Remix** "+
+          "the project. _Sign up for a Glitch account to save your work for later. Having a Postman account will also let you save your changes"+
+          " to the collection._"
+        },
+        {
+          note: "Find __API Starter__ in __Collections__ on the left, click __...__ &gt; __Edit__ &gt; __Variables__ "+
+          "and update the `url` variable values (both initial and current) to match your own Glitch app location (to find it in Glitch, "+
+          "click __Show__ &gt; __In new window__ and copy it from the address bar in your web browser—it should have the format "+
+          "`your-app-name.glitch.me`). In Postman, __Update__ your collection to save the variable."
+        },
+        {
+          note: "In the __API Starter__ folder, click the first request `GET` __Get one cat__ and click __Send__. The __Response__ will guide "+
+          "you through the next steps in the __Body__ tab!"
         }
       ]
     });
