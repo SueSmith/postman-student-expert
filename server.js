@@ -51,16 +51,19 @@ app.get("/setup", (request, response) => {
       title: "API Starter - Setup",
       init_note: "If you're using the API Starter template in Postman, click **Visualize**!",
       intro: "This collection will walk you through learning the basics of API operations. "+
-      "You will call your own API in Postman and make changes to the API code itself on Glitch. Make sure you are using the API Starter "+
-      "in Postman."+
+      "You will call your own API in Postman and make changes to the API code itself on Glitch. "+
       "Carry out the setup steps to get learning and leave with a starter project you can continue developing! 🏗️",
       info: [
         {
-          note: ""
+          note: "Make sure you are using the **API Starter** template in Postman. If you aren't, visit the template, click **Run in Postman**"+
+          " to import it into your app and **Send** this request (`GET` 0. Setup API) again to get started."
+        },
+        {
+          note: "Visit the postman-api-starter app in Glitch"
         }
       ]
     });
-  //TODO add postman explore or docs link to intro
+  //TODO add postman explore or docs link
 });
 //get a single random cat
 app.get("/cat", (request, response) => {
