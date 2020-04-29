@@ -48,7 +48,7 @@ app.get("/", (request, response) => {
 app.get("/setup", (request, response) => {
   response.status(200).json(
     {
-      title: "API Starter - Setup",
+      title: "Welcome to the API Starter collection! 🎓🚀",
       init_note: "If you're using the API Starter template in Postman, click **Visualize**!",
       intro: "This collection will walk you through learning the basics of API operations. "+
       "You will call your own API in Postman and make changes to the API code itself on Glitch. "+
@@ -90,7 +90,7 @@ app.get("/setup", (request, response) => {
         },
         {
           note: "Now you're ready to go! In the collection, click the first request `GET` __1. Get one cat__ and click __Send__. "+
-          "The __Response__ will guide you through the next steps in the __Body__ tab &gt; __Visualize__! 🚀",
+          "The __Response__ will guide you through the next steps in the __Body__ tab &gt; __Visualize__! 🎉",
           pic: "tbc"
         }
       ]
@@ -127,7 +127,7 @@ app.get("/cat", (request, response) => {
     var randCat = cats[Math.floor(Math.random() * cats.length)];
     //TODO update link to correct collection
     response.status(200).json({
-      title: "Welcome to the API Starter collection! 🎓🚀",
+      title: "Get one cat",
       init_note: "If you're using the API Starter template inside Postman - click **Visualize** for a much more informative view of this info!",
       intro: "This is the first request in the cats collection!",
       info: [
@@ -148,9 +148,9 @@ app.get("/cat", (request, response) => {
             "_you can import the collection again if you want to start over_."
         }
       ],
-      next: "In your Glitch app, open the server.js file. "+
-        "This is the app.get('/cat') request, which you'll see has an _if...else_ inside it."+
-        " The if part checks to see if you sent a query parameter named 'humans' but in this case you didn't, "+
+      next: "In your Glitch app, open the `server.js` file. "+
+        "This is the `app.get('/cat')` request, which you'll see has an `if...else` inside it."+
+        " The if part checks to see if you sent a query parameter named `humans` but in this case you didn't, "+
       "so it returned what's in the else. Next try adding the query param."
     });
   }
