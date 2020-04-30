@@ -109,8 +109,14 @@ app.get("/cat", (request, response) => {
       .get("cats")
       .sortBy("humans")
       .value();
+    //TODO use some same for all with query param
     if (request.query.humans === "most")
-      response.status(200).json({ leading_cat: cats[cats.length - 1] });
+      response.status(200).json({
+        title: "You requested a cat with a query parameter!",
+        init_note: "If you're using the API Starter template inside Postman - click **Visualize** for a much more informative view of this info!",
+        intro: "You sent a request to the `/cat` endpoint with a `humans` parameter value of `"+request.query.humans+"`",
+        leading_cat: cats[cats.length - 1]
+      });
     else if (request.query.humans === "least")
       response.status(200).json({ trailing_cat: cats[0] });
     else
@@ -118,7 +124,7 @@ app.get("/cat", (request, response) => {
         .status(400)
         .json({
           error:
-            "🚧Oops! Check your 'humans' query parameter value—you passed '" +
+            "🚧Oops! Check your `humans` query parameter value—you passed '" +
             request.query.humans +
             "' but it should be either most or least."
         });
