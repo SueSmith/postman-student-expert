@@ -129,11 +129,13 @@ app.get("/cat", (request, response) => {
     response.status(200).json({
       title: "Get one cat",
       init_note: "If you're using the API Starter template inside Postman - click **Visualize** for a much more informative view of this info!",
-      intro: "This is the first request in the cats collection!",
+      intro: "You made a request to retrieve a cat from the database!",
       info: [
         {
+          note: " It uses `GET` method because you are retrieving data. Later you'll use different methods to send data to the API."
+        },
+        {
           note:
-            "You sent a request to retrieve a single cat from the database. "+
             "The API returned a random cat, including its name and the number of humans it has, like this:",
           json_content: {cat: randCat}
         },
@@ -142,14 +144,14 @@ app.get("/cat", (request, response) => {
             "You can also see the response time and size—hover over them for more detail."
         },
         {
-          note: "🔖Before you continue, in the left, open **History** and make sure you have **Save Responses** switched on—"+
+          note: "🔖Before you continue, in the left, open **History** and make sure **Save Responses** is switched on—"+
             "this will let you look back through your requests later. "+
-            "💾**Save** your edits as you work on the requests using the button to the top right—"+
-            "_you can import the collection again if you want to start over_."
+            "💾**Save** your edits as you work on the requests using the button to the top right (it's easier if you sign up for a "+
+          "Postman account). _You can import the collection again if you want to start over_."
         }
       ],
-      next: "In your Glitch app, open the `server.js` file. "+
-        "This is the `app.get('/cat')` request, which you'll see has an `if...else` inside it."+
+      next: "In your Glitch app (in the web browser), open the `server.js` file. "+
+        "This is the `app.get('/cat', ...)` request, which you'll see has an `if...else` inside it."+
         " The if part checks to see if you sent a query parameter named `humans` but in this case you didn't, "+
       "so it returned what's in the else. Next try adding the query param."
     });
