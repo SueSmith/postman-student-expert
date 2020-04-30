@@ -66,7 +66,7 @@ app.get("/setup", (request, response) => {
         {
           note: "Visit the **Postman API Starter** app on Glitch—open `https://glitch.com/~postman-api-starter` in your web browser and **Remix** "+
           "the project. _Sign up for a Glitch account to save your work for later._",
-          pic: "tbc"
+          pic: "https://assets.postman.com/postman-docs/api-starter-remix-glitch.jpg"
         },
         {
           note: "The Postman collection sends requests to the original API, but you can edit it to use your remix. Find the URL for your "+
