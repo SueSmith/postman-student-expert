@@ -46,55 +46,65 @@ app.get("/", (request, response) => {
 
 //setup collection - swap your api url and secret into the collection variables
 app.get("/setup", (request, response) => {
-  response.status(200).json(
-    {
-      title: "Welcome to the API Starter collection! 🎓🚀",
-      init_note: "If you're using the API Starter template in Postman, click **Visualize**!",
-      intro: "This collection will walk you through learning the basics of API operations. "+
-      "You will call your own API in Postman and make changes to the API code itself on Glitch. "+
+  response.status(200).json({
+    title: "Welcome to the API Starter collection! 🎓🚀",
+    init_note:
+      "If you're using the API Starter template in Postman, click **Visualize**!",
+    intro:
+      "This collection will walk you through learning the basics of API operations. " +
+      "You will call your own API in Postman and make changes to the API code itself on Glitch. " +
       "Carry out the setup steps to get learning and leave with a starter project you can continue developing! 🏗️",
-      info: [
-        {
-          note: "Make sure you are using the **API Starter** template in Postman. If you aren't, in Postman click __New__ &gt; __Templates__, "+
+    info: [
+      {
+        note:
+          "Make sure you are using the **API Starter** template in Postman. If you aren't, in Postman click __New__ &gt; __Templates__, " +
           "search for 'api starter', select the template and click **Run in Postman**. _Alternatively visit `tbc` in your web browser_.",
-          pic: "tbc"
-        },
-        {
-          note: "Open the collection in __Collections__ on the left of the Postman app, select this request again (`GET` 0. Setup API) "+
+        pic: "tbc"
+      },
+      {
+        note:
+          "Open the collection in __Collections__ on the left of the Postman app, select this request again (`GET` 0. Setup API) " +
           "and click **Send**, select **Visualize** then proceed to the next step:"
-        },
-        {
-          note: "Visit the **Postman API Starter** app on Glitch—open `https://glitch.com/~postman-api-starter` in your web browser and **Remix** "+
+      },
+      {
+        note:
+          "Visit the **Postman API Starter** app on Glitch—open `https://glitch.com/~postman-api-starter` in your web browser and **Remix** " +
           "the project. _Sign up for a Glitch account to save your work for later._",
-          pic: "https://assets.postman.com/postman-docs/api-starter-remix-glitch.jpg"
-        },
-        {
-          note: "The Postman collection sends requests to the original API, but you can edit it to use your remix. Find the URL for your "+
-          "Glitch remix by clicking __Show__ &gt; __In new window__. Copy it from the address bar in your web browser—"+
+        pic:
+          "https://assets.postman.com/postman-docs/api-starter-remix-glitch.jpg"
+      },
+      {
+        note:
+          "The Postman collection sends requests to the original API, but you can edit it to use your remix. Find the URL for your " +
+          "Glitch remix by clicking __Show__ &gt; __In new window__. Copy it from the address bar in your web browser—" +
           "it should have the format `your-app-name.glitch.me`).",
-          pic: "tbc"
-        },
-        {
-          note: "Back in Postman, find the __API Starter__ in __Collections__ on the left again, click __...__ &gt; __Edit__.",
-          pic: "tbc"
-        },
-        {
-          note: "Select __Variables__ and update the `url` variable values (both initial and current) to match your own Glitch app location. "+
+        pic: "tbc"
+      },
+      {
+        note:
+          "Back in Postman, find the __API Starter__ in __Collections__ on the left again, click __...__ &gt; __Edit__.",
+        pic: "tbc"
+      },
+      {
+        note:
+          "Select __Variables__ and update the `url` variable values (both initial and current) to match your own Glitch app location. " +
           "__Update__ your collection to save the variable.",
-          pic: ""
-        },
-        {
-          note: "In the request address, you will see `{{url}}`—this is a variable reference, hover over it and you should see the address "+
+        pic: ""
+      },
+      {
+        note:
+          "In the request address, you will see `{{url}}`—this is a variable reference, hover over it and you should see the address " +
           "for your own Glitch app remix. Try sending this request again to make sure it works, you should see the same response.",
-          pic: ""
-        },
-        {
-          note: "Now you're ready to go! In the collection, click the first request `GET` __1. Get one cat__ and click __Send__. "+
+        pic: ""
+      },
+      {
+        note:
+          "Now you're ready to go! In the collection, click the first request `GET` __1. Get one cat__ and click __Send__. " +
           "The __Response__ will guide you through the next steps in the __Body__ tab &gt; __Visualize__! 🎉",
-          pic: "tbc"
-        }
-      ]
-    });
+        pic: "tbc"
+      }
+    ]
+  });
   //TODO add postman explore or docs link
   //TODO add glitch images where tbc
   //TODO tell update secret later in pm and g
@@ -113,64 +123,79 @@ app.get("/cat", (request, response) => {
     if (request.query.humans === "most")
       response.status(200).json({
         title: "You requested a cat with a query parameter!",
-        init_note: "If you're using the API Starter template inside Postman - click **Visualize** for a much more informative view of this info!",
-        intro: "You sent a request to the `/cat` endpoint with a `humans` parameter value of `"+request.query.humans+"`",
-        leading_cat: cats[cats.length - 1]
+        init_note:
+          "If you're using the API Starter template inside Postman - click **Visualize** for a much more informative view of this info!",
+        intro: "Your request included a value in the query string.",
+        info: [
+          {
+            note:
+              "You sent a request to the `/cat` endpoint with a `humans` parameter value of `" +
+              request.query.humans +
+              "`",
+            json_content: { leading_cat: cats[cats.length - 1] }
+          }
+        ],
+        next: "Now"
       });
     else if (request.query.humans === "least")
       response.status(200).json({ trailing_cat: cats[0] });
     else
-      response
-        .status(400)
-        .json({
-          error:
-            "🚧Oops! Check your `humans` query parameter value—you passed '" +
-            request.query.humans +
-            "' but it should be either most or least."
-        });
+      response.status(400).json({
+        error:
+          "🚧Oops! Check your `humans` query parameter value—you passed '" +
+          request.query.humans +
+          "' but it should be either most or least."
+      });
   } else {
     var cats = db.get("cats").value(); // Find all cats in the collection
     var randCat = cats[Math.floor(Math.random() * cats.length)];
     //TODO update link to correct collection
     response.status(200).json({
       title: "Get one cat",
-      init_note: "If you're using the API Starter template inside Postman - click **Visualize** for a much more informative view of this info!",
+      init_note:
+        "If you're using the API Starter template inside Postman - click **Visualize** for a much more informative view of this info!",
       intro: "You made a request to retrieve a cat from the database!",
       info: [
         {
-          note: " It uses `GET` method because you are retrieving data. Later you'll use different methods to send data to the API."
+          note:
+            " It uses `GET` method because you are retrieving data. Later you'll use different methods to send data to the API."
         },
         {
           note:
             "The API returned a random cat, including its name and the number of humans it has, like this:",
-          json_content: {cat: randCat}
+          json_content: { cat: randCat }
         },
         {
-          note: "Notice above and to the right in Postman that the response returned a _200 OK_ **Status** code. "+
+          note:
+            "Notice above and to the right in Postman that the response returned a _200 OK_ **Status** code. " +
             "You can also see the response time and size—hover over them for more detail."
         },
         {
-          note: "🔖Before you continue, in the left, open **History** and make sure **Save Responses** is switched on—"+
-            "this will let you look back through your requests later. "+
-            "💾**Save** your edits as you work on the requests using the button to the top right (it's easier if you sign up for a "+
-          "Postman account). _You can import the collection again if you want to start over_."
+          note:
+            "🔖Before you continue, in the left, open **History** and make sure **Save Responses** is switched on—" +
+            "this will let you look back through your requests later. " +
+            "💾**Save** your edits as you work on the requests using the button to the top right (it's easier if you sign up for a " +
+            "Postman account). _You can import the collection again if you want to start over_."
         },
         {
-          note: "In Glitch (in the web browser), **Edit** your remix of the API app and open the `server.js` file. This is the code "+
-          "for the endpoints you're calling in Postman. Scroll down to see the different sections. Each endpoint begins `app` then the "+
-          "method e.g. `.get` followed by the path e.g. `/cat`. The first endpoint is the `/setup` one you called first to setup your version. "+
-          " _Don't worry if you don't understand the JavaScript in Glitch, you should still be able to follow the steps._"
+          note:
+            "In Glitch (in the web browser), **Edit** your remix of the API app and open the `server.js` file. This is the code " +
+            "for the endpoints you're calling in Postman. Scroll down to see the different sections. Each endpoint begins `app` then the " +
+            "method e.g. `.get` followed by the path e.g. `/cat`. The first endpoint is the `/setup` one you called first to setup your version. " +
+            " _Don't worry if you don't understand the JavaScript in Glitch, you should still be able to follow the steps._"
         },
         {
-          note: "This is the `app.get('/cat', ...)` request. Each request address is the base URL, which you added as your variable, then "+
-          " the path, e.g. `/cat`. Inside the request, there's an `if...else` structure. The `if` part checks to see if you sent a query "+
-          "parameter named `humans` but in this case you didn't, so it returned what's in the `else`.",
+          note:
+            "This is the `app.get('/cat', ...)` request. Each request address is the base URL, which you added as your variable, then " +
+            " the path, e.g. `/cat`. Inside the request, there's an `if...else` structure. The `if` part checks to see if you sent a query " +
+            "parameter named `humans` but in this case you didn't, so it returned what's in the `else`.",
           pic: ""
         }
       ],
-      next: "Next try adding the query parameter. Under the request address in Postman, select **Params**. In the **Key** field, enter "+
-      "`humans` and for the **Value** enter either `most` or `least`. You will see the request address change—Postman will add your parameter"+
-      "to the URL in the query string, e.g. `?humans=most`. **Send** the request.",
+      next:
+        "Next try adding the query parameter. Under the request address in Postman, select **Params**. In the **Key** field, enter " +
+        "`humans` and for the **Value** enter either `most` or `least`. You will see the request address change—Postman will add your parameter" +
+        "to the URL in the query string, e.g. `?humans=most`. **Send** the request.",
       pic: "tbc"
     });
   }
@@ -192,7 +217,7 @@ app.get("/cats", (request, response) => {
 app.get("/*", (request, response) => {
   response.status(400).json({
     error:
-      "🚧Oops this isn't a valid endpoint! "+
+      "🚧Oops this isn't a valid endpoint! " +
       "Try undoing your changes or closing the request without saving and opening it again from the collection on the left."
   });
 });
@@ -202,7 +227,8 @@ app.use((req, res, next) => {
   const apiSecret = req.get("cat_key");
   if (!apiSecret || apiSecret !== process.env.SECRET) {
     res.status(401).json({
-      error: "🚫Unauthorized - your secret needs to match the one on the server!"
+      error:
+        "🚫Unauthorized - your secret needs to match the one on the server!"
     });
   } else {
     next();
@@ -314,28 +340,28 @@ app.delete("/cat", (request, response) => {
 app.post("/*", (request, response) => {
   response.status(400).json({
     error:
-      "🚧Oops this isn't a valid endpoint! "+
+      "🚧Oops this isn't a valid endpoint! " +
       "Try undoing your changes or closing the request without saving and opening it again from the collection on the left."
   });
 });
 app.put("/*", (request, response) => {
   response.status(400).json({
     error:
-      "🚧Oops this isn't a valid endpoint! "+
+      "🚧Oops this isn't a valid endpoint! " +
       "Try undoing your changes or closing the request without saving and opening it again from the collection on the left."
   });
 });
 app.patch("/*", (request, response) => {
   response.status(400).json({
     error:
-      "🚧Oops this isn't a valid endpoint! "+
+      "🚧Oops this isn't a valid endpoint! " +
       "Try undoing your changes or closing the request without saving and opening it again from the collection on the left."
   });
 });
 app.delete("/*", (request, response) => {
   response.status(400).json({
     error:
-      "🚧Oops this isn't a valid endpoint! "+
+      "🚧Oops this isn't a valid endpoint! " +
       "Try undoing your changes or closing the request without saving and opening it again from the collection on the left."
   });
 });
@@ -344,4 +370,3 @@ app.delete("/*", (request, response) => {
 const listener = app.listen(process.env.PORT, () => {
   console.log("Your app is listening on port " + listener.address().port);
 });
- 
