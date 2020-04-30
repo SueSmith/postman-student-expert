@@ -122,7 +122,7 @@ app.get("/cat", (request, response) => {
     //TODO use some same for all with query param
     if (request.query.humans === "most")
       response.status(200).json({
-        title: "You requested a cat with a query parameter!",
+        title: "You requested a specific cat!",
         init_note:
           "If you're using the API Starter template inside Postman - click **Visualize** for a much more informative view of this info!",
         intro: "Your request included a value in the query string.",
@@ -151,7 +151,7 @@ app.get("/cat", (request, response) => {
     var randCat = cats[Math.floor(Math.random() * cats.length)];
     //TODO update link to correct collection
     response.status(200).json({
-      title: "Get one cat",
+      title: "You requested a random cat!",
       init_note:
         "If you're using the API Starter template inside Postman - click **Visualize** for a much more informative view of this info!",
       intro: "You made a request to retrieve a cat from the database!",
@@ -305,17 +305,17 @@ app.patch("/cat", (request, response) => {
 app.put("/cat", (request, response) => {
   if (
     request.query.current_name &&
-    request.body.humans &&
+    request.body.new_humans &&
     request.body.new_name
   ) {
     db.get("cats")
       .find({ name: request.query.current_name })
-      .assign({ name: request.body.new_name, humans: request.body.humans })
+      .assign({ name: request.body.new_name, humans: request.body.new_humans })
       .write();
     response.status(201).json({
       status: "Updated",
-      cat: request.query.new_name,
-      humans: request.body.humans
+      cat: request.body.new_name,
+      humans: request.body.new_humans
     });
   } else
     response
