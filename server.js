@@ -5,21 +5,21 @@ This API works in conjunction with the API Starter collecction in Postman to wal
 Import the collection into Postman and send a request to the setup endpoint to begin.
 
 This Glitch app is based on hello-express and low-db.
+
+Below you'll see the code for the endpoints in the API after some initial setup processing
+  - each endpoint begins "app." followed by get, post, patch, put, or delete, then the endpoint path, e.g. /cat
 */
 
 // server.js
 // where your node app starts
 
-// we've started you off with Express (https://expressjs.com/)
-// but feel free to use whatever libraries or frameworks you'd like through `package.json`.
 const express = require("express");
 var bodyParser = require("body-parser");
 const app = express();
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
-// setup a new database
-// persisted using async file storage
+// setup a new database persisted using async file storage
 // Security note: the database is saved to the file `db.json` on the local filesystem.
 // It's deliberately placed in the `.data` directory which doesn't get copied if someone remixes the project.
 var low = require("lowdb");
@@ -148,12 +148,21 @@ app.get("/cat", (request, response) => {
             "this will let you look back through your requests later. "+
             "💾**Save** your edits as you work on the requests using the button to the top right (it's easier if you sign up for a "+
           "Postman account). _You can import the collection again if you want to start over_."
+        },
+        {
+          note: "In Glitch (in the web browser), **Edit** your remix of the API app and open the `server.js` file. This is the code "+
+          "for the endpoints you're calling in Postman. Scroll down to see the different sections. Each endpoint begins `app` then the "+
+          "method e.g. `.get` followed by the path e.g. `/cat`. The first endpoint is the `/setup` one you called first to setup your version. "+
+          " _Don't worry if you don't understand the JavaScript in Glitch, you should still be able to follow the steps._"
+        },
+        {
+          note: "This is the `app.get('/cat', ...)` request, which you'll "+
+          "see has an `if...else` inside it. The if part checks to see if you sent a query parameter named `humans` but in this case you "+
+          "didn't, so it returned what's in the else.",
+          pic: ""
         }
       ],
-      next: "In your Glitch app (in the web browser), open the `server.js` file. "+
-        "This is the `app.get('/cat', ...)` request, which you'll see has an `if...else` inside it."+
-        " The if part checks to see if you sent a query parameter named `humans` but in this case you didn't, "+
-      "so it returned what's in the else. Next try adding the query param."
+      next: "Next try adding the query parameter. In Postman, under the request address, select **Params**."
     });
   }
 });
