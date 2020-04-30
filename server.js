@@ -156,13 +156,16 @@ app.get("/cat", (request, response) => {
           " _Don't worry if you don't understand the JavaScript in Glitch, you should still be able to follow the steps._"
         },
         {
-          note: "This is the `app.get('/cat', ...)` request, which you'll "+
-          "see has an `if...else` inside it. The if part checks to see if you sent a query parameter named `humans` but in this case you "+
-          "didn't, so it returned what's in the else.",
+          note: "This is the `app.get('/cat', ...)` request. Each request address is the base URL, which you added as your variable, then "+
+          " the path, e.g. `/cat`. Inside the request, there's an `if...else` structure. The `if` part checks to see if you sent a query "+
+          "parameter named `humans` but in this case you didn't, so it returned what's in the `else`.",
           pic: ""
         }
       ],
-      next: "Next try adding the query parameter. In Postman, under the request address, select **Params**."
+      next: "Next try adding the query parameter. Under the request address in Postman, select **Params**. In the **Key** field, enter "+
+      "`humans` and for the **Value** enter either `most` or `least`. You will see the request address change—Postman will add your parameter"+
+      "to the URL in the query string, e.g. `?humans=most`. **Send** the request.",
+      pic: "tbc"
     });
   }
 });
