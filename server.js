@@ -119,32 +119,32 @@ app.get("/cat", (request, response) => {
       .get("cats")
       .sortBy("humans")
       .value();
-    //TODO use some same for all with query param
-    if (request.query.humans === "most")
+    if (request.query.humans === "most" || request.query.humans === "least"){
+      var requested_cat = request.query.humans === "most" ? cats[cats.length - 1] : cats[0];
       response.status(200).json({
         title: "You requested a specific cat!",
         init_note:
           "If you're using the API Starter template inside Postman - click **Visualize** for a much more informative view of this info!",
-        intro: "Your request included a value in the query string.",
+        intro: "Your request included a value in the query string. The query string can have a value of either `least` or `most` to return "+
+        "the cat with the highest or lowest number of humans.",
         info: [
           {
             note:
-              "You sent a request to the `/cat` endpoint with a `humans` parameter value of `" +
+              "You sent the `/cat` endpoint a `humans` parameter value of `" +
               request.query.humans +
-              "`",
-            json_content: { leading_cat: cats[cats.length - 1] }
+              "`. The API returned the cat incuding its name and number of humans:",
+            json_content: { cat: requested_cat }
           }
         ],
         next: "Now"
       });
-    else if (request.query.humans === "least")
-      response.status(200).json({ trailing_cat: cats[0] });
+    }
     else
       response.status(400).json({
         error:
-          "🚧Oops! Check your `humans` query parameter value—you passed '" +
+          "🚧Oops! Check your `humans` query parameter value—you passed `" +
           request.query.humans +
-          "' but it should be either most or least."
+          "` but it should be either `most` or `least`."
       });
   } else {
     var cats = db.get("cats").value(); // Find all cats in the collection
