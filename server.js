@@ -134,6 +134,11 @@ app.get("/cat", (request, response) => {
               request.query.humans +
               "`. The API returned the cat incuding its name and number of humans:",
             json_content: { cat: requested_cat }
+          },
+          {
+            note: "Back in the Glitch app, look for the section that begins `if (request.query.humans...`. The API pulls the cats from the "+
+            "database and sorts them in order of how many humans they have. If you sent `most` as the query parameter, the API sends you back "+
+            
           }
         ],
         next: "Now"
