@@ -147,6 +147,9 @@ app.get("/cat", (request, response) => {
               "Back in the Glitch app, look for the section inside `app.get('/cat', ...` that begins `if (request.query.humans ...`. " +
               "The API pulls the cats from the database and sorts them into an array in order of how many humans each one has. If you send `most` " +
               "as the query parameter, the API sends you back the last cat in the array—if you asked for `least` it sends you back the first one."
+          },
+          {
+            note: ""
           }
         ],
         next: "Now"
