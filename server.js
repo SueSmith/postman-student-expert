@@ -46,6 +46,7 @@ app.get("/", (request, response) => {
 
 //setup collection - swap your api url and secret into the collection variables
 app.get("/setup", (request, response) => {
+  //send back a response to the client calling the API - in Postman you will see this text in Body > Visualize
   response.status(200).json({
     title: "Welcome to the API Starter collection! 🎓🚀",
     init_note:
@@ -114,19 +115,25 @@ app.get("/setup", (request, response) => {
 //TODO add Having a Postman account will also let you save your changes to the collection.
 app.get("/cat", (request, response) => {
   if (request.query.humans) {
-    //send back cat with most humans
+    //send back cat with most or least humans
+    //start by getting all cats in order of # humans
     var cats = db
       .get("cats")
       .sortBy("humans")
       .value();
-    if (request.query.humans === "most" || request.query.humans === "least"){
-      var requested_cat = request.query.humans === "most" ? cats[cats.length - 1] : cats[0];
+    //make sure we have a valid humans parameter value
+    if (request.query.humans === "most" || request.query.humans === "least") {
+      //if the humans query is most, select the last cat in the array, otherwise select the first - store the result in a variable
+      var requested_cat =
+        request.query.humans === "most" ? cats[cats.length - 1] : cats[0];
+      //send back a response to the client calling the API - in Postman you will see this text in Body > Visualize
       response.status(200).json({
         title: "You requested a specific cat!",
         init_note:
           "If you're using the API Starter template inside Postman - click **Visualize** for a much more informative view of this info!",
-        intro: "Your request included a value in the query string. The query string can have a value of either `least` or `most` to return "+
-        "the cat with the highest or lowest number of humans.",
+        intro:
+          "Your request included a value in the query string. The query string can have a value of either `least` or `most` to return " +
+          "the cat with the highest or lowest number of humans.",
         info: [
           {
             note:
@@ -136,15 +143,15 @@ app.get("/cat", (request, response) => {
             json_content: { cat: requested_cat }
           },
           {
-            note: "Back in the Glitch app, look for the section that begins `if (request.query.humans...`. The API pulls the cats from the "+
-            "database and sorts them in order of how many humans they have. If you sent `most` as the query parameter, the API sends you back "+
-            
+            note:
+              "Back in the Glitch app, look for the section inside `app.get('/cat', ...` that begins `if (request.query.humans ...`. " +
+              "The API pulls the cats from the database and sorts them into an array in order of how many humans each one has. If you send `most` " +
+              "as the query parameter, the API sends you back the last cat in the array—if you asked for `least` it sends you back the first one."
           }
         ],
         next: "Now"
       });
-    }
-    else
+    } else
       response.status(400).json({
         error:
           "🚧Oops! Check your `humans` query parameter value—you passed `" +
@@ -154,7 +161,7 @@ app.get("/cat", (request, response) => {
   } else {
     var cats = db.get("cats").value(); // Find all cats in the collection
     var randCat = cats[Math.floor(Math.random() * cats.length)];
-    //TODO update link to correct collection
+    //send back a response to the client calling the API - in Postman you will see this text in Body > Visualize
     response.status(200).json({
       title: "You requested a random cat!",
       init_note:
@@ -187,11 +194,12 @@ app.get("/cat", (request, response) => {
             "In Glitch (in the web browser), **Edit** your remix of the API app and open the `server.js` file. This is the code " +
             "for the endpoints you're calling in Postman. Scroll down to see the different sections. Each endpoint begins `app` then the " +
             "method e.g. `.get` followed by the path e.g. `/cat`. The first endpoint is the `/setup` one you called first to setup your version. " +
+            "" +
             " _Don't worry if you don't understand the JavaScript in Glitch, you should still be able to follow the steps._"
         },
         {
           note:
-            "This is the `app.get('/cat', ...)` request. Each request address is the base URL, which you added as your variable, then " +
+            "This is the `app.get('/cat', ...)` request in Glitch. Each request address is the base URL, which you added as your variable, then " +
             " the path, e.g. `/cat`. Inside the request, there's an `if...else` structure. The `if` part checks to see if you sent a query " +
             "parameter named `humans` but in this case you didn't, so it returned what's in the `else`.",
           pic: ""
