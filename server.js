@@ -154,7 +154,7 @@ app.get("/cat", (request, response) => {
             "Templates and the address looks something like this: `https://explore.postman.com/templates/search?q=visualize`."
           }
         ],
-        next: "Now"
+        next: "You requested a specific cat using a query parameter, now try out a path parameter. In the address URL above, insert ``"
       });
     } else
       response.status(400).json({
@@ -217,6 +217,18 @@ app.get("/cat", (request, response) => {
       pic: "tbc"
     });
   }
+});
+
+//get humans for specific cat by name
+app.get("/:cat/humans", (request, response) => {
+  var dbCats = [];
+  var numHumans = db.get('cats').find({"name": request.params.cat}).value().humans;
+  response.status(200).json({
+    message:
+      "This response includes an array—click Visualize above and then scroll to see it displayed as a chart",
+    cat: request.params.cat,
+    humans: numHumans
+  });
 });
 
 //get all cats
