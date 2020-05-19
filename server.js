@@ -149,7 +149,9 @@ app.get("/cat", (request, response) => {
               "as the query parameter, the API sends you back the last cat in the array—if you asked for `least` it sends you back the first one."
           },
           {
-            note: ""
+            note: "Query parameters are used to make requests for something specific, for example some text to search for, or a user ID."+
+            " You'll see query parameters in your web browser when you browse websites, for example when you search for something in Postman "+
+            "Templates and the address looks something like this: `https://explore.postman.com/templates/search?q=visualize`."
           }
         ],
         next: "Now"
