@@ -223,7 +223,9 @@ app.get("/cat", (request, response) => {
 //get humans for specific cat by name
 app.get("/:cat/humans", (request, response) => {
   var dbCats = [];
-  var numHumans = db.get('cats').find({"name": request.params.cat}).value().humans;
+  var catQuery = db.get('cats').find({"name": request.params.cat}).value();
+  var numHumans;
+  if(catQuery) numHumans = catQuery.humans; else numHumans = 0;
   response.status(200).json({
     message:
       "This response includes an array—click Visualize above and then scroll to see it displayed as a chart",
