@@ -131,6 +131,7 @@ app.get("/cat", (request, response) => {
         title: "You requested a specific cat!",
         init_note:
           "If you're using the API Starter template inside Postman - click **Visualize** for a much more informative view of this info!",
+        cat: requested_cat,
         intro:
           "Your request included a value in the query string. The query string can have a value of either `least` or `most` to return " +
           "the cat with the highest or lowest number of humans.",
