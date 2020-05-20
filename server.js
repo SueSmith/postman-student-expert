@@ -124,14 +124,14 @@ app.get("/cat", (request, response) => {
     //make sure we have a valid humans parameter value
     if (request.query.humans === "most" || request.query.humans === "least") {
       //if the humans query is most, select the last cat in the array, otherwise select the first - store the result in a variable
-      var requested_cat =
+      var requestedCat =
         request.query.humans === "most" ? cats[cats.length - 1] : cats[0];
       //send back a response to the client calling the API - in Postman you will see this text in Body > Visualize
       response.status(200).json({
         title: "You requested a specific cat!",
         init_note:
           "If you're using the API Starter template inside Postman - click **Visualize** for a much more informative view of this info!",
-        cat: requested_cat,
+        cat: requestedCat,
         intro:
           "Your request included a value in the query string. The query string can have a value of either `least` or `most` to return " +
           "the cat with the highest or lowest number of humans.",
@@ -141,7 +141,7 @@ app.get("/cat", (request, response) => {
               "You sent the `/cat` endpoint a `humans` parameter value of `" +
               request.query.humans +
               "`. The API returned the cat incuding its name and number of humans:",
-            json_content: { cat: requested_cat }
+            json_content: { cat: requestedCat }
           },
           {
             note:
@@ -172,6 +172,7 @@ app.get("/cat", (request, response) => {
       title: "You requested a random cat!",
       init_note:
         "If you're using the API Starter template inside Postman - click **Visualize** for a much more informative view of this info!",
+      cat: randCat,
       intro: "You made a request to retrieve a cat from the database!",
       info: [
         {
@@ -224,11 +225,12 @@ app.get("/cat", (request, response) => {
 app.get("/:cat/humans", (request, response) => {
   var dbCats = [];
   var catQuery = db.get('cats').find({"name": request.params.cat}).value();
-  var numHumans;
-  if(catQuery) numHumans = catQuery.humans; else numHumans = 0;
+  var numHumans, infoMessage;
+  catQuery ? numHumans = catQuery.humans : numHumans = 0;
+  if(request.params.cat==="tbc") infoMessage = "Oops! You didn't use the name of a cat in the database. Run the `Get one cat` request first."; 
+  else infoMessage = "This response includes an array—click Visualize above and then scroll to see it displayed as a chart"
   response.status(200).json({
-    message:
-      "This response includes an array—click Visualize above and then scroll to see it displayed as a chart",
+    message: infoMessage,
     cat: request.params.cat,
     humans: numHumans
   });
