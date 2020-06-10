@@ -155,7 +155,8 @@ app.get("/cat", (request, response) => {
             "Templates and the address looks something like this: `https://explore.postman.com/templates/search?q=visualize`."
           }
         ],
-        next: "You requested a specific cat using a query parameter, now try out a path parameter. In the address URL above, insert ``"
+        next: "You requested a specific cat using a query parameter, now try out a path parameter. Open the next request from the collection "+
+          "`2. Get humans per cat` and click __Send__."
       });
     } else
       response.status(400).json({
@@ -228,7 +229,7 @@ app.get("/:cat/humans", (request, response) => {
   var numHumans, infoMessage;
   catQuery ? numHumans = catQuery.humans : numHumans = 0;
   if(request.params.cat==="tbc") infoMessage = "Oops! You didn't use the name of a cat in the database. Run the `Get one cat` request first."; 
-  else infoMessage = "This response includes an array—click Visualize above and then scroll to see it displayed as a chart"
+  else infoMessage = "hi"
   response.status(200).json({
     message: infoMessage,
     cat: request.params.cat,
