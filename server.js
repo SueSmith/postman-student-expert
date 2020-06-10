@@ -229,7 +229,9 @@ app.get("/:cat/humans", (request, response) => {
   var numHumans, infoMessage;
   catQuery ? numHumans = catQuery.humans : numHumans = 0;
   //save to var
-  if(request.params.cat==="tbc") infoMessage = "Oops! You didn't use the name of a cat in the database. Run the `Get one cat` request first."; 
+  if(request.params.cat==="tbc") {
+    infoMessage = "You sent a request to this URL ``"; 
+  }
   else infoMessage = "hi"
   response.status(200).json({
     message: infoMessage,
