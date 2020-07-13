@@ -155,8 +155,8 @@ app.get("/cat", (request, response) => {
             "Templates and the address looks something like this: `https://explore.postman.com/templates/search?q=visualize`."
           }
         ],
-        next: "You requested a specific cat using a query parameter, now try out a path parameter. Copy the cat name returned by this request "+
-          requestedCat.name+"`. Open the next request from the collection `2. Get humans per cat` and click __Send__."
+        next: "You requested a specific cat using a query parameter, now try out a path parameter. Copy the cat name returned by this request: "+
+          requestedCat.name+". Open the next request from the collection `2. Get humans per cat` and click __Send__."
       });
     } else
       response.status(400).json({
