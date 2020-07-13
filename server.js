@@ -125,7 +125,7 @@ app.get("/cat", (request, response) => {
     if (request.query.humans === "most" || request.query.humans === "least") {
       //if the humans query is most, select the last cat in the array, otherwise select the first - store the result in a variable
       var requestedCat =
-        request.query.humans === "most" ? cats[cats.length - 1] : cats[0]; console.log(requestedCat);
+        request.query.humans === "most" ? cats[cats.length - 1] : cats[0]; 
       //send back a response to the client calling the API - in Postman you will see this text in Body > Visualize
       response.status(200).json({
         title: "You requested a specific cat!",
@@ -154,9 +154,9 @@ app.get("/cat", (request, response) => {
             " You'll see query parameters in your web browser when you browse websites, for example when you search for something in Postman "+
             "Templates and the address looks something like this: `https://explore.postman.com/templates/search?q=visualize`."
           }
-        ]/*,
+        ],
         next: "You requested a specific cat using a query parameter, now try out a path parameter. Copy the cat name returned by this request "+
-          requestedCat.cat.name+"`. Open the next request from the collection `2. Get humans per cat` and click __Send__."*/
+          requestedCat.name+"`. Open the next request from the collection `2. Get humans per cat` and click __Send__."
       });
     } else
       response.status(400).json({
