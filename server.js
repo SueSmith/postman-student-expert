@@ -229,15 +229,19 @@ app.get("/:cat/humans", (request, response) => {
   var numHumans, infoMessage;
   catQuery ? numHumans = catQuery.humans : numHumans = 0;
   //save to var
-  if(request.params.cat==="tbc") {
-    infoMessage = "You sent a request to this URL ``"; 
+  if(request.params.cat==="tbc") { 
+    response.status(200).json({
+      title: "You sent a request with a path parameter!",
+      intro: "You sent a request to this path `"+request.originalUrl+"`. Hover over `{{url}}` in the request address in Postman.",
+    });
   }
-  else infoMessage = "hi"
-  response.status(200).json({
-    message: infoMessage,
-    cat: request.params.cat,
-    humans: numHumans
-  });
+  else {
+    response.status(200).json({
+      title: "You sent a request with a path parameter!",
+      intro: "You sent a request to this path `"+request.originalUrl+"`. Hover over `{{url}}` in the request address in Postman.",
+    });
+  }
+  
 });
 
 //get all cats
