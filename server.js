@@ -232,7 +232,9 @@ app.get("/:cat/humans", (request, response) => {
   if(request.params.cat==="tbc") { 
     response.status(200).json({
       title: "You sent a request with a path parameter!",
-      humans: 0,
+      init_note:
+        "If you're using the API Starter template inside Postman - click **Visualize** for a much more informative view of this info!",
+      humans: numHumans,
       intro: "You sent a request to this path `"+request.originalUrl+"`. Hover over `{{cat_name}}` in the request **Params** in Postman "+
       "to see where the path parameter value is coming from.",
       info: [
@@ -242,24 +244,31 @@ app.get("/:cat/humans", (request, response) => {
             "`cat_name` in there."
         },
         {
-          note: "Since your path param didn't specify and actual cat in the database, the API returned the following JSON:",
-          json_content: { humans: 0 }
+          note: "This requests returns the number of humans per cat. Since your path param didn't specify and actual cat in the database, "+
+            "the API returned the following JSON:",
+          json_content: { humans: numHumans }
         }
       ],
-      next: "Change the value. In the **Current Value** field, enter the name of a cat from the response when you sent the `Get one cat` "+
-            "request, e.g. 'Syd'. **Update** and send the request again.",
+      next: "Change the value to get the number of humans for a cat in the db. In the **Current Value** field, enter the name of a cat from "+
+        "the response when you sent the `Get one cat` request, e.g. 'Syd'. **Update** and send the request again.",
       pic: "tbc"
     });
   }
   else {
     response.status(200).json({
       title: "You sent a request with a valid path parameter!",
+      init_note:
+        "If you're using the API Starter template inside Postman - click **Visualize** for a much more informative view of this info!",
+      humans: 0,
       intro: "You sent a request to this path `"+request.originalUrl+"`. This time you requested the number of humans for a specific cat.",
       info: [
         {
-          note: ""
+          note: "This time the API returned the number of humans recorded for the cat you specified using the path parameter:",
+          json_content: { humans: numHumans }
         }
-      ]
+      ],
+      next: "Now add a new cat to the database by opening the `POST Add new cat` request and clicking **Send**.",
+      pic: "tbc"
     });
   }
   
