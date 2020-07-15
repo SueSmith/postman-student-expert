@@ -232,13 +232,34 @@ app.get("/:cat/humans", (request, response) => {
   if(request.params.cat==="tbc") { 
     response.status(200).json({
       title: "You sent a request with a path parameter!",
-      intro: "You sent a request to this path `"+request.originalUrl+"`. Hover over `{{url}}` in the request address in Postman.",
+      humans: 0,
+      intro: "You sent a request to this path `"+request.originalUrl+"`. Hover over `{{cat_name}}` in the request **Params** in Postman "+
+      "to see where the path parameter value is coming from.",
+      info: [
+        {
+          note: "The parameter value is initially coming from the variable value that was included in the collection when you imported it. "+
+            "To see the value, **Collections** on the left, open the **...** menu and select **Edit**. Open **Variables** and you'll see "+
+            "`cat_name` in there."
+        },
+        {
+          note: "Since your path param didn't specify and actual cat in the database, the API returned the following JSON:",
+          json_content: { humans: 0 }
+        }
+      ],
+      next: "Change the value. In the **Current Value** field, enter the name of a cat from the response when you sent the `Get one cat` "+
+            "request, e.g. 'Syd'. **Update** and send the request again.",
+      pic: "tbc"
     });
   }
   else {
     response.status(200).json({
-      title: "You sent a request with a path parameter!",
-      intro: "You sent a request to this path `"+request.originalUrl+"`. Hover over `{{url}}` in the request address in Postman.",
+      title: "You sent a request with a valid path parameter!",
+      intro: "You sent a request to this path `"+request.originalUrl+"`. This time you requested the number of humans for a specific cat.",
+      info: [
+        {
+          note: ""
+        }
+      ]
     });
   }
   
