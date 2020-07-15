@@ -300,8 +300,14 @@ app.use((req, res, next) => {
   const apiSecret = req.get("cat_key");
   if (!apiSecret || apiSecret !== process.env.SECRET) {
     res.status(401).json({
-      error:
-        "🚫Unauthorized - your secret needs to match the one on the server!"
+      title: "You got an unauthorized error response!",
+      intro:
+        "🚫Unauthorized - your secret needs to match the one on the server!",
+      info: [
+        {
+          note: "Hover over the status code just above and to the right of the response area."
+        }
+      ]
     });
   } else {
     next();
