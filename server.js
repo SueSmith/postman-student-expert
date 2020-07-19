@@ -305,9 +305,21 @@ app.use((req, res, next) => {
         "🚫Unauthorized - your secret needs to match the one on the server!",
       info: [
         {
-          note: "Hover over the status code just above and to the right of the response area."
+          note: "Hover over the status code just above and to the right of the response area. You'll see that the server returned a `401` "+
+            "Unauthorized response."
+        },
+        {
+          note: "For many API requests you need to provide authorization details, particularly when you are adding or changing data, or if "+
+            "you're requesting data from a third party service on behalf of a user. For this API, the `POST` method is protected - it requires "+
+            "an API key that needs to match the one on the server."
+        },
+        {
+          note: "In the **Authorization** tab for the request, select **API Key** from the **Type** drop-down list. For the **Key**, enter "+
+            "`cat_key`. For the **Value**, enter `{{key}}` to reference the `key` variable that was included with the collection. Select"
         }
-      ]
+      ],
+      next: "",
+      pic: ""
     });
   } else {
     next();
