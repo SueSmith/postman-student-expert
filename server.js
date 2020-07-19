@@ -298,7 +298,7 @@ app.get("/*", (request, response) => {
 //protect everything after this by checking for the secret
 app.use((req, res, next) => {
   const apiSecret = req.get("cat_key");
-  if (!apiSecret || apiSecret !== process.env.SECRET) {
+  if (!apiSecret) {
     res.status(401).json({
       title: "You got an unauthorized error response!",
       intro:
@@ -312,16 +312,29 @@ app.use((req, res, next) => {
           note: "For many API requests you need to provide authorization details, particularly when you are adding or changing data, or if "+
             "you're requesting data from a third party service on behalf of a user. For this API, the `POST` method is protected - it requires "+
             "an API key that needs to match the one on the server."
-        },
+        }
+      ],
+      next: "In the **Authorization** tab for the request, select **API Key** from the **Type** drop-down list. For the **Key**, enter "+
+            "`cat_key`. For the **Value**, enter `{{key}}` to reference the `key` variable that was included with the collection. Select "+
+            "**Header** in the **Add to** drop-down list. Click **Send**.",
+      pic: ""
+    });
+  } 
+  else if(apiSecret !== process.env.SECRET){
+    res.status(401).json({
+      title: "You got an unauthorized error response!",
+      intro:
+        "🚫Unauthorized - your secret needs to match the one on the server!",
+      info: [
         {
-          note: "In the **Authorization** tab for the request, select **API Key** from the **Type** drop-down list. For the **Key**, enter "+
-            "`cat_key`. For the **Value**, enter `{{key}}` to reference the `key` variable that was included with the collection. Select"
+          note: "set the key on server and var"
         }
       ],
       next: "",
       pic: ""
     });
-  } else {
+  }
+  else {
     next();
   }
 });
