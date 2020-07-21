@@ -152,7 +152,7 @@ app.get("/matches", (request, response) => {
     },
     tutorial: {
       title: "You sent a request to retrieve all matches for the team! 🎉",
-      intro: "The demo API we're using for this course is a for a fictional sports team. The API manages match, p;ay",
+      intro: "The demo API we're using for this course is a for a fictional sports team. The API manages match, player, and team data. ",
       steps: [
         {
           note: "Here is a step with `code` in it...",
