@@ -37,6 +37,22 @@ db.defaults({
       opposition: "United",
       date: "Wed Mar 24 2021 14: 00: 04 GMT+0000 (Coordinated Universal Time)",
       points: -1
+    },
+    {
+      id: 2,
+      creator: "postman",
+      matchType: "League Cup Quarter Final",
+      opposition: "City",
+      date: "Thu Jan 30 2020 20: 50: 46 GMT+0000 (Coordinated Universal Time)",
+      points: 3
+    },
+    {
+      id: 3,
+      creator: "postman",
+      matchType: "Friendly",
+      opposition: "Athletic",
+      date: "Wed Jan 13 2021 23: 01: 26 GMT+0000 (Coordinated Universal Time)",
+      points: -1
     }
   ]
 }).write();
@@ -90,15 +106,13 @@ app.get("/training", (request, response) => {
 });
 
 app.get("/matches", (request, response) => {
+  var matches = db.get("matches").value(); 
   response.status(200).json({
     welcome:
       "Welcome! Check out the 'data' object below to see the values returned by the API. Click **Visualize** to see the 'tutorial' data " +
       "for this request in a more readable view.",
     data: {
-      cat: {
-        name: "Syd",
-        humans: 9
-      }
+      matches: matches
     },
     tutorial: {
       title: "You did a thing! 🚀",
@@ -109,7 +123,7 @@ app.get("/matches", (request, response) => {
           pic:
             "https://assets.postman.com/postman-docs/postman-app-overview-response.jpg",
           raw_data: {
-            cat: {
+            matches: {
               name: "Syd",
               humans: 9
             }
@@ -129,6 +143,7 @@ app.get("/matches", (request, response) => {
   });
 });
 
+/*
 //generic get error
 app.get("/*", (request, response) => {
   response.status(400).json({
@@ -136,11 +151,11 @@ app.get("/*", (request, response) => {
       "🚧Oops this isn't a valid endpoint! " +
       "Try undoing your changes or closing the request without saving and opening it again from the collection on the left."
   });
-});
+});*/
 
 //protect everything after this by checking for the secret - protect reset and clear here, above req personal key for post put del
-app.use((req, res, next) => {
-  const apiSecret = req.get("cat_key");
+app.use((req, res, next) => { 
+  const apiSecret = req.get("match_key");
   if (!apiSecret) {
     res.status(401).json({
       title: "You got an unauthorized error response!",
@@ -161,7 +176,7 @@ app.use((req, res, next) => {
         "🚫Unauthorized - your secret needs to match the one on the server!",
       info: [
         {
-          note: "set the key on server and var"
+          note: "tbc"
         }
       ],
       next: "",
@@ -189,10 +204,26 @@ app.get("/reset", (request, response) => {
       opposition: "United",
       date: "Wed Mar 24 2021 14: 00: 04 GMT+0000 (Coordinated Universal Time)",
       points: -1
+    },
+    {
+      id: 2,
+      creator: "postman",
+      matchType: "League Cup Quarter Final",
+      opposition: "City",
+      date: "Thu Jan 30 2020 20: 50: 46 GMT+0000 (Coordinated Universal Time)",
+      points: 3
+    },
+    {
+      id: 3,
+      creator: "postman",
+      matchType: "Friendly",
+      opposition: "Athletic",
+      date: "Wed Jan 13 2021 23: 01: 26 GMT+0000 (Coordinated Universal Time)",
+      points: -1
     }
   ];
 
-  macthes.forEach(match => {
+  matches.forEach(match => {
     db.get("matches")
       .push({
         id: match.id,
