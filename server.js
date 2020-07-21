@@ -143,9 +143,53 @@ app.get("/training", (request, response) => {
 
 app.get("/matches", (request, response) => {
   if(request.query.status){
+    var matches;
     if(request.query.status==="played"){
-      
+      matches = db.get("matches")
+        .filter(o => o.points > -1)
+        .value();
     }
+    else if(request.query.status==="pending"){
+      matches = db.get("matches")
+        .filter(o => o.points < 0)
+        .value();
+    }//need response when param but neither of the valid values
+      response.status(200).json({
+    welcome:
+      "Hi! Check out the 'data' object below to see the values returned by the API. Click **Visualize** to see the 'tutorial' data " +
+      "for this request in a more readable view.",
+    data: {
+      matches: matches
+    },
+    tutorial: {
+      title: "You sent a request to retrieve all matches for the team! 🎉",
+      intro: "The demo API we're using for this course is a for a fictional sports team. The API manages match, player, and team data. "+
+        "The request you just sent uses a `GET` which is for retrieving data.",
+      steps: [
+        {
+          note: "Look at the request URL. It should look like this `{{training-api}}/matches`. The URL is partly made up from a variable, "+
+          " referenced using double curly braces around `training-api` - hover over it to see the value, it's part of the collection."
+        },
+        {
+          note: "Open the **Console** along the bottom of the Postman window to see the address the request sent to. You can click a request "+
+            "in the Console to see the full detail of what happened when it sent - this is helpful when you're troubleshooting. Close and "+
+            "open the Console area whenever you find it useful."
+        },
+        {
+          note: "The request you sent to `/matches` returned the following data. It's an array of the matches currently in the database, "+
+            "including a few data values for each match.",
+          raw_data: {
+            matches: matches
+          }
+        }
+      ],
+      next: "This request retrieved all matches, but you can also filter the matches using parameters. Open **Params** and enter a new query "+
+      "parameter, with `status` as the **Key** and `played` as the **Value**.",
+      pic:
+        "https://assets.postman.com/postman-docs/postman-app-overview-response.jpg"
+    }
+  });
+    
   }
   else {
   var matches = db.get("matches").value(); 
