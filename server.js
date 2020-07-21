@@ -44,6 +44,43 @@ app.get("/", (request, response) => {
   response.sendFile(__dirname + "/views/index.html");
 });
 
+app.get("/training", (request, response) => {
+  response.status(200).json({
+ "welcome": "Welcome! Check out the 'data' object below to see the values returned by the API. Click **Visualize** to see the 'tutorial' data "+
+      "for this request in a more readable view.",
+ "data": {
+  "cat": {
+   "name": "Syd",
+   "humans": 9
+  }
+ },
+ "tutorial": {
+  "title": "You did a thing! 🚀",
+  "intro": "Here is the _intro_ to this **lesson**...",
+  "steps": [
+   {
+    "note": "Here is a step with `code` in it...",
+    "pic": "https://assets.postman.com/postman-docs/postman-app-overview-response.jpg",
+    "raw_data": {
+     "cat": {
+      "name": "Syd",
+      "humans": 9
+     }
+    }
+   }
+  ],
+  "next": "Now do this...",
+  "pic": "https://assets.postman.com/postman-docs/postman-app-overview-response.jpg",
+  "raw_data": {
+   "cat": {
+    "name": "Syd",
+    "humans": 9
+   }
+  }
+ }
+});
+});
+
 //setup collection - swap your api url and secret into the collection variables
 app.get("/setup", (request, response) => {
   //send back a response to the client calling the API - in Postman you will see this text in Body > Visualize
