@@ -142,6 +142,12 @@ app.get("/training", (request, response) => {
 });
 
 app.get("/matches", (request, response) => {
+  if(request.query.status){
+    if(request.query.status==="played"){
+      
+    }
+  }
+  else {
   var matches = db.get("matches").value(); 
   response.status(200).json({
     welcome:
@@ -172,14 +178,13 @@ app.get("/matches", (request, response) => {
           }
         }
       ],
-      next: "This request retrieved all matches, but you can also filter the matches using parameters.",
+      next: "This request retrieved all matches, but you can also filter the matches using parameters. Open **Params** and enter a new query "+
+      "parameter, with `status` as the **Key** and `played` as the **Value**.",
       pic:
-        "https://assets.postman.com/postman-docs/postman-app-overview-response.jpg",
-      raw_data: {
-        matches: matches
-      }
+        "https://assets.postman.com/postman-docs/postman-app-overview-response.jpg"
     }
   });
+  }
 });
 
 /*
