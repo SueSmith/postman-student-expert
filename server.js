@@ -134,7 +134,7 @@ app.get("/training", (request, response) => {
             "steps. You will work through the requests in the collection folders, learning API and Postman skills along the way."
         }
       ],
-      next: "Now get started by opening the next request `GET Get all matches` and clicking **Send**.",
+      next: "Now get started by opening the next request `Get matches` and clicking **Send**.",
       pic:
         "https://assets.postman.com/postman-docs/postman-app-overview-response.jpg"
     }
@@ -145,14 +145,14 @@ app.get("/matches", (request, response) => {
   var matches = db.get("matches").value(); 
   response.status(200).json({
     welcome:
-      "Welcome! Check out the 'data' object below to see the values returned by the API. Click **Visualize** to see the 'tutorial' data " +
+      "Hi! Check out the 'data' object below to see the values returned by the API. Click **Visualize** to see the 'tutorial' data " +
       "for this request in a more readable view.",
     data: {
       matches: matches
     },
     tutorial: {
-      title: "You did a thing! 🚀",
-      intro: "Here is the _intro_ to this **lesson**...",
+      title: "You sent a request to retrieve all matches for the team! 🎉",
+      intro: "The demo API we're using for this course is a for a fictional sports team. The API manages match, p;ay",
       steps: [
         {
           note: "Here is a step with `code` in it...",
