@@ -116,30 +116,27 @@ app.get("/training", (request, response) => {
       course: "Postman Student Expert"
     },
     tutorial: {
-      title: "Welcome to Postman Student Expert training! 🎉",
+      title: "Welcome to Postman Student Expert training! 🎒🎓",
       intro: "This API and the collection you imported into Postman will guide you through the steps required to become a student expert.",
       steps: [
         {
-          note: "Here is a step with `code` in it...",
-          pic:
-            "https://assets.postman.com/postman-docs/postman-app-overview-response.jpg",
+          note: "The request you sent to the student training API received a response including this data:",
           raw_data: {
-            cat: {
-              name: "Syd",
-              humans: 9
-            }
+            course: "Postman Student Expert"
           }
+        },
+        {
+          note: "The responses will include JSON data that you can see in the **Body > Pretty** area. The **Visualize** view will show you this "+
+            "more readable view of the 'tutorial' information in the response, including images that will help you understand each step."
+        },
+        {
+          note: "Throughout the course, you will create, edit, and send requests inside Postman, and the responses will guide you onto next "+
+            "steps. You will work through the requests in the collection folders, learning API and Postman skills along the way."
         }
       ],
-      next: "Now do this...",
+      next: "Now get started by opening the next request `GET Get all matches` and clicking **Send**.",
       pic:
-        "https://assets.postman.com/postman-docs/postman-app-overview-response.jpg",
-      raw_data: {
-        cat: {
-          name: "Syd",
-          humans: 9
-        }
-      }
+        "https://assets.postman.com/postman-docs/postman-app-overview-response.jpg"
     }
   });
 });
