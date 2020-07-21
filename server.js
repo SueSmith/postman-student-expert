@@ -10,6 +10,48 @@ Below you'll see the code for the endpoints in the API after some initial setup 
   - each endpoint begins "app." followed by get, post, patch, put, or delete, then the endpoint path, e.g. /cat
 */
 
+/*
+response structure:
+
+{
+    welcome:
+      "Welcome! Check out the 'data' object below to see the values returned by the API. Click **Visualize** to see the 'tutorial' data " +
+      "for this request in a more readable view.",
+    data: {
+      cat: {
+        name: "Syd",
+        humans: 9
+      }
+    },
+    tutorial: {
+      title: "You did a thing! 🚀",
+      intro: "Here is the _intro_ to this **lesson**...",
+      steps: [
+        {
+          note: "Here is a step with `code` in it...",
+          pic:
+            "https://assets.postman.com/postman-docs/postman-app-overview-response.jpg",
+          raw_data: {
+            cat: {
+              name: "Syd",
+              humans: 9
+            }
+          }
+        }
+      ],
+      next: "Now do this...",
+      pic:
+        "https://assets.postman.com/postman-docs/postman-app-overview-response.jpg",
+      raw_data: {
+        cat: {
+          name: "Syd",
+          humans: 9
+        }
+      }
+    }
+  }
+*/
+
 // server.js
 // where your node app starts
 
@@ -68,17 +110,14 @@ app.get("/", (request, response) => {
 app.get("/training", (request, response) => {
   response.status(200).json({
     welcome:
-      "Welcome! Check out the 'data' object below to see the values returned by the API. Click **Visualize** to see the 'tutorial' data " +
-      "for this request in a more readable view.",
+      "Welcome to the Postman Student Expert training course! Check out the 'data' object below to see the values returned by this API request. "+
+      "Click **Visualize** to see the 'tutorial' guiding you through next steps - do this for every request in the collection!",
     data: {
-      cat: {
-        name: "Syd",
-        humans: 9
-      }
+      course: "Postman Student Expert"
     },
     tutorial: {
-      title: "You did a thing! 🚀",
-      intro: "Here is the _intro_ to this **lesson**...",
+      title: "Welcome to Postman Student Expert training! 🎉",
+      intro: "This API and the collection you imported into Postman will guide you through the steps required to become a student expert.",
       steps: [
         {
           note: "Here is a step with `code` in it...",
@@ -123,10 +162,7 @@ app.get("/matches", (request, response) => {
           pic:
             "https://assets.postman.com/postman-docs/postman-app-overview-response.jpg",
           raw_data: {
-            matches: {
-              name: "Syd",
-              humans: 9
-            }
+            matches: matches
           }
         }
       ],
@@ -134,10 +170,7 @@ app.get("/matches", (request, response) => {
       pic:
         "https://assets.postman.com/postman-docs/postman-app-overview-response.jpg",
       raw_data: {
-        cat: {
-          name: "Syd",
-          humans: 9
-        }
+        matches: matches
       }
     }
   });
