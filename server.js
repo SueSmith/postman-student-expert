@@ -212,7 +212,7 @@ app.get("/matches", (request, response) => {
             step:
               "So far we've retrieved data from the API, but let's also add some new data. Add another request to the collection. In **Collections** " +
               "click the *...* on the **Student Expert** > **1. Begin training - Requests** folder and click **Add Request**. Enter the name '2. Add match' " +
-              "and make sure the collection and folder are selected before you click **Save to...**. In the request URL, enter {{training-api}}/match and " +
+              "and make sure the collection and folder are selected before you click **Save to...**. In the request URL, enter `{{training-api}}/match` and " +
               "select `POST` from the method drop-down list. Click **Send**.",
             pic:
               "https://assets.postman.com/postman-docs/postman-app-overview-response.jpg"
