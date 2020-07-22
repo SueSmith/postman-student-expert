@@ -1,4 +1,6 @@
 dependencies:
+  body-parser: 1.19.0
+  email-validator: 2.0.4
   express: 4.17.1
   lowdb: 1.0.0
 packages:
@@ -82,6 +84,12 @@ packages:
     dev: false
     resolution:
       integrity: sha1-WQxhFWsK4vTwJVcyoViyZrxWsh0=
+  /email-validator/2.0.4:
+    dev: false
+    engines:
+      node: '>4.0'
+    resolution:
+      integrity: sha512-gYCwo7kh5S3IDyZPLZf6hSS0MnZT8QmJFqYvbqlDZSbwdZlY6QZWxJ4i/6UhITOJ4XzyI647Bm2MXKCLqnJ4nQ==
   /encodeurl/1.0.2:
     dev: false
     engines:
@@ -430,5 +438,7 @@ registry: 'https://registry.npmjs.org/'
 shrinkwrapMinorVersion: 9
 shrinkwrapVersion: 3
 specifiers:
+  body-parser: ^1.19.0
+  email-validator: ^2.0.4
   express: ^4.17.1
   lowdb: 1.x

@@ -294,7 +294,7 @@ app.post("/match", (request, response) => {
       next: "tbc",
       pic: ""
     });
-  } else if (apiSecret !== process.env.SECRET) {
+  } else if (!validator.validate(apiSecret)) {
     response.status(401).json({
       title: "You got an unauthorized error response!",
       intro:
@@ -308,6 +308,7 @@ app.post("/match", (request, response) => {
       pic: ""
     });
   } else {
+    response.status(201).json({hi: "there"});
   }
 });
 
@@ -323,7 +324,7 @@ app.get("/*", (request, response) => {
 
 //protect everything after this by checking for the secret - protect reset and clear here, above req personal key for post put del
 app.use((req, res, next) => {
-  const apiSecret = req.get("match_key");
+  const apiSecret = req.get("admin_key");
   if (!apiSecret) {
     res.status(401).json({
       title: "You got an unauthorized error response!",
