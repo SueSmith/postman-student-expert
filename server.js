@@ -177,14 +177,17 @@ app.get("/matches", (request, response) => {
           }
         },
         {
-          note: "You can use different types of parameter with your requests as you will see in some of the requests you build next."
+          note: "Notice that the parameter is added to the request address as part of the query string (after the `?` and with the structure "+
+            "`status=played`)—you could have several of these by preceding additional query parameters with `&`. This is a pattern you will see "+
+            "in the web browser address bar as you navigate websites—APIs work the same way."
         },
         {
-          note: "save"
+          note: "You can use different types of parameter with your requests as you will see in some of the requests you build next. "+
+            "Before you move on, click **Save** in Postman to save the current state of your request."
         }
       ],
-      next: "This request retrieved all matches, but you can also filter the matches using parameters. Open **Params** and enter a new query "+
-      "parameter, with `status` as the **Key** and `played` as the **Value**.",
+      next: "So far we've retrieved data from the API, but let's also add some new data. Add another request to the collection. In **Collections** "+
+        "click the *...* on the **Student Expert** > **1. Begin training - Requests** folder and click **Add Request**.",
       pic:
         "https://assets.postman.com/postman-docs/postman-app-overview-response.jpg"
     }
@@ -223,9 +226,7 @@ app.get("/matches", (request, response) => {
         }
       ],
       next: "This request retrieved all matches, but you can also filter the matches using parameters. Open **Params** and enter a new Query "+
-        "parameter, with `status` as the **Key** and `played` or `pending` as the **Value**. Notice that the parameter is added to the request address as part "+
-        "of the query string (after the `?` and with the structure `status=played`)—you could have several of these by preceding additional "+
-        "query parameters with `&`.",
+        "parameter, with `status` as the **Key** and `played` or `pending` as the **Value**.",
       pic:
         "https://assets.postman.com/postman-docs/postman-app-overview-response.jpg"
     }
