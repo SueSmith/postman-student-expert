@@ -73,6 +73,8 @@ var FileSync = require("lowdb/adapters/FileSync");
 var adapter = new FileSync(".data/db.json");
 var db = low(adapter);
 
+var validator = require("email-validator");
+
 // default cat list
 db.defaults({
   matches: [
@@ -211,9 +213,17 @@ app.get("/matches", (request, response) => {
           {
             step:
               "So far we've retrieved data from the API, but let's also add some new data. Add another request to the collection. In **Collections** " +
-              "click the *...* on the **Student Expert** > **1. Begin training - Requests** folder and click **Add Request**. Enter the name '2. Add match' " +
-              "and make sure the collection and folder are selected before you click **Save to...**. In the request URL, enter `{{training-api}}/match` and " +
-              "select `POST` from the method drop-down list. Click **Send**.",
+              "click the *...* on the **Student Expert** > **1. Begin training - Requests** folder and click **Add Request**.",
+            pic: "tbc"
+          },
+          {
+            step:
+              "Enter the name '2. Add match' and make sure the correct collection and folder are selected before you click **Save to...**.",
+            pic: "tbc"
+          },
+          {
+            step:
+              "In the request URL, enter `{{training-api}}/match` and select `POST` from the method drop-down list. Click **Send**.",
             pic:
               "https://assets.postman.com/postman-docs/postman-app-overview-response.jpg"
           }
@@ -258,14 +268,46 @@ app.get("/matches", (request, response) => {
         next: [
           {
             step:
-          "This request retrieved all matches, but you can also filter the matches using parameters. Open **Params** and enter a new Query " +
-          "parameter, with `status` as the **Key** and `played` or `pending` as the **Value**.",
-        pic:
-          "https://assets.postman.com/postman-docs/postman-app-overview-response.jpg"
+              "This request retrieved all matches, but you can also filter the matches using parameters. Open **Params** and enter a new Query " +
+              "parameter, with `status` as the **Key** and `played` or `pending` as the **Value**.",
+            pic:
+              "https://assets.postman.com/postman-docs/postman-app-overview-response.jpg"
           }
-          ]
+        ]
       }
     });
+  }
+});
+
+app.post("/match", (request, response) => {
+  const apiSecret = request.get("match_key");
+  if (!apiSecret) {
+    response.status(401).json({
+      title: "You got an unauthorized error response!",
+      intro:
+        "🚫Unauthorized - your secret needs to match the one on the server!",
+      info: [
+        {
+          note: "tbc"
+        }
+      ],
+      next: "tbc",
+      pic: ""
+    });
+  } else if (apiSecret !== process.env.SECRET) {
+    response.status(401).json({
+      title: "You got an unauthorized error response!",
+      intro:
+        "🚫Unauthorized - your secret needs to match the one on the server!",
+      info: [
+        {
+          note: "tbc"
+        }
+      ],
+      next: "",
+      pic: ""
+    });
+  } else {
   }
 });
 
