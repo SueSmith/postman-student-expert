@@ -162,7 +162,7 @@ app.get("/matches", (request, response) => {
       matches: matches
     },
     tutorial: {
-      title: "You sent a request to retrieve all matches for the team! 🎉",
+      title: "You sent a request to filter the matches returned! ",
       intro: "The demo API we're using for this course is a for a fictional sports team. The API manages match, player, and team data. "+
         "The request you just sent uses a `GET` which is for retrieving data.",
       steps: [
