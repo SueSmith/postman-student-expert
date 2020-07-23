@@ -80,7 +80,7 @@ var validator = require("email-validator");
 db.defaults({
   matches: [
     {
-      id: 1,
+      id: shortid.generate(),
       creator: "postman",
       matchType: "League Cup Semi Final",
       opposition: "United",
@@ -88,7 +88,7 @@ db.defaults({
       points: -1
     },
     {
-      id: 2,
+      id: shortid.generate(),
       creator: "postman",
       matchType: "League Cup Quarter Final",
       opposition: "City",
@@ -96,7 +96,7 @@ db.defaults({
       points: 3
     },
     {
-      id: 3,
+      id: shortid.generate(),
       creator: "postman",
       matchType: "Friendly",
       opposition: "Athletic",
@@ -318,7 +318,7 @@ app.post("/match", (request, response) => {
              date: request.body.when,
              score: -1 })
       .write().id;
-      response.status(201).json({ status: "Match addedz", match: postId });
+      response.status(201).json({ status: "Match added" });
     } else
       response
         .status(400)
@@ -381,7 +381,7 @@ app.get("/reset", (request, response) => {
   // default users inserted in the database
   var matches = [
     {
-      id: 1,
+      id: shortid.generate(),
       creator: "postman",
       matchType: "League Cup Semi Final",
       opposition: "United",
@@ -389,7 +389,7 @@ app.get("/reset", (request, response) => {
       points: -1
     },
     {
-      id: 2,
+      id: shortid.generate(),
       creator: "postman",
       matchType: "League Cup Quarter Final",
       opposition: "City",
@@ -397,7 +397,7 @@ app.get("/reset", (request, response) => {
       points: 3
     },
     {
-      id: 3,
+      id: shortid.generate(),
       creator: "postman",
       matchType: "Friendly",
       opposition: "Athletic",
