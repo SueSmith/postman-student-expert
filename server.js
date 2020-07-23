@@ -284,16 +284,26 @@ app.post("/match", (request, response) => {
   const apiSecret = request.get("match_key");
   if (!apiSecret) {
     response.status(401).json({
-      title: "You got an unauthorized error response!",
-      intro:
-        "🚫Unauthorized - your secret needs to match the one on the server!",
-      info: [
-        {
-          note: "tbc"
-        }
-      ],
-      next: "tbc",
-      pic: ""
+      welcome:
+        "Hi! Click **Visualize** to see instructions on fixing this error response.",
+      tutorial: {
+        title: "Oops - You got an unauthorized error response! 🚫",
+        intro:
+          "When you're sending new data to the API, you will typically need to authorize your requests.",
+        steps: [
+          {
+            note: "hi"
+          }
+        ],
+        next: [
+          {
+            step:
+              "auth",
+            pic:
+              "https://assets.postman.com/postman-docs/postman-app-overview-response.jpg"
+          }
+        ]
+      }
     });
   } else if (!validator.validate(apiSecret)) {
     response.status(401).json({
