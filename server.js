@@ -308,7 +308,47 @@ app.post("/match", (request, response) => {
       pic: ""
     });
   } else {
-    response.status(201).json({hi: "there"});
+    response.status(201).json({
+    welcome:
+      "Welcome! Check out the 'data' object below to see the values returned by the API. Click **Visualize** to see the 'tutorial' data " +
+      "for this request in a more readable view.",
+    data: {
+      cat: {
+        name: "Syd",
+        humans: 9
+      }
+    },
+    tutorial: {
+      title: "You did a thing! 🚀",
+      intro: "Here is the _intro_ to this **lesson**...",
+      steps: [
+        {
+          note: "Here is a step with `code` in it...",
+          pic:
+            "https://assets.postman.com/postman-docs/postman-app-overview-response.jpg",
+          raw_data: {
+            cat: {
+              name: "Syd",
+              humans: 9
+            }
+          }
+        }
+      ],
+      next: [
+      {
+        step: "Now do this...",
+        pic:
+          "https://assets.postman.com/postman-docs/postman-app-overview-response.jpg",
+        raw_data: {
+          cat: {
+            name: "Syd",
+            humans: 9
+          } 
+        }
+      }
+      ]
+    }
+  });
   }
 });
 
