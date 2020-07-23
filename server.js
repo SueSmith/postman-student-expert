@@ -309,9 +309,8 @@ app.post("/match", (request, response) => {
       pic: ""
     });
   } else {
-    console.log("post");
     if (request.body.match && request.body.when && request.body.against) {
-      /*    const postId = db.get("matches")
+          const postId = db.get("matches")
       .push({ id: shortid.generate(), 
              creator: apiSecret, 
              matchType: request.body.match, 
@@ -319,11 +318,7 @@ app.post("/match", (request, response) => {
              date: request.body.when,
              score: -1 })
       .write().id;
-      const postedMatch = db
-      .get('matches')
-      .find({ id: postId })
-      .value();*/
-      response.status(201).json({ status: "Match added" }); //, match: postedMatch });
+      response.status(201).json({ status: "Match addedz", match: postId });
     } else
       response
         .status(400)
