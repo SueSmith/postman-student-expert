@@ -158,6 +158,7 @@ app.get("/training", (request, response) => {
 });
 
 app.get("/matches", (request, response) => {
+  const apiSecret = request.get("match_key");
   if (request.query.status) {
     var matches;
     if (!["played", "pending"].includes(request.query.status)) {
@@ -168,12 +169,12 @@ app.get("/matches", (request, response) => {
     } else if (request.query.status === "played") {
       matches = db
         .get("matches")
-        .filter(o => o.points > -1)
+        .filter(o => o.points > -1).filter(m => (m.creator === "postman") || m.creator === apiSecret)
         .value();
     } else if (request.query.status === "pending") {
       matches = db
         .get("matches")
-        .filter(o => o.points < 0)
+        .filter(o => o.points < 0).filter(m => (m.creator === "postman") || m.creator === apiSecret)
         .value();
     }
     response.status(200).json({
@@ -232,7 +233,7 @@ app.get("/matches", (request, response) => {
       }
     });
   } else {
-    var matches = db.get("matches").value();
+    var matches = db.get("matches").filter(m => (m.creator === "postman") || m.creator === apiSecret).value();
     response.status(200).json({
       welcome:
         "Hi! Check out the 'data' object below to see the values returned by the API. Click **Visualize** to see the 'tutorial' data " +
@@ -294,6 +295,9 @@ app.post("/match", (request, response) => {
           {
             note: "You're going to add an auth key to this request, but instead of entering it manually let's use a variable—this helps "+
               "minimize visibility of what could be sensitive credentials."
+          },
+          {
+            note: "Add auth to collection and inherit in each request - do in get before run again so only your email will see this"
           }
         ],
         next: [
@@ -336,6 +340,8 @@ app.post("/match", (request, response) => {
         .json({ error: "🚧Bad request - please check your cat body data!" });
   }
 });
+
+//put and delete has to be id this user created - response if not - make sure can't affect "postman" data
 
 /*
 //generic get error
