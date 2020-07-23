@@ -13,7 +13,8 @@
     "express": "^4.17.1",
     "lowdb": "1.x",
     "email-validator": "^2.0.4",
-    "body-parser": "^1.19.0"
+    "body-parser": "^1.19.0",
+    "shortid": "^2.2.15"
   },
   "engines": {
     "node": "12.x"

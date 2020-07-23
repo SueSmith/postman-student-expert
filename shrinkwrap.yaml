@@ -3,6 +3,7 @@ dependencies:
   email-validator: 2.0.4
   express: 4.17.1
   lowdb: 1.0.0
+  shortid: 2.2.15
 packages:
   /accepts/1.3.7:
     dependencies:
@@ -284,6 +285,10 @@ packages:
     dev: false
     resolution:
       integrity: sha512-tgp+dl5cGk28utYktBsrFqA7HKgrhgPsg6Z/EfhWI4gl1Hwq8B/GmY/0oXZ6nF8hDVesS/FpnYaD/kOWhYQvyg==
+  /nanoid/2.1.11:
+    dev: false
+    resolution:
+      integrity: sha512-s/snB+WGm6uwi0WjsZdaVcuf3KJXlfGl2LcxgwkEwJF0D/BWzVWAZW/XY4bFaiR7s0Jk3FPvlnepg1H1b1UwlA==
   /negotiator/0.6.2:
     dev: false
     engines:
@@ -389,6 +394,12 @@ packages:
     dev: false
     resolution:
       integrity: sha512-JvdAWfbXeIGaZ9cILp38HntZSFSo3mWg6xGcJJsd+d4aRMOqauag1C63dJfDw7OaMYwEbHMOxEZ1lqVRYP2OAw==
+  /shortid/2.2.15:
+    dependencies:
+      nanoid: 2.1.11
+    dev: false
+    resolution:
+      integrity: sha512-5EaCy2mx2Jgc/Fdn9uuDuNIIfWBpzY4XIlhoqtXF6qsf+/+SGZ+FxDdX/ZsMZiWupIWNqAEmiNY4RC+LSmCeOw==
   /statuses/1.5.0:
     dev: false
     engines:
@@ -442,3 +453,4 @@ specifiers:
   email-validator: ^2.0.4
   express: ^4.17.1
   lowdb: 1.x
+  shortid: ^2.2.15

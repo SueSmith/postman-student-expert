@@ -72,6 +72,7 @@ var low = require("lowdb");
 var FileSync = require("lowdb/adapters/FileSync");
 var adapter = new FileSync(".data/db.json");
 var db = low(adapter);
+const shortid = require('shortid');
 
 var validator = require("email-validator");
 
@@ -308,47 +309,65 @@ app.post("/match", (request, response) => {
       pic: ""
     });
   } else {
+    if (request.body.match && request.body.when && request.body.against) {
+    const postId = db.get("cats")
+      .push({ id: shortid.generate(), 
+             creator: apiSecret, 
+             matchType: request.body.match, 
+             opposition: request.body.against,
+             date: request.body.when,
+             score: -1 })
+      .write().id;
+    console.log("New cat inserted in the database");
+    response.status(200).json({ status: "Cat added", cat: request.body });
+  } else
+    response
+      .status(400)
+      .json({ error: "🚧Bad request - please check your cat body data!" });
     response.status(201).json({
-    welcome:
-      "Welcome! Check out the 'data' object below to see the values returned by the API. Click **Visualize** to see the 'tutorial' data " +
-      "for this request in a more readable view.",
-    data: {
-      cat: {
-        name: "Syd",
-        humans: 9
-      }
-    },
-    tutorial: {
-      title: "You did a thing! 🚀",
-      intro: "Here is the _intro_ to this **lesson**...",
-      steps: [
-        {
-          note: "Here is a step with `code` in it...",
-          pic:
-            "https://assets.postman.com/postman-docs/postman-app-overview-response.jpg",
-          raw_data: {
-            cat: {
-              name: "Syd",
-              humans: 9
+      welcome:
+        "Hi! Check out the 'data' object below to see the values returned by the API. Click **Visualize** to see the 'tutorial' data " +
+        "for this request in a more readable view.",
+      data: {
+        
+      },
+      tutorial: {
+        title: "You sent a request to retrieve all matches for the team! 🎉",
+        intro:
+          "The demo API we're using for this course is a for a fictional sports team. The API manages match, player, and team data. " +
+          "The request you just sent uses a `GET` which is for retrieving data.",
+        steps: [
+          {
+            note:
+              "Look at the request URL. It should look like this `{{training-api}}/matches`. The URL is partly made up from a variable, " +
+              " referenced using double curly braces around `training-api` - hover over it to see the value, it's part of the collection."
+          },
+          {
+            note:
+              "Open the **Console** along the bottom of the Postman window to see the address the request sent to. You can click a request " +
+              "in the Console to see the full detail of what happened when it sent - this is helpful when you're troubleshooting. Close and " +
+              "open the Console area whenever you find it useful."
+          },
+          {
+            note:
+              "The request you sent to `/matches` returned the following data. It's an array of the matches currently in the database, " +
+              "including a few data values for each match.",
+            raw_data: {
+              
             }
           }
-        }
-      ],
-      next: [
-      {
-        step: "Now do this...",
-        pic:
-          "https://assets.postman.com/postman-docs/postman-app-overview-response.jpg",
-        raw_data: {
-          cat: {
-            name: "Syd",
-            humans: 9
-          } 
-        }
+        ],
+        next: [
+          {
+            step:
+              "This request retrieved all matches, but you can also filter the matches using parameters. Open **Params** and enter a new Query " +
+              "parameter, with `status` as the **Key** and `played` or `pending` as the **Value**.",
+            pic:
+              "https://assets.postman.com/postman-docs/postman-app-overview-response.jpg"
+          }
+        ]
       }
-      ]
-    }
-  });
+    });
   }
 });
 
