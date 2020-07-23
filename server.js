@@ -292,7 +292,8 @@ app.post("/match", (request, response) => {
           "When you're sending new data to the API, you will typically need to authorize your requests.",
         steps: [
           {
-            note: "hi"
+            note: "You're going to add an auth key to this request, but instead of entering it manually let's use a variable—this helps "+
+              "minimize visibility of what could be sensitive credentials."
           }
         ],
         next: [
