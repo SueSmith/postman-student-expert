@@ -72,7 +72,6 @@ var low = require("lowdb");
 var FileSync = require("lowdb/adapters/FileSync");
 var adapter = new FileSync(".data/db.json");
 var db = low(adapter);
-const shortid = require("shortid");
 
 var validator = require("email-validator");
 
@@ -309,27 +308,7 @@ app.post("/match", (request, response) => {
       pic: ""
     });
   } else {
-    response.status(201).json({message: "added"});
-    /*
-    if (request.body.match && request.body.when && request.body.against) {
-         const postId = db.get("matches")
-      .push({ id: shortid.generate(), 
-             creator: apiSecret, 
-             matchType: request.body.match, 
-             opposition: request.body.against,
-             date: request.body.when,
-             score: -1 })
-      .write().id;
-      const postedMatch = db
-      .get('matches')
-      .find({ id: postId })
-      .value();
-      response.status(201).json({ status: "Match added" }); //, match: postedMatch });
-    } else
-      response
-        .status(400)
-        .json({ error: "🚧Bad request - please check your body data!" });
-        */
+    response.status(201).json({hi: "there"});
   }
 });
 
