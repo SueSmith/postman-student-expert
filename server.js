@@ -309,9 +309,10 @@ app.post("/match", (request, response) => {
       pic: ""
     });
   } else {
-    console.log("post");
+    response.status(201).json({message: "added"});
+    /*
     if (request.body.match && request.body.when && request.body.against) {
-      /*    const postId = db.get("matches")
+         const postId = db.get("matches")
       .push({ id: shortid.generate(), 
              creator: apiSecret, 
              matchType: request.body.match, 
@@ -322,12 +323,13 @@ app.post("/match", (request, response) => {
       const postedMatch = db
       .get('matches')
       .find({ id: postId })
-      .value();*/
+      .value();
       response.status(201).json({ status: "Match added" }); //, match: postedMatch });
     } else
       response
         .status(400)
-        .json({ error: "🚧Bad request - please check your cat body data!" });
+        .json({ error: "🚧Bad request - please check your body data!" });
+        */
   }
 });
 
