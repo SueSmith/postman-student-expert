@@ -147,23 +147,25 @@ app.get("/training", (request, response) => {
       ],
       next: [
         {
-          step: "This folder has two requests in it—open the second one, look at the address, then come back to this one."
+          step: "This folder has two requests in it—open the next one `1. Get matches`, look at the address, then come back to this one."
         },
         {
-          step: "They both use the same **base** URL `postman-student-expert.glitch.me`—instead of repeating this in every request, let's "+
-            "store it in a variable and reuse the value. In the collection on the left, click **...** > **Edit**.",
-          pic: "tbc"
-        },
-        {
-          step: "In **Variables** enter a new one, with `training-api` in the **Variable** column and `postman-student-expert.glitch.me` for "+
-            "both **Initial** and **Current Value**.",
+          step: "Both requests use the same **base** URL `postman-student-expert.glitch.me`—instead of repeating this in every request, let's "+
+            "store it in a variable and reuse the value. In the collection on the left, click **...** > **Edit**. In **Variables** add a new "+
+            "entry, with `training-api` in the **Variable** column and `postman-student-expert.glitch.me` for both **Initial** and **Current "+
+            "Value**. Click **Update**.",
           pic: "tbc"
         },
         {
           step:
             "In the request address above, replace `postman-student-expert.glitch.me` with `{{training-api}}`—this is how we reference variables "+
-            "in requests. Click **Send** to make sure the request still behaves the same way and scroll back here. Now open the next request "+
-            "`Get matches` and do the same for the URL in the **Send**.",
+            "in requests. Click **Send** to make sure the request still behaves the same way and scroll back here.",
+          pic: "tbc"
+        }
+        ,
+        {
+          step: "Now open the next request `Get matches` and do the same for the URL in there, replacing the base part of address with the "+
+            "variable reference—it should now be `{{training-api}}/matches`. Click **Send** on the `Get matches` request.",
           pic:
             "https://assets.postman.com/postman-docs/postman-app-overview-response.jpg"
         }
