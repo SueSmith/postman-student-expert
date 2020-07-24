@@ -354,7 +354,7 @@ app.post("/match", (request, response) => {
     } else
       response
         .status(400)
-        .json({ error: "🚧Bad request - please check your cat body data!" });
+        .json({ error: "🚧Bad request - please check your body data!" });
   }
 });
 
