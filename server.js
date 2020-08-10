@@ -186,12 +186,12 @@ app.get("/matches", (request, response) => {
     } else if (request.query.status === "played") {
       matches = db
         .get("matches")
-        .filter(o => o.points > -1).filter(m => (m.creator === "postman") || m.creator === apiSecret)
+        .filter(o => o.points > -1).filter(m => (m.creator == "postman") || m.creator == apiSecret)
         .value();
     } else if (request.query.status === "pending") {
       matches = db
         .get("matches")
-        .filter(o => o.points < 0).filter(m => (m.creator === "postman") || m.creator === apiSecret)
+        .filter(o => o.points < 0).filter(m => (m.creator == "postman") || m.creator == apiSecret)
         .value();
     }
     response.status(200).json({
@@ -250,7 +250,7 @@ app.get("/matches", (request, response) => {
       }
     });
   } else {
-    var matches = db.get("matches").filter(m => (m.creator === "postman") || m.creator === apiSecret).value();
+    var matches = db.get("matches").filter(m => (m.creator == "postman") || m.creator == apiSecret).value();
     response.status(200).json({
       welcome:
         "Hi! Check out the 'data' object below to see the values returned by the API. Click **Visualize** to see the 'tutorial' data " +
