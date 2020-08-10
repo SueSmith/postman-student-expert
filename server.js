@@ -314,6 +314,9 @@ app.post("/match", (request, response) => {
               "minimize visibility of what could be sensitive credentials."
           },
           {
+            note: "In **Collections** on the left, click the "
+          },
+          {
             note: "Add auth to collection and inherit in each request - do in get before run again so only your email will see this"
           }
         ],
@@ -331,7 +334,7 @@ app.post("/match", (request, response) => {
     response.status(401).json({
       title: "You got an unauthorized error response!",
       intro:
-        "🚫Unauthorized - your secret needs to match the one on the server!",
+        "🚫Unauthorized - your secret needs to be an email address!",
       info: [
         {
           note: "tbc"
