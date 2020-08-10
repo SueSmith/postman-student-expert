@@ -300,7 +300,7 @@ app.get("/matches", (request, response) => {
 
 app.post("/match", (request, response) => {
   const apiSecret = request.get("match_key");
-  if (!apiSecret) {
+  if (!apiSecret ) {
     response.status(401).json({
       welcome:
         "Hi! Click **Visualize** to see instructions on fixing this error response.",
@@ -316,18 +316,16 @@ app.post("/match", (request, response) => {
           },
           {
             note: "In **Collections** on the left, click the **...** for the student training collection and choose **Edit**. Open the "+
-              "**Authorization** tab. When you imported the collection, this configuration was already part of it. Postman will add the API key "+
-              "details to the header for every request using the name `match_key` and the value specified by the referenced `email_key` variable."
-          },
-          {
-            note: "Add a variable to the collection also via the **Edit** menu—choosing the **Variables** tab. Use the name `email_key` and enter "+
-              "your email address as the value. Postman will now append your email address to each request to identify you as the client."
+              "**Authorization** tab. Postman will add the API key details to the header for every request using the name `match_key` and "+
+              "the value specified by the referenced `email_key` variable."
           }
         ],
         next: [
           {
             step:
-              "Next ",
+              "Add a variable to the collection also via the **Edit** menu—choosing the **Variables** tab. Use the name `email_key` and enter "+
+              "your email address as the value. Postman will now append your email address to each request to identify you as the client. "+
+              "With your API Key in place, click **Send**.",
             pic:
               "https://assets.postman.com/postman-docs/postman-app-overview-response.jpg"
           }
