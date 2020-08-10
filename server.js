@@ -147,24 +147,26 @@ app.get("/training", (request, response) => {
       ],
       next: [
         {
-          step: "This folder has two requests in it—open the next one `1. Get matches`, look at the address, then come back to this one."
+          step:
+            "This folder has two requests in it—open the next one `1. Get matches`, look at the address, then come back to this one."
         },
         {
-          step: "Both requests use the same **base** URL `postman-student-expert.glitch.me`—instead of repeating this in every request, let's "+
-            "store it in a variable and reuse the value. In the collection on the left, click **...** > **Edit**. In **Variables** add a new "+
-            "entry, with `training-api` in the **Variable** column and `postman-student-expert.glitch.me` for both **Initial** and **Current "+
+          step:
+            "Both requests use the same **base** URL `postman-student-expert.glitch.me`—instead of repeating this in every request, let's " +
+            "store it in a variable and reuse the value. In the collection on the left, click **...** > **Edit**. In **Variables** add a new " +
+            "entry, with `training-api` in the **Variable** column and `postman-student-expert.glitch.me` for both **Initial** and **Current " +
             "Value**. Click **Update**.",
           pic: "tbc"
         },
         {
           step:
-            "In the request address above, replace `postman-student-expert.glitch.me` with `{{training-api}}`—this is how we reference variables "+
+            "In the request address above, replace `postman-student-expert.glitch.me` with `{{training-api}}`—this is how we reference variables " +
             "in requests. Click **Send** to make sure the request still behaves the same way and scroll back here.",
           pic: "tbc"
-        }
-        ,
+        },
         {
-          step: "Now open the next request `Get matches` and do the same for the URL in there, replacing the base part of address with the "+
+          step:
+            "Now open the next request `Get matches` and do the same for the URL in there, replacing the base part of address with the " +
             "variable reference—it should now be `{{training-api}}/matches`. Click **Send** on the `Get matches` request.",
           pic:
             "https://assets.postman.com/postman-docs/postman-app-overview-response.jpg"
@@ -186,12 +188,14 @@ app.get("/matches", (request, response) => {
     } else if (request.query.status === "played") {
       matches = db
         .get("matches")
-        .filter(o => o.points > -1).filter(m => (m.creator == "postman") || m.creator == apiSecret)
+        .filter(o => o.points > -1)
+        .filter(m => m.creator == "postman" || m.creator == apiSecret)
         .value();
     } else if (request.query.status === "pending") {
       matches = db
         .get("matches")
-        .filter(o => o.points < 0).filter(m => (m.creator == "postman") || m.creator == apiSecret)
+        .filter(o => o.points < 0)
+        .filter(m => m.creator == "postman" || m.creator == apiSecret)
         .value();
     }
     response.status(200).json({
@@ -250,7 +254,10 @@ app.get("/matches", (request, response) => {
       }
     });
   } else {
-    var matches = db.get("matches").filter(m => (m.creator == "postman") || m.creator == apiSecret).value();
+    var matches = db
+      .get("matches")
+      .filter(m => m.creator == "postman" || m.creator == apiSecret)
+      .value();
     response.status(200).json({
       welcome:
         "Hi! Check out the 'data' object below to see the values returned by the API. Click **Visualize** to see the 'tutorial' data " +
@@ -300,7 +307,8 @@ app.get("/matches", (request, response) => {
 
 app.post("/match", (request, response) => {
   const apiSecret = request.get("match_key");
-  if (!apiSecret ) {
+  console.log(apiSecret);
+  if (!apiSecret || apiSecret.length < 1 || apiSecret.startsWith("{")) {
     response.status(401).json({
       welcome:
         "Hi! Click **Visualize** to see instructions on fixing this error response.",
@@ -310,21 +318,23 @@ app.post("/match", (request, response) => {
           "When you're sending new data to the API, you will typically need to authorize your requests.",
         steps: [
           {
-            note: "You're going to add an auth key to this request, but instead of entering it manually let's use a variable—this helps "+
-              "minimize visibility of what could be sensitive credentials. Open the **Authorization** tab for the request—you'll see that "+
+            note:
+              "You're going to add an auth key to this request, but instead of entering it manually let's use a variable—this helps " +
+              "minimize visibility of what could be sensitive credentials. Open the **Authorization** tab for the request—you'll see that " +
               "it inherits auth from the parent."
           },
           {
-            note: "In **Collections** on the left, click the **...** for the student training collection and choose **Edit**. Open the "+
-              "**Authorization** tab. Postman will add the API key details to the header for every request using the name `match_key` and "+
+            note:
+              "In **Collections** on the left, click the **...** for the student training collection and choose **Edit**. Open the " +
+              "**Authorization** tab. Postman will add the API key details to the header for every request using the name `match_key` and " +
               "the value specified by the referenced `email_key` variable."
           }
         ],
         next: [
           {
             step:
-              "Add a variable to the collection also via the **Edit** menu—choosing the **Variables** tab. Use the name `email_key` and enter "+
-              "your email address as the value. Postman will now append your email address to each request to identify you as the client. "+
+              "Add a variable to the collection also via the **Edit** menu—choosing the **Variables** tab. Use the name `email_key` and enter " +
+              "your email address as the value. Postman will now append your email address to each request to identify you as the client. " +
               "With your API Key in place, click **Send**.",
             pic:
               "https://assets.postman.com/postman-docs/postman-app-overview-response.jpg"
@@ -334,27 +344,40 @@ app.post("/match", (request, response) => {
     });
   } else if (!validator.validate(apiSecret)) {
     response.status(401).json({
-      title: "You got an unauthorized error response!",
-      intro:
-        "🚫Unauthorized - your secret needs to be an email address!",
-      info: [
-        {
-          note: "tbc"
-        }
-      ],
-      next: "",
-      pic: ""
+      welcome:
+        "Hi! Click **Visualize** to see instructions on fixing this error response.",
+      tutorial: {
+        title: "You got an unauthorized error response!",
+        intro: "🚫Unauthorized - your key needs to be an email address!",
+        steps: [
+          {
+            note:
+              "The API will only authorize your requests if your key is a valid email address."
+          }
+        ],
+        next: [
+          {
+            step:
+              "Open your collection **Edit** menu and navigate to **Variables**. You should have a variable named `email_key`—make sure it's " +
+              "value is an email address and click **Send** again.",
+            pic: ""
+          }
+        ]
+      }
     });
   } else {
     if (request.body.match && request.body.when && request.body.against) {
-          const postId = db.get("matches")
-      .push({ id: shortid.generate(), 
-             creator: apiSecret, 
-             matchType: request.body.match, 
-             opposition: request.body.against,
-             date: request.body.when,
-             score: -1 })
-      .write().id;
+      const postId = db
+        .get("matches")
+        .push({
+          id: shortid.generate(),
+          creator: apiSecret,
+          matchType: request.body.match,
+          opposition: request.body.against,
+          date: request.body.when,
+          score: -1
+        })
+        .write().id;
       response.status(201).json({ status: "Match added" });
     } else
       response
