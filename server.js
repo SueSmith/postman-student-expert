@@ -311,19 +311,23 @@ app.post("/match", (request, response) => {
         steps: [
           {
             note: "You're going to add an auth key to this request, but instead of entering it manually let's use a variable—this helps "+
-              "minimize visibility of what could be sensitive credentials."
+              "minimize visibility of what could be sensitive credentials. Open the **Authorization** tab for the request—you'll see that "+
+              "it inherits auth from the parent."
           },
           {
-            note: "In **Collections** on the left, click the "
+            note: "In **Collections** on the left, click the **...** for the student training collection and choose **Edit**. Open the "+
+              "**Authorization** tab. When you imported the collection, this configuration was already part of it. Postman will add the API key "+
+              "details to the header for every request using the name `match_key` and the value specified by the referenced `email_key` variable."
           },
           {
-            note: "Add auth to collection and inherit in each request - do in get before run again so only your email will see this"
+            note: "Add a variable to the collection also via the **Edit** menu—choosing the **Variables** tab. Use the name `email_key` and enter "+
+              "your email address as the value. Postman will now append your email address to each request to identify you as the client."
           }
         ],
         next: [
           {
             step:
-              "auth",
+              "Next ",
             pic:
               "https://assets.postman.com/postman-docs/postman-app-overview-response.jpg"
           }
