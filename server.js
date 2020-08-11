@@ -594,7 +594,7 @@ app.put("/match", function(req, res) {
 });
 
 //delete match
-  app.delete("/matches/:match_id", function(req, res) {
+  app.delete("/match/:match_id", function(req, res) {
     const apiSecret = req.get("match_key");
     if (!apiSecret)
       res.status(401).json({
@@ -681,55 +681,52 @@ app.put("/match", function(req, res) {
       .get("matches")
       .find({ id: req.params.match_id })
       .value(); 
-    if (match && apiSecret != "postman" && updateMatch.creator == apiSecret) {
-        db.get("customers")
-          .remove({ id: parseInt(req.params.cust_id) })
+    if (match && apiSecret != "postman" && match.creator == apiSecret) {
+        db.get("matches")
+          .remove({ id: req.params.match_id })
           .write();
         res.status(200).json({
           welcome: welcomeMsg,
           tutorial: {
-            title: "You deleted a customer! 🏆",
-            intro: "Your customer was removed from the database.",
+            title: "You deleted a match! 🏆",
+            intro: "Your match was removed from the database.",
             steps: [
               {
                 note:
-                  "Go back into the first request you opened `Get all customers` and **Send** it again before returning here—" +
-                  "you should see that your deleted customer is no longer in the array!"
+                  "Go back into the first request you opened `Get matches` and **Send** it again before returning here—" +
+                  "you should see that your deleted match is no longer in the array!"
               }
             ],
             next: [
               {
                 step:
-                  "🚀 You completed the API 101 collection! Check out the **API Learner** template to continue learning—it walks you through " +
-                  "remixing your own API!<br/><br/>" +
-                  "[![Run in Postman](https://run.pstmn.io/button.svg)](https://app.getpostman.com/run-collection/cf574a217e39178d2c20)"
+                  "🚀 You completed the first part of Postman Student Expert training!"
               }
             ]
           }
         });
       } else {
         res.status(400).json({
-          welcome: welcomeMsg,
-          tutorial: {
-            title: "Your request is invalid! ⛔",
-            intro:
-              "You can only remove customers you added using the `POST` method during the current session (and that haven't been deleted).",
-            steps: [
-              {
-                note:
-                  "This request includes a path parameter with `/:customer_id` at the end of the request address—open **Params** and replace " +
-                  "`placeholder` with the `id` of a customer you added when you sent the `POST` request. Copy the `id` from the response in the " +
-                  "`Get all customers` request. ***You can only remove a customer you added.***"
-              }
-            ],
-            next: [
-              {
-                step:
-                  "With the ID parameter for a customer _you added_ during this session in place, click **Send** again."
-              }
-            ]
-          }
-        });
+        welcome: welcomeMsg,
+        tutorial: {
+          title: "Your request is invalid! ⛔",
+          intro:
+            "You can only remove matches you added using the `POST` method during the current session (and that haven't been deleted yet).",
+          steps: [
+            {
+              note:
+                "In **Params** add `match_id` in the **Key** column, and the `id` values from a match _you added_ to the customer list as the " +
+                "**Value**. ***You can only remove a match you added.***"
+            }
+          ],
+          next: [
+            {
+              step:
+                "With the ID parameter for a match _you added_ during this session in place, click **Send** again."
+            }
+          ]
+        }
+      });
       }
     }
   });
