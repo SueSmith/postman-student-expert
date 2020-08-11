@@ -73,8 +73,12 @@ var FileSync = require("lowdb/adapters/FileSync");
 var adapter = new FileSync(".data/db.json");
 var db = low(adapter);
 const shortid = require("shortid");
-
+//email validation
 var validator = require("email-validator");
+
+var welcomeMsg =
+  "You're using the Postman Student Expert training course! Check out the 'data' object below to see the values returned by this API request. " +
+  "Click **Visualize** to see the 'tutorial' guiding you through next steps - do this for every request in the collection!";
 
 // default cat list
 db.defaults({
@@ -116,9 +120,7 @@ app.get("/", (request, response) => {
 
 app.get("/training", (request, response) => {
   response.status(200).json({
-    welcome:
-      "Welcome to the Postman Student Expert training course! Check out the 'data' object below to see the values returned by this API request. " +
-      "Click **Visualize** to see the 'tutorial' guiding you through next steps - do this for every request in the collection!",
+    welcome: welcomeMsg,
     data: {
       course: "Postman Student Expert"
     },
@@ -199,9 +201,7 @@ app.get("/matches", (request, response) => {
         .value();
     }
     response.status(200).json({
-      welcome:
-        "Hi! Check out the 'data' object below to see the values returned by the API. Click **Visualize** to see the 'tutorial' data " +
-        "for this request in a more readable view.",
+      welcome: welcomeMsg,
       data: {
         matches: matches
       },
@@ -259,9 +259,7 @@ app.get("/matches", (request, response) => {
       .filter(m => m.creator == "postman" || m.creator == apiSecret)
       .value();
     response.status(200).json({
-      welcome:
-        "Hi! Check out the 'data' object below to see the values returned by the API. Click **Visualize** to see the 'tutorial' data " +
-        "for this request in a more readable view.",
+      welcome: welcomeMsg,
       data: {
         matches: matches
       },
@@ -310,8 +308,7 @@ app.post("/match", (request, response) => {
   console.log(apiSecret);
   if (!apiSecret || apiSecret.length < 1 || apiSecret.startsWith("{")) {
     response.status(401).json({
-      welcome:
-        "Hi! Click **Visualize** to see instructions on fixing this error response.",
+      welcome: welcomeMsg,
       tutorial: {
         title: "Oops - You got an unauthorized error response! 🚫",
         intro:
@@ -344,8 +341,7 @@ app.post("/match", (request, response) => {
     });
   } else if (!validator.validate(apiSecret)) {
     response.status(401).json({
-      welcome:
-        "Hi! Click **Visualize** to see instructions on fixing this error response.",
+      welcome: welcomeMsg,
       tutorial: {
         title: "You got an unauthorized error response!",
         intro: "🚫Unauthorized - your key needs to be an email address!",
@@ -378,11 +374,54 @@ app.post("/match", (request, response) => {
           score: -1
         })
         .write().id;
-      response.status(201).json({ status: "Match added" });
+      response.status(201).json({
+        welcome: welcomeMsg,
+        tutorial: {
+          title: "You added a new customer! 🏅",
+          intro: "Your new customer was added to the database.",
+          steps: [
+            {
+              note:
+                "Go back into the first request you opened `Get all customers` and **Send** it again before returning here—" +
+                "you should see your new addition in the array! _Note that this will only work if you're using the API 101 Postman template._"
+            }
+          ],
+          next: [
+            {
+              step:
+                "Next open the `PUT Update customer` request and click **Send**."
+            }
+          ]
+        }
+      });
     } else
-      response
-        .status(400)
-        .json({ error: "🚧Bad request - please check your body data!" });
+      response.status(400).json({
+        welcome: welcomeMsg,
+        tutorial: {
+          title: "🚧Bad request - please check your body data!",
+          intro: "This endpoint requires body data representing the new match.",
+          steps: [
+            {
+              note:
+                "In **Body** select **raw** and choose **JSON** instead of `Text` in the drop-down list. Enter the following JSON data " +
+                "including the enclosing curly braces:",
+              raw_data: {
+                match: "Cup Final",
+                when: "{{$randomDateFuture}}",
+                against: "Academical"
+              },
+              {
+              note: ""
+            }
+            }
+          ],
+          next: [
+            {
+              step: "With your body data in place, click **Send** again."
+            }
+          ]
+        }
+      });
   }
 });
 
