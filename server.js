@@ -412,8 +412,9 @@ app.post("/match", (request, response) => {
               }
             },
             {
-              note: "The `when` value uses a dynamic variable. Postman will add a random future date when you send your request. "+
-                "There are lots of other dynamic variables you can use in your requests for values you want to calculate at runtime or if "+
+              note:
+                "The `when` value uses a dynamic variable. Postman will add a random future date when you send your request. " +
+                "There are lots of other dynamic variables you can use in your requests for values you want to calculate at runtime or if " +
                 "you want to use demo data instead of real values."
             }
           ],
@@ -428,11 +429,11 @@ app.post("/match", (request, response) => {
 });
 
 //update score
-  app.put("/match", function(req, res) {
-//    db.get("calls").push({when: Date.now(), where: "POST /customer", what: req.get("user-id")+" "+req.body.name+" "+req.params.cust_id}).write();
-    const apiSecret = req.get("auth_key");
-    if (!apiSecret)
-      res.status(401).json({
+app.put("/match", function(req, res) {
+  //    db.get("calls").push({when: Date.now(), where: "POST /customer", what: req.get("user-id")+" "+req.body.name+" "+req.params.cust_id}).write();
+  const apiSecret = req.get("match_key");
+  if (!apiSecret)
+    res.status(401).json({
       welcome: welcomeMsg,
       tutorial: {
         title: "Oops - You got an unauthorized error response! 🚫",
@@ -464,7 +465,7 @@ app.post("/match", (request, response) => {
         ]
       }
     });
-    else if (!validator.validate(apiSecret)) 
+  else if (!validator.validate(apiSecret))
     res.status(401).json({
       welcome: welcomeMsg,
       tutorial: {
@@ -486,111 +487,111 @@ app.post("/match", (request, response) => {
         ]
       }
     });
-    else if (!req.query.match_id)
-      res.status(400).json({
+  else if (!req.query.match_id)
+    res.status(400).json({
+      welcome: welcomeMsg,
+      tutorial: {
+        title: "Your request is missing some info! 😕",
+        intro: "This endpoint requires you to specify a match to update.",
+        steps: [
+          {
+            note:
+              "In **Params** add `match_id` in the **Key** column, and the `id` values from a match _you added_ to the customer list as the " +
+              "**Value**. ***You can only update a match you added.***"
+          }
+        ],
+        next: [
+          {
+            step:
+              "With your parameter in place (you'll see e.g. `?match_id=101` added to the request address), click **Send** again."
+          }
+        ]
+      }
+    });
+  else if (!req.body.points)
+    res.status(400).json({
+      welcome: welcomeMsg,
+      tutorial: {
+        title: "Your request is incomplete! ✋",
+        intro:
+          "This endpoint requires body data representing the updated score.",
+        steps: [
+          {
+            note:
+              "In **Body** select **raw** and choose **JSON** instead of `Text` in the drop-down list. Enter the following JSON data " +
+              "including the enclosing curly braces:",
+            raw_data: {
+              points: 3
+            }
+          }
+        ],
+        next: [
+          {
+            step: "With your body data in place, click **Send** again."
+          }
+        ]
+      }
+    });
+  else {
+    var adminId = req.get("user-id") ? req.get("user-id") : "anonymous";
+
+    var updateMatch = db
+      .get("matches")
+      .find({ id: parseInt(req.query.match_id) })
+      .value();
+    if (updateMatch && adminId != "postman" && updateMatch.creator == adminId) {
+      db.get("customers")
+        .find({ id: parseInt(req.params.cust_id) })
+        .assign({
+          score: req.body.points
+        })
+        .write();
+
+      res.status(201).json({
         welcome: welcomeMsg,
         tutorial: {
-          title: "Your request is missing some info! 😕",
-          intro: "This endpoint requires you to specify a match to update.",
+          title: "You updated a match! ✅",
+          intro: "Your match score was updated in the database.",
           steps: [
             {
               note:
-                "In **Params** add `match_id` in the **Key** column, and the `id` values from a match _you added_ to the customer list as the "+
+                "Go back into the `Get matches` and **Send** it again before returning here—" +
+                "you should see your updated match in the array!"
+            }
+          ],
+          next: [
+            {
+              step:
+                "Next open the `DEL Remove match` request and click **Send**."
+            }
+          ]
+        }
+      });
+    } else {
+      res.status(400).json({
+        welcome: welcomeMsg,
+        tutorial: {
+          title: "Your request is invalid! ⛔",
+          intro:
+            "You can only update matches you added using the `POST` method during the current session (and that haven't been deleted).",
+          steps: [
+            {
+              note:
+                "In **Params** add `match_id` in the **Key** column, and the `id` values from a match _you added_ to the customer list as the " +
                 "**Value**. ***You can only update a match you added.***"
             }
           ],
           next: [
             {
               step:
-                "With your parameter in place (you'll see e.g. `?match_id=101` added to the request address), click **Send** again."
+                "With the ID parameter for a match _you added_ during this session in place, click **Send** again."
             }
           ]
         }
       });
-    else if (!req.body.name || !req.body.type)
-      res.status(400).json({
-        welcome: welcomeMsg,
-        tutorial: {
-          title: "Your request is incomplete! ✋",
-          intro:
-            "This endpoint requires body data representing the updated customer details.",
-          steps: [
-            {
-              note:
-                "In **Body** select **raw** and choose **JSON** instead of `Text` in the drop-down list. Enter the following JSON data " +
-                "including the enclosing curly braces:",
-              raw_data: {
-                name: "Sophia Petrillo",
-                type: "Individual"
-              }
-            }
-          ],
-          next: [
-            {
-              step: "With your body data in place, click **Send** again."
-            }
-          ]
-        }
-      });
-    else {
-      var adminId = req.get("user-id") ? req.get("user-id") : "anonymous";
-
-      var updateCust = db
-        .get("customers")
-        .find({ id: parseInt(req.params.cust_id) })
-        .value();
-      if (updateCust && adminId != "postman" && updateCust.admin == adminId) {
-        db.get("customers")
-          .find({ id: parseInt(req.params.cust_id) })
-          .assign({ name: req.body.name, type: req.body.type, admin: adminId })
-          .write();
-
-        res.status(201).json({
-          welcome: welcomeMsg,
-          tutorial: {
-            title: "You updated a customer! ✅",
-            intro: "Your customer was updated in the database.",
-            steps: [
-              {
-                note:
-                  "Go back into the first request you opened `Get all customers` and **Send** it again before returning here—" +
-                  "you should see your updated customer in the array!"
-              }
-            ],
-            next: [
-              {
-                step:
-                  "Next open the `DEL Remove customer` request and click **Send**."
-              }
-            ]
-          }
-        });
-      } else {
-        res.status(400).json({
-          welcome: welcomeMsg,
-          tutorial: {
-            title: "Your request is invalid! ⛔",
-            intro:
-              "You can only update customers you added using the `POST` method during the current session (and that haven't been deleted).",
-            steps: [
-              {
-                note:
-                  "This request includes a path parameter with `/:customer_id` at the end of the request address—open **Params** and replace " +
-                  "`placeholder` with the `id` of a customer you added when you sent the `POST` request. Copy the `id` from the response in the " +
-                  "`Get all customers` request. ***You can only update a customer you added.***"
-              }
-            ],
-            next: [
-              {
-                step:
-                  "With the ID parameter for a customer _you added_ during this session in place, click **Send** again."
-              }
-            ]
-          }
-        });
-      }
     }
-  });
+  }
+});
 
 //put and delete has to be id this user created - response if not - make sure can't affect "postman" data
 
