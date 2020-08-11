@@ -377,19 +377,19 @@ app.post("/match", (request, response) => {
       response.status(201).json({
         welcome: welcomeMsg,
         tutorial: {
-          title: "You added a new customer! 🏅",
-          intro: "Your new customer was added to the database.",
+          title: "You added a new match! 🏅",
+          intro: "Your new match was added to the database.",
           steps: [
             {
               note:
-                "Go back into the first request you opened `Get all customers` and **Send** it again before returning here—" +
-                "you should see your new addition in the array! _Note that this will only work if you're using the API 101 Postman template._"
+                "Go back into the `Get matches` request and **Send** it again before returning here—" +
+                "you should see your new addition in the array! _Note that this will only work if you're using the Student Expert Postman template._"
             }
           ],
           next: [
             {
               step:
-                "Next open the `PUT Update customer` request and click **Send**."
+                "Next open the `3 PUT Update score` request and click **Send**."
             }
           ]
         }
@@ -398,7 +398,7 @@ app.post("/match", (request, response) => {
       response.status(400).json({
         welcome: welcomeMsg,
         tutorial: {
-          title: "🚧Bad request - please check your body data!",
+          title: "🚧 Bad request - please check your body data!",
           intro: "This endpoint requires body data representing the new match.",
           steps: [
             {
@@ -409,10 +409,12 @@ app.post("/match", (request, response) => {
                 match: "Cup Final",
                 when: "{{$randomDateFuture}}",
                 against: "Academical"
-              },
-              {
-              note: ""
-            }
+              }
+            },
+            {
+              note: "The `when` value uses a dynamic variable. Postman will add a random future date when you send your request. "+
+                "There are lots of other dynamic variables you can use in your requests for values you want to calculate at runtime or if "+
+                "you want to use demo data instead of real values."
             }
           ],
           next: [
@@ -533,7 +535,9 @@ app.get("/clear", (request, response) => {
   response.redirect("/");
 });
 
-//errors
+//TODO add logging and admin calls to retrieve all matches / calls, to delete specific records
+
+//errors - these are unreachable now
 app.post("/*", (request, response) => {
   response.status(400).json({
     error:
