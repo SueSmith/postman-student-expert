@@ -431,7 +431,7 @@ app.post("/match", (request, response) => {
 //update score
 app.put("/match", function(req, res) {
   //    db.get("calls").push({when: Date.now(), where: "POST /customer", what: req.get("user-id")+" "+req.body.name+" "+req.params.cust_id}).write();
-  const apiSecret = req.get("match_key");
+  const apiSecret = req.get("match_key"); 
   if (!apiSecret)
     res.status(401).json({
       welcome: welcomeMsg,
@@ -533,15 +533,15 @@ app.put("/match", function(req, res) {
       }
     });
   else {
-    var adminId = req.get("user-id") ? req.get("user-id") : "anonymous";
+//    var adminId = req.get("user-id") ? req.get("user-id") : "anonymous";
 
     var updateMatch = db
       .get("matches")
-      .find({ id: parseInt(req.query.match_id) })
-      .value();
-    if (updateMatch && adminId != "postman" && updateMatch.creator == adminId) {
-      db.get("customers")
-        .find({ id: parseInt(req.params.cust_id) })
+      .find({ id: req.query.match_id })
+      .value(); console.log(updateMatch);
+    if (updateMatch && apiSecret != "postman" && updateMatch.creator == apiSecret) {
+      db.get("matches")
+        .find({ id: req.query.match_id })
         .assign({
           score: req.body.points
         })
@@ -592,6 +592,147 @@ app.put("/match", function(req, res) {
     }
   }
 });
+
+//delete match
+  app.delete("/matches/:match_id", function(req, res) {
+    const apiSecret = req.get("match_key");
+    if (!apiSecret)
+      res.status(401).json({
+      welcome: welcomeMsg,
+      tutorial: {
+        title: "Oops - You got an unauthorized error response! 🚫",
+        intro:
+          "When you're sending new data to the API, you will typically need to authorize your requests.",
+        steps: [
+          {
+            note:
+              "You're going to add an auth key to this request, but instead of entering it manually let's use a variable—this helps " +
+              "minimize visibility of what could be sensitive credentials. Open the **Authorization** tab for the request—you'll see that " +
+              "it inherits auth from the parent."
+          },
+          {
+            note:
+              "In **Collections** on the left, click the **...** for the student training collection and choose **Edit**. Open the " +
+              "**Authorization** tab. Postman will add the API key details to the header for every request using the name `match_key` and " +
+              "the value specified by the referenced `email_key` variable."
+          }
+        ],
+        next: [
+          {
+            step:
+              "Add a variable to the collection also via the **Edit** menu—choosing the **Variables** tab. Use the name `email_key` and enter " +
+              "your email address as the value. Postman will now append your email address to each request to identify you as the client. " +
+              "With your API Key in place, click **Send**.",
+            pic:
+              "https://assets.postman.com/postman-docs/postman-app-overview-response.jpg"
+          }
+        ]
+      }
+    });
+    else if (!validator.validate(apiSecret))
+    res.status(401).json({
+      welcome: welcomeMsg,
+      tutorial: {
+        title: "You got an unauthorized error response!",
+        intro: "🚫Unauthorized - your key needs to be an email address!",
+        steps: [
+          {
+            note:
+              "The API will only authorize your requests if your key is a valid email address."
+          }
+        ],
+        next: [
+          {
+            step:
+              "Open your collection **Edit** menu and navigate to **Variables**. You should have a variable named `email_key`—make sure it's " +
+              "value is an email address and click **Send** again.",
+            pic: ""
+          }
+        ]
+      }
+    });
+    else if (req.params.match_id == "placeholder")
+      res.status(400).json({
+        welcome: welcomeMsg,
+        tutorial: {
+          title: "Your request is incomplete! ✋",
+          intro:
+            "This endpoint requires an ID representing the match to remove.",
+          steps: [
+            {
+              note:
+                "This request includes a path parameter with `/:match_id` at the end of the request address—open **Params** and replace " +
+                "`placeholder` with the `id` of a match you added when you sent the `POST` request. Copy the `id` from the response in the " +
+                "`Get matches` request. ***You can only remove a match you added.***"
+            }
+          ],
+          next: [
+            {
+              step:
+                "With your customer ID parameter in place, click **Send** again."
+            }
+          ]
+        }
+      });
+    else {
+//      var adminId = req.get("user-id") ? req.get("user-id") : "anonymous";
+      //check the record matches the user id
+      var match = db
+      .get("matches")
+      .find({ id: req.params.match_id })
+      .value(); 
+    if (match && apiSecret != "postman" && updateMatch.creator == apiSecret) {
+        db.get("customers")
+          .remove({ id: parseInt(req.params.cust_id) })
+          .write();
+        res.status(200).json({
+          welcome: welcomeMsg,
+          tutorial: {
+            title: "You deleted a customer! 🏆",
+            intro: "Your customer was removed from the database.",
+            steps: [
+              {
+                note:
+                  "Go back into the first request you opened `Get all customers` and **Send** it again before returning here—" +
+                  "you should see that your deleted customer is no longer in the array!"
+              }
+            ],
+            next: [
+              {
+                step:
+                  "🚀 You completed the API 101 collection! Check out the **API Learner** template to continue learning—it walks you through " +
+                  "remixing your own API!<br/><br/>" +
+                  "[![Run in Postman](https://run.pstmn.io/button.svg)](https://app.getpostman.com/run-collection/cf574a217e39178d2c20)"
+              }
+            ]
+          }
+        });
+      } else {
+        res.status(400).json({
+          welcome: welcomeMsg,
+          tutorial: {
+            title: "Your request is invalid! ⛔",
+            intro:
+              "You can only remove customers you added using the `POST` method during the current session (and that haven't been deleted).",
+            steps: [
+              {
+                note:
+                  "This request includes a path parameter with `/:customer_id` at the end of the request address—open **Params** and replace " +
+                  "`placeholder` with the `id` of a customer you added when you sent the `POST` request. Copy the `id` from the response in the " +
+                  "`Get all customers` request. ***You can only remove a customer you added.***"
+              }
+            ],
+            next: [
+              {
+                step:
+                  "With the ID parameter for a customer _you added_ during this session in place, click **Send** again."
+              }
+            ]
+          }
+        });
+      }
+    }
+  });
 
 //put and delete has to be id this user created - response if not - make sure can't affect "postman" data
 
