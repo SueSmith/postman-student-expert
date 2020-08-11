@@ -427,6 +427,171 @@ app.post("/match", (request, response) => {
   }
 });
 
+//update score
+  app.put("/match", function(req, res) {
+//    db.get("calls").push({when: Date.now(), where: "POST /customer", what: req.get("user-id")+" "+req.body.name+" "+req.params.cust_id}).write();
+    const apiSecret = req.get("auth_key");
+    if (!apiSecret)
+      res.status(401).json({
+      welcome: welcomeMsg,
+      tutorial: {
+        title: "Oops - You got an unauthorized error response! 🚫",
+        intro:
+          "When you're sending new data to the API, you will typically need to authorize your requests.",
+        steps: [
+          {
+            note:
+              "You're going to add an auth key to this request, but instead of entering it manually let's use a variable—this helps " +
+              "minimize visibility of what could be sensitive credentials. Open the **Authorization** tab for the request—you'll see that " +
+              "it inherits auth from the parent."
+          },
+          {
+            note:
+              "In **Collections** on the left, click the **...** for the student training collection and choose **Edit**. Open the " +
+              "**Authorization** tab. Postman will add the API key details to the header for every request using the name `match_key` and " +
+              "the value specified by the referenced `email_key` variable."
+          }
+        ],
+        next: [
+          {
+            step:
+              "Add a variable to the collection also via the **Edit** menu—choosing the **Variables** tab. Use the name `email_key` and enter " +
+              "your email address as the value. Postman will now append your email address to each request to identify you as the client. " +
+              "With your API Key in place, click **Send**.",
+            pic:
+              "https://assets.postman.com/postman-docs/postman-app-overview-response.jpg"
+          }
+        ]
+      }
+    });
+    else if (!validator.validate(apiSecret)) 
+    res.status(401).json({
+      welcome: welcomeMsg,
+      tutorial: {
+        title: "You got an unauthorized error response!",
+        intro: "🚫Unauthorized - your key needs to be an email address!",
+        steps: [
+          {
+            note:
+              "The API will only authorize your requests if your key is a valid email address."
+          }
+        ],
+        next: [
+          {
+            step:
+              "Open your collection **Edit** menu and navigate to **Variables**. You should have a variable named `email_key`—make sure it's " +
+              "value is an email address and click **Send** again.",
+            pic: ""
+          }
+        ]
+      }
+    });
+    else if (!req.query.match_id)
+      res.status(400).json({
+        welcome: welcomeMsg,
+        tutorial: {
+          title: "Your request is missing some info! 😕",
+          intro: "This endpoint requires you to specify a match to update.",
+          steps: [
+            {
+              note:
+                "In **Params** add `match_id` in the **Key** column, and the `id` values from a match _you added_ to the customer list as the "+
+                "**Value**. ***You can only update a match you added.***"
+            }
+          ],
+          next: [
+            {
+              step:
+                "With your parameter in place (you'll see e.g. `?match_id=101` added to the request address), click **Send** again."
+            }
+          ]
+        }
+      });
+    else if (!req.body.name || !req.body.type)
+      res.status(400).json({
+        welcome: welcomeMsg,
+        tutorial: {
+          title: "Your request is incomplete! ✋",
+          intro:
+            "This endpoint requires body data representing the updated customer details.",
+          steps: [
+            {
+              note:
+                "In **Body** select **raw** and choose **JSON** instead of `Text` in the drop-down list. Enter the following JSON data " +
+                "including the enclosing curly braces:",
+              raw_data: {
+                name: "Sophia Petrillo",
+                type: "Individual"
+              }
+            }
+          ],
+          next: [
+            {
+              step: "With your body data in place, click **Send** again."
+            }
+          ]
+        }
+      });
+    else {
+      var adminId = req.get("user-id") ? req.get("user-id") : "anonymous";
+
+      var updateCust = db
+        .get("customers")
+        .find({ id: parseInt(req.params.cust_id) })
+        .value();
+      if (updateCust && adminId != "postman" && updateCust.admin == adminId) {
+        db.get("customers")
+          .find({ id: parseInt(req.params.cust_id) })
+          .assign({ name: req.body.name, type: req.body.type, admin: adminId })
+          .write();
+
+        res.status(201).json({
+          welcome: welcomeMsg,
+          tutorial: {
+            title: "You updated a customer! ✅",
+            intro: "Your customer was updated in the database.",
+            steps: [
+              {
+                note:
+                  "Go back into the first request you opened `Get all customers` and **Send** it again before returning here—" +
+                  "you should see your updated customer in the array!"
+              }
+            ],
+            next: [
+              {
+                step:
+                  "Next open the `DEL Remove customer` request and click **Send**."
+              }
+            ]
+          }
+        });
+      } else {
+        res.status(400).json({
+          welcome: welcomeMsg,
+          tutorial: {
+            title: "Your request is invalid! ⛔",
+            intro:
+              "You can only update customers you added using the `POST` method during the current session (and that haven't been deleted).",
+            steps: [
+              {
+                note:
+                  "This request includes a path parameter with `/:customer_id` at the end of the request address—open **Params** and replace " +
+                  "`placeholder` with the `id` of a customer you added when you sent the `POST` request. Copy the `id` from the response in the " +
+                  "`Get all customers` request. ***You can only update a customer you added.***"
+              }
+            ],
+            next: [
+              {
+                step:
+                  "With the ID parameter for a customer _you added_ during this session in place, click **Send** again."
+              }
+            ]
+          }
+        });
+      }
+    }
+  });
+
 //put and delete has to be id this user created - response if not - make sure can't affect "postman" data
 
 /*
