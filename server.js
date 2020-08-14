@@ -77,10 +77,10 @@ const shortid = require("shortid");
 var validator = require("email-validator");
 
 var welcomeMsg =
-  "You're using the Postman Student Expert training course! Check out the 'data' object below to see the values returned by this API request. " +
+  "You're using the "+process.env.PROJECT+" training course! Check out the 'data' object below to see the values returned by this API request. " +
   "Click **Visualize** to see the 'tutorial' guiding you through next steps - do this for every request in the collection!";
 
-// default cat list
+// default list
 db.defaults({
   matches: [
     {
@@ -107,20 +107,22 @@ db.defaults({
       date: "Wed Jan 13 2021 23: 01: 26 GMT+0000 (Coordinated Universal Time)",
       points: -1
     }
-  ]
+  ],
+  calls: []
 }).write();
 
 // http://expressjs.com/en/starter/basic-routing.html
 app.get("/", (request, response) => {
   if (request.headers["user-agent"].includes("Postman"))
     response.status(200).json({
-      title: "Learn by API",
+      title: process.env.PROJECT,
       intro:
-        "To get started, enter learn-by-api.glitch.me/intro in the address field, select GET method, and click Send. " +
-        "Make sure you are using the Learn by API collection to see cool stuff happen in the Postman Visualizer."
+        "Use the "+process.env.PROJECT+" template in Postman to learn API basics! Import the collection in Postman by clicking " +
+      "New > Templates, and searching for '"+process.env.PROJECT+"'. Open the first request in the collection and click Send. " +
+      "To see the API code navigate to https://glitch.com/edit/#!/"+process.env.PROJECT_DOMAIN+" in your web browser!"
     });
-  else response.send("<h1>REST API</h1><p>Oh, hi! There's not much to see here - view the code instead</p>" +
-        '<script src="https://button.glitch.me/button.js" data-style="glitch"></script><div class="glitchButton" style="position:fixed;top:20px;right:20px;"></div>'
+  else response.send("<h1>"+process.env.PROJECT+"</h1><p>Oh, hi! There's not much to see here - view the code instead:</p>" +
+        '<script src="https://button.glitch.me/button.js" data-style="glitch"></script><div class="glitchButton"></div>'
     );
 });
 
@@ -128,10 +130,10 @@ app.get("/training", (request, response) => {
   response.status(200).json({
     welcome: welcomeMsg,
     data: {
-      course: "Postman Student Expert"
+      course: process.env.PROJECT
     },
     tutorial: {
-      title: "Welcome to Postman Student Expert training! 🎒🎓",
+      title: "Welcome to "+process.env.PROJECT+" training! 🎒🎓",
       intro:
         "This API and the collection you imported into Postman will guide you through the steps required to become a student expert.",
       steps: [
@@ -139,7 +141,7 @@ app.get("/training", (request, response) => {
           note:
             "The request you sent to the student training API received a response including this data:",
           raw_data: {
-            course: "Postman Student Expert"
+            course: process.env.PROJECT
           }
         },
         {
