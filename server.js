@@ -211,13 +211,13 @@ app.get("/matches", (request, response) => {
       matches = db
         .get("matches")
         .filter(o => o.points > -1)
-        .filter(o => o.creator == "postman" || o.creator == apiSecret)
+        .filter(o => o.creator === "postman" || o.creator === apiSecret)
         .value();
     } else if (request.query.status === "pending") {
       matches = db
         .get("matches")
         .filter(o => o.points < 0)
-        .filter(o => o.creator == "postman" || o.creator == apiSecret)
+        .filter(o => o.creator === "postman" || o.creator === apiSecret)
         .value();
     }
     response.status(200).json({
@@ -399,7 +399,7 @@ app.post("/match", (request, response) => {
           matchType: request.body.match,
           opposition: request.body.against,
           date: request.body.when,
-          score: -1
+          points: -1
         })
         .write().id;
       response.status(201).json({
@@ -418,7 +418,10 @@ app.post("/match", (request, response) => {
           next: [
             {
               step:
-                "Next open the `3 PUT Update score` request and click **Send**."
+                "Next create another new request still inside the **1. Begin training - Requests** folder. Give it the name `3 Update score` "+
+                " and save it. Open it from the collection on the left. In the request builder select `PUT` method, and enter the URL "+
+                "`{{training-api}}/match`. Click **Send**.",
+              pic: "https://assets.postman.com/postman-docs/student-expert-put-request.jpg"
             }
           ]
         }
