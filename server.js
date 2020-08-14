@@ -269,7 +269,7 @@ app.get("/matches", (request, response) => {
               "The new request will appear in the collection folder on the left—click to open it in the request builder. In the request URL, "+
               "enter `{{training-api}}/match` and select `POST` from the method drop-down list. Click **Send**.",
             pic:
-              "https://assets.postman.com/postman-docs/postman-app-overview-response.jpg"
+              "https://assets.postman.com/postman-docs/student-expert-post-request.jpg"
           }
         ]
       }
@@ -344,13 +344,15 @@ app.post("/match", (request, response) => {
             note:
               "You're going to add an auth key to this request, but instead of entering it manually let's use a variable—this helps " +
               "minimize visibility of what could be sensitive credentials. Open the **Authorization** tab for the request—you'll see that " +
-              "it inherits auth from the parent."
+              "it inherits auth from the parent.",
+            pic: "https://assets.postman.com/postman-docs/student-expert-inherit-auth.jpg"
           },
           {
             note:
-              "In **Collections** on the left, click the **...** for the student training collection and choose **Edit**. Open the " +
+              "In **Collections** on the left, click the **...** for the **Student expert** collection and choose **Edit**. Open the " +
               "**Authorization** tab. Postman will add the API key details to the header for every request using the name `match_key` and " +
-              "the value specified by the referenced `email_key` variable."
+              "the value specified by the referenced `email_key` variable.",
+            pic: "https://assets.postman.com/postman-docs/student-expert-collection-auth.jpg"
           }
         ],
         next: [
