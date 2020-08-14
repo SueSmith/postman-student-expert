@@ -211,13 +211,13 @@ app.get("/matches", (request, response) => {
       matches = db
         .get("matches")
         .filter(o => o.points > -1)
-        .filter(o => o.creator === "postman" || o.creator === apiSecret)
+        .filter(o => o.creator == "postman" || o.creator == apiSecret)
         .value();
     } else if (request.query.status === "pending") {
       matches = db
         .get("matches")
         .filter(o => o.points < 0)
-        .filter(o => o.creator === "postman" || o.creator === apiSecret)
+        .filter(o => o.creator == "postman" || o.creator == apiSecret)
         .value();
     }
     response.status(200).json({
