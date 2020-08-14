@@ -1,5 +1,5 @@
 /*
-POSTMAN API STARTER
+POSTMAN STUDENT EXPERT
 
 This API works in conjunction with the API Starter collecction in Postman to walk you through API basics.
 Import the collection into Postman and send a request to the setup endpoint to begin.
