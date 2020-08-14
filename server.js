@@ -173,8 +173,8 @@ app.get("/training", (request, response) => {
             "Both requests use the same **base** URL `"+process.env.PROJECT_DOMAIN+".glitch.me`—instead of repeating this in every request, let's " +
             "store it in a variable and reuse the value. In the 'Student expert' collection on the left, click **...** > **Edit**. In "+
             "**Variables** add a new entry, with `training-api` in the **Variable** column and `"+process.env.PROJECT_DOMAIN+".glitch.me` "+
-            "for both **Initial** and **Current Value**. Click **Update**.",
-          pic: "tbc"
+            "for both **Initial** and **Current Value**. Click **Update**. (We'll be working with other variables later.)",
+          pic: "https://assets.postman.com/postman-docs/edit-student-var.jpg"
         },
         {
           step:
