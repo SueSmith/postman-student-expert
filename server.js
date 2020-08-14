@@ -178,7 +178,7 @@ app.get("/training", (request, response) => {
         },
         {
           step:
-            "In the request builder, edit the address, replacing `postman-student-expert.glitch.me` with `{{training-api}}`—this is how we "+
+            "In the request builder, edit the address, replacing `postman-student-expert.glitch.me` with `{{training_api}}`—this is how we "+
             "reference variables in requests. Click **Send** to make sure the request still behaves the same way and scroll back here.",
           pic: "https://assets.postman.com/postman-docs/student-expert-url-var.jpg"
         },
@@ -186,7 +186,7 @@ app.get("/training", (request, response) => {
           step:
             "Before you move on click **Save** to save your request edits. Now open the next request in the collection `Get matches` and do "+
             "the same for the URL in there, replacing the base part of address with the variable reference—it should now be "+
-            "`{{training-api}}/matches`. Click **Send** on the `Get matches` request and remember "+
+            "`{{training_api}}/matches`. Click **Send** on the `Get matches` request and remember "+
             "to open the **Visualizer** on the response."
         }
       ]
@@ -267,9 +267,9 @@ app.get("/matches", (request, response) => {
           {
             step:
               "The new request will appear in the collection folder on the left—click to open it in the request builder. In the request URL, "+
-              "enter `{{training-api}}/match` and select `POST` from the method drop-down list. Click **Send**.",
+              "enter `{{training_api}}/match` and select `POST` from the method drop-down list. Click **Send**.",
             pic:
-              "https://assets.postman.com/postman-docs/student-expert-post-request.jpg"
+              "https://assets.postman.com/postman-docs/student-expert-post-url.jpg"
           }
         ]
       }
@@ -343,8 +343,8 @@ app.post("/match", (request, response) => {
           {
             note:
               "You're going to add an auth key to this request, but instead of entering it manually let's use a variable—this helps " +
-              "minimize visibility of what could be sensitive credentials. Open the **Authorization** tab for the request—you'll see that " +
-              "it inherits auth from the parent.",
+              "minimize visibility of what could be sensitive credentials. Open the **Authorization** tab for the request—select "+
+              "`Inherit auth from parent` from the **Type** drop-down list.",
             pic: "https://assets.postman.com/postman-docs/student-expert-inherit-auth.jpg"
           },
           {
@@ -420,8 +420,8 @@ app.post("/match", (request, response) => {
               step:
                 "Next create another new request still inside the **1. Begin training - Requests** folder. Give it the name `3 Update score` "+
                 " and save it. Open it from the collection on the left. In the request builder select `PUT` method, and enter the URL "+
-                "`{{training-api}}/match`. Click **Send**.",
-              pic: "https://assets.postman.com/postman-docs/student-expert-put-request.jpg"
+                "`{{training_api}}/match`. Click **Send**.",
+              pic: "https://assets.postman.com/postman-docs/student-expert-put-url.jpg"
             }
           ]
         }
@@ -474,29 +474,18 @@ app.put("/match", function(req, res) {
       tutorial: {
         title: "Oops - You got an unauthorized error response! 🚫",
         intro:
-          "When you're sending new data to the API, you will typically need to authorize your requests.",
+          "You will need to authorize your request just as you did in the `POST` request.",
         steps: [
           {
             note:
-              "You're going to add an auth key to this request, but instead of entering it manually let's use a variable—this helps " +
-              "minimize visibility of what could be sensitive credentials. Open the **Authorization** tab for the request—you'll see that " +
-              "it inherits auth from the parent."
-          },
-          {
-            note:
-              "In **Collections** on the left, click the **...** for the student training collection and choose **Edit**. Open the " +
-              "**Authorization** tab. Postman will add the API key details to the header for every request using the name `match_key` and " +
-              "the value specified by the referenced `email_key` variable."
+              "You already have your auth key set up, so you just need to select it here. Open the **Authorization** tab—select "+
+              "`Inherit auth from parent` from the **Type** drop-down list."
           }
         ],
         next: [
           {
             step:
-              "Add a variable to the collection also via the **Edit** menu—choosing the **Variables** tab. Use the name `email_key` and enter " +
-              "your email address as the value. Postman will now append your email address to each request to identify you as the client. " +
-              "With your API Key in place, click **Send**.",
-            pic:
-              "https://assets.postman.com/postman-docs/postman-app-overview-response.jpg"
+              "Click **Send**."
           }
         ]
       }
@@ -517,8 +506,7 @@ app.put("/match", function(req, res) {
           {
             step:
               "Open your collection **Edit** menu and navigate to **Variables**. You should have a variable named `email_key`—make sure it's " +
-              "value is an email address and click **Send** again.",
-            pic: ""
+              "value is an email address and click **Send** again."
           }
         ]
       }
@@ -533,7 +521,8 @@ app.put("/match", function(req, res) {
           {
             note:
               "In **Params** add `match_id` in the **Key** column, and the `id` values from a match _you added_ to the customer list as the " +
-              "**Value**. ***You can only update a match you added.***"
+              "**Value**. ***You can only update a match you added.***",
+            pic: "https://assets.postman.com/postman-docs/student-expert-put-id.jpg"
           }
         ],
         next: [
