@@ -203,7 +203,7 @@ app.get("/matches", (request, response) => {
   if (request.query.status) {
     var matches;
     if (!["played", "pending"].includes(request.query.status)) {
-      //TODO flesh this out to full response
+      //TODO flesh this out to full response like post one with email validation
       response
         .status(400)
         .json({ error: "Status must be `played` or `pending`" });
@@ -362,7 +362,7 @@ app.post("/match", (request, response) => {
               "your email address as the value. Postman will now append your email address to each request to identify you as the client. " +
               "With your API Key in place, click **Send**.",
             pic:
-              "https://assets.postman.com/postman-docs/postman-app-overview-response.jpg"
+              "https://assets.postman.com/postman-docs/student-expert-email-var.jpg"
           }
         ]
       }
@@ -431,18 +431,19 @@ app.post("/match", (request, response) => {
           steps: [
             {
               note:
-                "In **Body** select **raw** and choose **JSON** instead of `Text` in the drop-down list. Enter the following JSON data " +
+                "In **Body** select **raw** and choose `JSON` instead of `Text` in the drop-down list. Enter the following JSON data " +
                 "including the enclosing curly braces:",
               raw_data: {
                 match: "Cup Final",
                 when: "{{$randomDateFuture}}",
                 against: "Academical"
-              }
+              },
+              pic: "https://assets.postman.com/postman-docs/student-expert-body-added.jpg"
             },
             {
               note:
                 "The `when` value uses a dynamic variable. Postman will add a random future date when you send your request. " +
-                "There are lots of other dynamic variables you can use in your requests for values you want to calculate at runtime or if " +
+                "There are lots of other dynamic variables you can use in your requests for values you want to calculate at runtime, or if " +
                 "you want to use demo data instead of real values."
             }
           ],
