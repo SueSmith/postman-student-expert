@@ -174,20 +174,19 @@ app.get("/training", (request, response) => {
             "store it in a variable and reuse the value. In the 'Student expert' collection on the left, click **...** > **Edit**. In "+
             "**Variables** add a new entry, with `training-api` in the **Variable** column and `"+process.env.PROJECT_DOMAIN+".glitch.me` "+
             "for both **Initial** and **Current Value**. Click **Update**. (We'll be working with other variables later.)",
-          pic: "https://assets.postman.com/postman-docs/edit-student-var.jpg"
+          pic: "https://assets.postman.com/postman-docs/student-expert-edit-var.jpg"
         },
         {
           step:
-            "In the request address above, replace `postman-student-expert.glitch.me` with `{{training-api}}`—this is how we reference variables " +
-            "in requests. Click **Send** to make sure the request still behaves the same way and scroll back here.",
-          pic: "tbc"
+            "In the request builder, edit the address, replacing `postman-student-expert.glitch.me` with `{{training-api}}`—this is how we "+
+            "reference variables in requests. Click **Send** to make sure the request still behaves the same way and scroll back here.",
+          pic: "https://assets.postman.com/postman-docs/student-expert-url-var.jpg"
         },
         {
           step:
-            "Now open the next request `Get matches` and do the same for the URL in there, replacing the base part of address with the " +
-            "variable reference—it should now be `{{training-api}}/matches`. Click **Send** on the `Get matches` request.",
-          pic:
-            "https://assets.postman.com/postman-docs/postman-app-overview-response.jpg"
+            "Now open the next request in the collection `Get matches` and do the same for the URL in there, replacing the base part of address "+
+            "with the variable reference—it should now be `{{training-api}}/matches`. Click **Send** on the `Get matches` request and remember "+
+            "to open the **Visualizer** on the response."
         }
       ]
     }
