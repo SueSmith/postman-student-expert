@@ -184,8 +184,9 @@ app.get("/training", (request, response) => {
         },
         {
           step:
-            "Now open the next request in the collection `Get matches` and do the same for the URL in there, replacing the base part of address "+
-            "with the variable reference—it should now be `{{training-api}}/matches`. Click **Send** on the `Get matches` request and remember "+
+            "Before you move on click **Save** to save your request edits. Now open the next request in the collection `Get matches` and do "+
+            "the same for the URL in there, replacing the base part of address with the variable reference—it should now be "+
+            "`{{training-api}}/matches`. Click **Send** on the `Get matches` request and remember "+
             "to open the **Visualizer** on the response."
         }
       ]
@@ -241,9 +242,9 @@ app.get("/matches", (request, response) => {
           },
           {
             note:
-              "Notice that the parameter is added to the request address as part of the query string (after the `?` and with the structure " +
-              "`status=played`)—you could have several of these by preceding additional query parameters with `&`. This is a pattern you will see " +
-              "in the web browser address bar as you navigate websites—APIs work the same way."
+              "You could have several query parameters, all of which will be appended to your request address by preceding each with"+
+              "`&` e.g. `/matches?status=pending&team=United`. This is a pattern you will see in the web browser address bar when you navigate "+
+              "websites—APIs work the same way."
           },
           {
             note:
@@ -312,9 +313,10 @@ app.get("/matches", (request, response) => {
           {
             step:
               "This request retrieved all matches, but you can also filter the matches using parameters. Open **Params** and enter a new Query " +
-              "parameter, with `status` as the **Key** and `played` or `pending` as the **Value**.",
+              "parameter, with `status` as the **Key** and `played` or `pending` as the **Value**. You will see the query parameter added to "+
+              "the end of the request address e.g. `/matches?status=pending`. Click **Send** again.",
             pic:
-              "https://assets.postman.com/postman-docs/postman-app-overview-response.jpg"
+              "https://assets.postman.com/postman-docs/student-expert-add-query.jpg"
           }
         ]
       }
