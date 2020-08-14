@@ -76,10 +76,6 @@ const shortid = require("shortid");
 //email validation
 var validator = require("email-validator");
 
-var welcomeMsg =
-  "You're using the "+process.env.PROJECT+" training course! Check out the 'data' object below to see the values returned by this API request. " +
-  "Click **Visualize** to see the 'tutorial' guiding you through next steps - do this for every request in the collection!";
-
 // default list
 db.defaults({
   matches: [
@@ -113,6 +109,10 @@ db.defaults({
 
 // http://expressjs.com/en/starter/basic-routing.html
 app.get("/", (request, response) => {
+  var newDate = new Date();
+  db.get("calls")
+    .push({ when: newDate.toDateString()+" "+newDate.toTimeString(), where: "GET /", what: "-" })
+    .write();
   if (request.headers["user-agent"].includes("Postman"))
     response.status(200).json({
       title: process.env.PROJECT,
@@ -126,7 +126,15 @@ app.get("/", (request, response) => {
     );
 });
 
+var welcomeMsg =
+  "You're using the "+process.env.PROJECT+" training course! Check out the 'data' object below to see the values returned by this API request. " +
+  "Click **Visualize** to see the 'tutorial' guiding you through next steps - do this for every request in the collection!";
+
 app.get("/training", (request, response) => {
+  var newDate = new Date();
+    db.get("calls")
+      .push({ when: newDate.toDateString()+" "+newDate.toTimeString(), where: "GET /training", what: "-" })
+      .write();
   response.status(200).json({
     welcome: welcomeMsg,
     data: {
@@ -187,11 +195,15 @@ app.get("/training", (request, response) => {
 });
 
 app.get("/matches", (request, response) => {
+  var newDate = new Date();
+    db.get("calls")
+      .push({ when: newDate.toDateString()+" "+newDate.toTimeString(), where: "GET /matches", what: request.query.status })
+      .write();
   const apiSecret = request.get("match_key");
   if (request.query.status) {
     var matches;
     if (!["played", "pending"].includes(request.query.status)) {
-      //flesh this out to full response
+      //TODO flesh this out to full response
       response
         .status(400)
         .json({ error: "Status must be `played` or `pending`" });
@@ -312,6 +324,10 @@ app.get("/matches", (request, response) => {
 });
 
 app.post("/match", (request, response) => {
+  var newDate = new Date();
+    db.get("calls")
+      .push({ when: newDate.toDateString()+" "+newDate.toTimeString(), where: "POST /match", what: request.body.match })
+      .write();
   const apiSecret = request.get("match_key");
   console.log(apiSecret);
   if (!apiSecret || apiSecret.length < 1 || apiSecret.startsWith("{")) {
@@ -438,7 +454,10 @@ app.post("/match", (request, response) => {
 
 //update score
 app.put("/match", function(req, res) {
-  //    db.get("calls").push({when: Date.now(), where: "POST /customer", what: req.get("user-id")+" "+req.body.name+" "+req.params.cust_id}).write();
+  var newDate = new Date();
+    db.get("calls")
+      .push({ when: newDate.toDateString()+" "+newDate.toTimeString(), where: "PUT /match", what: req.query.match_id })
+      .write();
   const apiSecret = req.get("match_key"); 
   if (!apiSecret)
     res.status(401).json({
@@ -541,8 +560,6 @@ app.put("/match", function(req, res) {
       }
     });
   else {
-//    var adminId = req.get("user-id") ? req.get("user-id") : "anonymous";
-
     var updateMatch = db
       .get("matches")
       .find({ id: req.query.match_id })
@@ -603,6 +620,10 @@ app.put("/match", function(req, res) {
 
 //delete match
   app.delete("/match/:match_id", function(req, res) {
+      var newDate = new Date();
+    db.get("calls")
+      .push({ when: newDate.toDateString()+" "+newDate.toTimeString(), where: "DEL /match", what: req.params.match_id })
+      .write();
     const apiSecret = req.get("match_key");
     if (!apiSecret)
       res.status(401).json({
@@ -683,7 +704,6 @@ app.put("/match", function(req, res) {
         }
       });
     else {
-//      var adminId = req.get("user-id") ? req.get("user-id") : "anonymous";
       //check the record matches the user id
       var match = db
       .get("matches")
@@ -739,7 +759,7 @@ app.put("/match", function(req, res) {
     }
   });
 
-//put and delete has to be id this user created - response if not - make sure can't affect "postman" data
+//TODO put and delete has to be id this user created - response if not - make sure can't affect "postman" data
 
 /*
 //generic get error
@@ -849,7 +869,7 @@ app.get("/clear", (request, response) => {
 
 //TODO add logging and admin calls to retrieve all matches / calls, to delete specific records
 
-//errors - these are unreachable now
+//TODO errors - these are unreachable now
 app.post("/*", (request, response) => {
   response.status(400).json({
     error:
