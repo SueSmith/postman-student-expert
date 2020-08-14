@@ -154,7 +154,7 @@ app.get("/training", (request, response) => {
         },
         {
           note:
-            "The responses will include JSON data that you can see in the **Body > Pretty** area. The **Visualize** view will show you this " +
+            "The responses will include JSON data that you can see in the **Body > Pretty** area. The **Visualize** view will show you a " +
             "more readable view of the 'tutorial' information in the response, including images that will help you understand each step."
         },
         {
@@ -170,10 +170,10 @@ app.get("/training", (request, response) => {
         },
         {
           step:
-            "Both requests use the same **base** URL `postman-student-expert.glitch.me`—instead of repeating this in every request, let's " +
-            "store it in a variable and reuse the value. In the collection on the left, click **...** > **Edit**. In **Variables** add a new " +
-            "entry, with `training-api` in the **Variable** column and `postman-student-expert.glitch.me` for both **Initial** and **Current " +
-            "Value**. Click **Update**.",
+            "Both requests use the same **base** URL `"+process.env.PROJECT_DOMAIN+".glitch.me`—instead of repeating this in every request, let's " +
+            "store it in a variable and reuse the value. In the 'Student expert' collection on the left, click **...** > **Edit**. In "+
+            "**Variables** add a new entry, with `training-api` in the **Variable** column and `"+process.env.PROJECT_DOMAIN+".glitch.me` "+
+            "for both **Initial** and **Current Value**. Click **Update**.",
           pic: "tbc"
         },
         {
