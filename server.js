@@ -130,6 +130,8 @@ var welcomeMsg =
   "You're using the "+process.env.PROJECT+" training course! Check out the 'data' object below to see the values returned by this API request. " +
   "Click **Visualize** to see the 'tutorial' guiding you through next steps - do this for every request in the collection!";
 
+//TODO use postman generated user id like api 101
+
 app.get("/training", (request, response) => {
   var newDate = new Date();
     db.get("calls")
@@ -588,8 +590,14 @@ app.put("/match", function(req, res) {
             {
               step:
                 "Next create a final request in the folder, this time naming it `4. Remove match`. Open it and set the method to `DELETE`, and "+
-                "the URL to `{{training_api}}/match/:match_id`. Click **Send**.",
+                "the URL to `{{training_api}}/match/:match_id`.",
               pic: "https://assets.postman.com/postman-docs/student-expert-delete-request.jpg"
+            },
+            {
+              step:
+                "This request includes a path parameter with `/:match_id` at the end of the request address—open **Params** and as the value " +
+                "for the `match_id` parameter, enter the `id` of a match _you added_ when you sent the `POST` request. Copy the `id` from the "+
+                "response in the `1. Get matches` request like you did for the `PUT` request then click **Send**."
             }
           ]
         }
@@ -665,36 +673,11 @@ app.put("/match", function(req, res) {
           {
             step:
               "Open your collection **Edit** menu and navigate to **Variables**. You should have a variable named `email_key`—make sure it's " +
-              "value is an email address and click **Send** again.",
-            pic: ""
+              "value is an email address and click **Send** again."
           }
         ]
       }
     });
-    //TODO change this to check for empty param
-    else if (req.params.match_id.length<1)
-      res.status(400).json({
-        welcome: welcomeMsg,
-        tutorial: {
-          title: "Your request is incomplete! ✋",
-          intro:
-            "This endpoint requires an ID representing the match to remove.",
-          steps: [
-            {
-              note:
-                "This request includes a path parameter with `/:match_id` at the end of the request address—open **Params** and as the value " +
-                "for the `match_id` parameter, enter the `id` of a match you added when you sent the `POST` request. (Copy the `id` from the "+
-                "response in the `1. Get matches` request. ***You can only remove a match you added.***"
-            }
-          ],
-          next: [
-            {
-              step:
-                "With your customer ID parameter in place, click **Send** again."
-            }
-          ]
-        }
-      });
     else {
       //check the record matches the user id
       var match = db
@@ -720,7 +703,8 @@ app.put("/match", function(req, res) {
             next: [
               {
                 step:
-                  "🚀 You completed the first part of Postman Student Expert training!"
+                  "🎊 You completed the first part of Postman Student Expert training! Next we're going to jump into the `2. Scripting and "+
+                  "Collection Runs` folder—open the folder, open the first request, and hit **Send**! 🚀"
               }
             ]
           }
@@ -735,7 +719,7 @@ app.put("/match", function(req, res) {
           steps: [
             {
               note:
-                "In **Params** add `match_id` in the **Key** column, and the `id` values from a match _you added_ to the customer list as the " +
+                "In **Params** add `match_id` in the **Key** column, and the `id` values from a match _you added_ to the match list as the " +
                 "**Value**. ***You can only remove a match you added.***"
             }
           ],
@@ -750,8 +734,6 @@ app.put("/match", function(req, res) {
       }
     }
   });
-
-//TODO put and delete has to be id this user created - response if not - make sure can't affect "postman" data
 
 /*
 //generic get error
