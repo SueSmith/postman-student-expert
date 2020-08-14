@@ -110,12 +110,18 @@ db.defaults({
   ]
 }).write();
 
-// http://expressjs.com/en/starter/static-files.html
-app.use(express.static("public"));
-
 // http://expressjs.com/en/starter/basic-routing.html
 app.get("/", (request, response) => {
-  response.sendFile(__dirname + "/views/index.html");
+  if (request.headers["user-agent"].includes("Postman"))
+    response.status(200).json({
+      title: "Learn by API",
+      intro:
+        "To get started, enter learn-by-api.glitch.me/intro in the address field, select GET method, and click Send. " +
+        "Make sure you are using the Learn by API collection to see cool stuff happen in the Postman Visualizer."
+    });
+  else response.send("<h1>REST API</h1><p>Oh, hi! There's not much to see here - view the code instead</p>" +
+        '<script src="https://button.glitch.me/button.js" data-style="glitch"></script><div class="glitchButton" style="position:fixed;top:20px;right:20px;"></div>'
+    );
 });
 
 app.get("/training", (request, response) => {
