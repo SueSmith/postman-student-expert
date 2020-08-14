@@ -418,9 +418,9 @@ app.post("/match", (request, response) => {
           next: [
             {
               step:
-                "Next create another new request still inside the **1. Begin training - Requests** folder. Give it the name `3 Update score` "+
-                " and save it. Open it from the collection on the left. In the request builder select `PUT` method, and enter the URL "+
-                "`{{training_api}}/match`. Click **Send**.",
+                "**Save** your current request, then create another new request still inside the **1. Begin training - Requests** folder. "+
+                "Give it the name `3 Update score` and save it. Open it from the collection on the left. In the request builder select `PUT` "+
+                "method, and enter the URL `{{training_api}}/match`. Click **Send**.",
               pic: "https://assets.postman.com/postman-docs/student-expert-put-url.jpg"
             }
           ]
@@ -478,7 +478,7 @@ app.put("/match", function(req, res) {
         steps: [
           {
             note:
-              "You already have your auth key set up, so you just need to select it here. Open the **Authorization** tab—select "+
+              "You should already have your auth key set up, so you just need to select it here. Open the **Authorization** tab—select "+
               "`Inherit auth from parent` from the **Type** drop-down list."
           }
         ],
@@ -520,8 +520,9 @@ app.put("/match", function(req, res) {
         steps: [
           {
             note:
-              "In **Params** add `match_id` in the **Key** column, and the `id` values from a match _you added_ to the customer list as the " +
-              "**Value**. ***You can only update a match you added.***",
+              "In **Params** add `match_id` in the **Key** column, and the `id` value from a match _you added_ to the customer list as the " +
+              "**Value**. ***You can only update a match you added—in the `1. Get matches` response, find the `id` for the match you added "+
+              "using the `POST` request.***",
             pic: "https://assets.postman.com/postman-docs/student-expert-put-id.jpg"
           }
         ],
@@ -547,7 +548,8 @@ app.put("/match", function(req, res) {
               "including the enclosing curly braces:",
             raw_data: {
               points: 3
-            }
+            },
+            pic: "https://assets.postman.com/postman-docs/student-expert-score-body.jpg"
           }
         ],
         next: [
@@ -578,14 +580,16 @@ app.put("/match", function(req, res) {
           steps: [
             {
               note:
-                "Go back into the `Get matches` and **Send** it again before returning here—" +
+                "Go back into the `1. Get matches` request and **Send** it again before returning here—" +
                 "you should see your updated match in the array!"
             }
           ],
           next: [
             {
               step:
-                "Next open the `DEL Remove match` request and click **Send**."
+                "Next create a final request in the folder, this time naming it `4. Remove match`. Open it and set the method to `DELETE`, and "+
+                "the URL to `{{training_api}}/match/:match_id`. Click **Send**.",
+              pic: "https://assets.postman.com/postman-docs/student-expert-delete-request.jpg"
             }
           ]
         }
@@ -629,29 +633,18 @@ app.put("/match", function(req, res) {
       tutorial: {
         title: "Oops - You got an unauthorized error response! 🚫",
         intro:
-          "When you're sending new data to the API, you will typically need to authorize your requests.",
+          "You will need to authorize your request just as you did in the `POST` and `PUT` requests.",
         steps: [
           {
             note:
-              "You're going to add an auth key to this request, but instead of entering it manually let's use a variable—this helps " +
-              "minimize visibility of what could be sensitive credentials. Open the **Authorization** tab for the request—you'll see that " +
-              "it inherits auth from the parent."
-          },
-          {
-            note:
-              "In **Collections** on the left, click the **...** for the student training collection and choose **Edit**. Open the " +
-              "**Authorization** tab. Postman will add the API key details to the header for every request using the name `match_key` and " +
-              "the value specified by the referenced `email_key` variable."
+              "You already have your auth key set up, so you just need to select it here. Open the **Authorization** tab—select "+
+              "`Inherit auth from parent` from the **Type** drop-down list."
           }
         ],
         next: [
           {
             step:
-              "Add a variable to the collection also via the **Edit** menu—choosing the **Variables** tab. Use the name `email_key` and enter " +
-              "your email address as the value. Postman will now append your email address to each request to identify you as the client. " +
-              "With your API Key in place, click **Send**.",
-            pic:
-              "https://assets.postman.com/postman-docs/postman-app-overview-response.jpg"
+              "Click **Send**."
           }
         ]
       }
@@ -678,7 +671,8 @@ app.put("/match", function(req, res) {
         ]
       }
     });
-    else if (req.params.match_id == "placeholder")
+    //TODO change this to check for empty param
+    else if (req.params.match_id.length<1)
       res.status(400).json({
         welcome: welcomeMsg,
         tutorial: {
@@ -688,9 +682,9 @@ app.put("/match", function(req, res) {
           steps: [
             {
               note:
-                "This request includes a path parameter with `/:match_id` at the end of the request address—open **Params** and replace " +
-                "`placeholder` with the `id` of a match you added when you sent the `POST` request. Copy the `id` from the response in the " +
-                "`Get matches` request. ***You can only remove a match you added.***"
+                "This request includes a path parameter with `/:match_id` at the end of the request address—open **Params** and as the value " +
+                "for the `match_id` parameter, enter the `id` of a match you added when you sent the `POST` request. (Copy the `id` from the "+
+                "response in the `1. Get matches` request. ***You can only remove a match you added.***"
             }
           ],
           next: [
