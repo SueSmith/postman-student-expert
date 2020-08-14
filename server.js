@@ -199,7 +199,7 @@ app.get("/matches", (request, response) => {
     db.get("calls")
       .push({ when: newDate.toDateString()+" "+newDate.toTimeString(), where: "GET /matches", what: request.query.status })
       .write();
-  const apiSecret = request.get("match_key");
+  const apiSecret = request.get("match_key"); 
   if (request.query.status) {
     var matches;
     if (!["played", "pending"].includes(request.query.status)) {
@@ -210,14 +210,12 @@ app.get("/matches", (request, response) => {
     } else if (request.query.status === "played") {
       matches = db
         .get("matches")
-        .filter(o => o.points > -1)
-        .filter(m => m.creator == "postman" || m.creator == apiSecret)
+        .filter(o => o.points > -1 && o.creator === "postman" || o.creator === apiSecret)
         .value();
     } else if (request.query.status === "pending") {
       matches = db
         .get("matches")
-        .filter(o => o.points < 0)
-        .filter(m => m.creator == "postman" || m.creator == apiSecret)
+        .filter(o => o.points < 0 && o.creator === "postman" || o.creator === apiSecret)
         .value();
     }
     response.status(200).json({
@@ -277,7 +275,7 @@ app.get("/matches", (request, response) => {
   } else {
     var matches = db
       .get("matches")
-      .filter(m => m.creator == "postman" || m.creator == apiSecret)
+      .filter(m => m.creator === "postman" || m.creator === apiSecret)
       .value();
     response.status(200).json({
       welcome: welcomeMsg,
@@ -410,8 +408,9 @@ app.post("/match", (request, response) => {
           steps: [
             {
               note:
-                "Go back into the `Get matches` request and **Send** it again before returning here—" +
-                "you should see your new addition in the array! _Note that this will only work if you're using the Student Expert Postman template._"
+                "Go back into the `Get matches` request, make sure your `status` query parameter is set to `pending` and **Send** it again "+
+                "before returning here—you should see your new addition in the array! _Note that this will only work if you're using the "+
+                "Student Expert Postman template._"
             }
           ],
           next: [
