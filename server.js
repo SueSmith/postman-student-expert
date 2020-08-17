@@ -108,20 +108,20 @@ db.defaults({
 }).write();
 
 // http://expressjs.com/en/starter/basic-routing.html
-app.get("/", (request, response) => {
+app.get("/", (req, res) => {
   var newDate = new Date();
   db.get("calls")
-    .push({ when: newDate.toDateString()+" "+newDate.toTimeString(), where: "GET /", what: request.get("email_key") })
+    .push({ when: newDate.toDateString()+" "+newDate.toTimeString(), where: "GET /", what: req.get("match_key") })
     .write();
-  if (request.headers["user-agent"].includes("Postman"))
-    response.status(200).json({
+  if (req.headers["user-agent"].includes("Postman"))
+    res.status(200).json({
       title: process.env.PROJECT,
       intro:
         "Use the "+process.env.PROJECT+" template in Postman to learn API basics! Import the collection in Postman by clicking " +
       "New > Templates, and searching for '"+process.env.PROJECT+"'. Open the first request in the collection and click Send. " +
       "To see the API code navigate to https://glitch.com/edit/#!/"+process.env.PROJECT_DOMAIN+" in your web browser!"
     });
-  else response.send("<h1>"+process.env.PROJECT+"</h1><p>Oh, hi! There's not much to see here - view the code instead:</p>" +
+  else res.send("<h1>"+process.env.PROJECT+"</h1><p>Oh, hi! There's not much to see here - view the code instead:</p>" +
         '<script src="https://button.glitch.me/button.js" data-style="glitch"></script><div class="glitchButton" style="position:fixed;top:20px;right:20px;"></div>'
     );
 });
@@ -130,14 +130,12 @@ var welcomeMsg =
   "You're using the "+process.env.PROJECT+" training course! Check out the 'data' object below to see the values returned by this API request. " +
   "Click **Visualize** to see the 'tutorial' guiding you through next steps - do this for every request in the collection!";
 
-//TODO use postman generated user id like api 101
-
-app.get("/training", (request, response) => {
+app.get("/training", (req, res) => {
   var newDate = new Date();
     db.get("calls")
-      .push({ when: newDate.toDateString()+" "+newDate.toTimeString(), where: "GET /training", what: request.get("email_key") })
+      .push({ when: newDate.toDateString()+" "+newDate.toTimeString(), where: "GET /training", what: req.get("match_key") })
       .write();
-  response.status(200).json({
+  res.status(200).json({
     welcome: welcomeMsg,
     data: {
       course: process.env.PROJECT
@@ -196,33 +194,37 @@ app.get("/training", (request, response) => {
   });
 });
 
-app.get("/matches", (request, response) => {
+app.get("/matches", (req, res) => {
+  const apiSecret = req.get("match_key"); 
   var newDate = new Date();
     db.get("calls")
-      .push({ when: newDate.toDateString()+" "+newDate.toTimeString(), where: "GET /matches", what: request.query.status+" "+request.get("email_key") })
+      .push({ when: newDate.toDateString()+" "+newDate.toTimeString(), where: "GET /matches", what: req.query.status+" "+apiSecret })
       .write();
-  const apiSecret = request.get("match_key"); 
-  if (request.query.status) {
+  if (req.query.status) {
     var matches;
-    if (!["played", "pending"].includes(request.query.status)) {
+    if (!["played", "pending"].includes(req.query.status)) {
       //TODO flesh this out to full response like post one with email validation
-      response
+      res
         .status(400)
         .json({ error: "Status must be `played` or `pending`" });
-    } else if (request.query.status === "played") {
+      /*Open **Params** and enter a new Query " +
+              "parameter, with `status` as the **Key** and `played` or `pending` as the **Value**. You will see the query parameter added to "+
+              "the end of the request address e.g. `/matches?status=pending`. Click **Send** again.
+              */
+    } else if (req.query.status === "played") {
       matches = db
         .get("matches")
         .filter(o => o.points > -1)
         .filter(o => o.creator === "postman" || o.creator === apiSecret)
         .value();
-    } else if (request.query.status === "pending") {
+    } else if (req.query.status === "pending") {
       matches = db
         .get("matches")
         .filter(o => o.points < 0)
         .filter(o => o.creator === "postman" || o.creator === apiSecret)
         .value();
     }
-    response.status(200).json({
+    res.status(200).json({
       welcome: welcomeMsg,
       data: {
         matches: matches
@@ -231,7 +233,7 @@ app.get("/matches", (request, response) => {
         title: "You sent a request to filter the matches returned!",
         intro:
           "The `status` parameter specified `" +
-          request.query.status +
+          req.query.status +
           "` which filters based on whether a match has been played or not.",
         steps: [
           {
@@ -281,7 +283,7 @@ app.get("/matches", (request, response) => {
       .get("matches")
       .filter(m => m.creator === "postman" || m.creator === apiSecret)
       .value();
-    response.status(200).json({
+    res.status(200).json({
       welcome: welcomeMsg,
       data: {
         matches: matches
@@ -327,15 +329,15 @@ app.get("/matches", (request, response) => {
   }
 });
 
-app.post("/match", (request, response) => {
+app.post("/match", (req, res) => {
+  const apiSecret = req.get("match_key"); 
   var newDate = new Date();
     db.get("calls")
-      .push({ when: newDate.toDateString()+" "+newDate.toTimeString(), where: "POST /match", what: request.body.match+" "+request.get("email_key") })
+      .push({ when: newDate.toDateString()+" "+newDate.toTimeString(), where: "POST /match", what: req.body.match+" "+apiSecret })
       .write();
-  const apiSecret = request.get("match_key");
   console.log(apiSecret);
   if (!apiSecret || apiSecret.length < 1 || apiSecret.startsWith("{")) {
-    response.status(401).json({
+    res.status(401).json({
       welcome: welcomeMsg,
       tutorial: {
         title: "Oops - You got an unauthorized error response! 🚫",
@@ -370,7 +372,7 @@ app.post("/match", (request, response) => {
       }
     });
   } else if (!validator.validate(apiSecret)) {
-    response.status(401).json({
+    res.status(401).json({
       welcome: welcomeMsg,
       tutorial: {
         title: "You got an unauthorized error response!",
@@ -392,19 +394,19 @@ app.post("/match", (request, response) => {
       }
     });
   } else {
-    if (request.body.match && request.body.when && request.body.against) {
+    if (req.body.match && req.body.when && req.body.against) {
       const postId = db
         .get("matches")
         .push({
           id: shortid.generate(),
           creator: apiSecret,
-          matchType: request.body.match,
-          opposition: request.body.against,
-          date: request.body.when,
+          matchType: req.body.match,
+          opposition: req.body.against,
+          date: req.body.when,
           points: -1
         })
         .write().id;
-      response.status(201).json({
+      res.status(201).json({
         welcome: welcomeMsg,
         tutorial: {
           title: "You added a new match! 🏅",
@@ -429,7 +431,7 @@ app.post("/match", (request, response) => {
         }
       });
     } else
-      response.status(400).json({
+      res.status(400).json({
         welcome: welcomeMsg,
         tutorial: {
           title: "🚧 Bad request - please check your body data!",
@@ -465,11 +467,11 @@ app.post("/match", (request, response) => {
 
 //update score
 app.put("/match", function(req, res) {
+  const apiSecret = req.get("match_key"); 
   var newDate = new Date();
     db.get("calls")
-      .push({ when: newDate.toDateString()+" "+newDate.toTimeString(), where: "PUT /match", what: req.query.match_id+" "+req.get("email_key") })
+      .push({ when: newDate.toDateString()+" "+newDate.toTimeString(), where: "PUT /match", what: req.query.match_id+" "+apiSecret })
       .write();
-  const apiSecret = req.get("match_key"); 
   if (!apiSecret)
     res.status(401).json({
       welcome: welcomeMsg,
@@ -630,11 +632,11 @@ app.put("/match", function(req, res) {
 
 //delete match
   app.delete("/match/:match_id", function(req, res) {
+  const apiSecret = req.get("match_key"); 
       var newDate = new Date();
     db.get("calls")
-      .push({ when: newDate.toDateString()+" "+newDate.toTimeString(), where: "DEL /match", what: req.params.match_id+" "+req.get("email_key") })
+      .push({ when: newDate.toDateString()+" "+newDate.toTimeString(), where: "DEL /match", what: req.params.match_id+" "+apiSecret })
       .write();
-    const apiSecret = req.get("match_key");
     if (!apiSecret)
       res.status(401).json({
       welcome: welcomeMsg,
@@ -780,7 +782,7 @@ app.use((req, res, next) => {
 });
 
 // removes entries from users and populates it with default users
-app.get("/reset", (request, response) => {
+app.get("/reset", (req, res) => {
   // removes all entries from the collection
   db.get("matches")
     .remove()
@@ -828,7 +830,7 @@ app.get("/reset", (request, response) => {
       .write();
   });
   console.log("Default matches added");
-  response.redirect("/");
+  res.redirect("/");
 });
 
 // removes all entries from the collection
