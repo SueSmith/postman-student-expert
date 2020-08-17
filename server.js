@@ -111,7 +111,7 @@ db.defaults({
 app.get("/", (request, response) => {
   var newDate = new Date();
   db.get("calls")
-    .push({ when: newDate.toDateString()+" "+newDate.toTimeString(), where: "GET /", what: request.get("user-id") })
+    .push({ when: newDate.toDateString()+" "+newDate.toTimeString(), where: "GET /", what: request.get("email_key") })
     .write();
   if (request.headers["user-agent"].includes("Postman"))
     response.status(200).json({
@@ -135,7 +135,7 @@ var welcomeMsg =
 app.get("/training", (request, response) => {
   var newDate = new Date();
     db.get("calls")
-      .push({ when: newDate.toDateString()+" "+newDate.toTimeString(), where: "GET /training", what: request.get("user-id") })
+      .push({ when: newDate.toDateString()+" "+newDate.toTimeString(), where: "GET /training", what: request.get("email_key") })
       .write();
   response.status(200).json({
     welcome: welcomeMsg,
@@ -199,7 +199,7 @@ app.get("/training", (request, response) => {
 app.get("/matches", (request, response) => {
   var newDate = new Date();
     db.get("calls")
-      .push({ when: newDate.toDateString()+" "+newDate.toTimeString(), where: "GET /matches", what: request.query.status+" "+request.get("user-id") })
+      .push({ when: newDate.toDateString()+" "+newDate.toTimeString(), where: "GET /matches", what: request.query.status+" "+request.get("email_key") })
       .write();
   const apiSecret = request.get("match_key"); 
   if (request.query.status) {
@@ -330,7 +330,7 @@ app.get("/matches", (request, response) => {
 app.post("/match", (request, response) => {
   var newDate = new Date();
     db.get("calls")
-      .push({ when: newDate.toDateString()+" "+newDate.toTimeString(), where: "POST /match", what: request.body.match+" "+request.get("user-id") })
+      .push({ when: newDate.toDateString()+" "+newDate.toTimeString(), where: "POST /match", what: request.body.match+" "+request.get("email_key") })
       .write();
   const apiSecret = request.get("match_key");
   console.log(apiSecret);
@@ -467,7 +467,7 @@ app.post("/match", (request, response) => {
 app.put("/match", function(req, res) {
   var newDate = new Date();
     db.get("calls")
-      .push({ when: newDate.toDateString()+" "+newDate.toTimeString(), where: "PUT /match", what: req.query.match_id+" "+request.get("user-id") })
+      .push({ when: newDate.toDateString()+" "+newDate.toTimeString(), where: "PUT /match", what: req.query.match_id+" "+req.get("email_key") })
       .write();
   const apiSecret = req.get("match_key"); 
   if (!apiSecret)
@@ -632,7 +632,7 @@ app.put("/match", function(req, res) {
   app.delete("/match/:match_id", function(req, res) {
       var newDate = new Date();
     db.get("calls")
-      .push({ when: newDate.toDateString()+" "+newDate.toTimeString(), where: "DEL /match", what: req.params.match_id+" "+request.get("user-id") })
+      .push({ when: newDate.toDateString()+" "+newDate.toTimeString(), where: "DEL /match", what: req.params.match_id+" "+req.get("email_key") })
       .write();
     const apiSecret = req.get("match_key");
     if (!apiSecret)
