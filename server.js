@@ -111,37 +111,57 @@ db.defaults({
 app.get("/", (req, res) => {
   var newDate = new Date();
   db.get("calls")
-    .push({ when: newDate.toDateString()+" "+newDate.toTimeString(), where: "GET /", what: req.get("match_key") })
+    .push({
+      when: newDate.toDateString() + " " + newDate.toTimeString(),
+      where: "GET /",
+      what: req.get("match_key")
+    })
     .write();
   if (req.headers["user-agent"].includes("Postman"))
     res.status(200).json({
       title: process.env.PROJECT,
       intro:
-        "Use the "+process.env.PROJECT+" template in Postman to learn API basics! Import the collection in Postman by clicking " +
-      "New > Templates, and searching for '"+process.env.PROJECT+"'. Open the first request in the collection and click Send. " +
-      "To see the API code navigate to https://glitch.com/edit/#!/"+process.env.PROJECT_DOMAIN+" in your web browser!"
+        "Use the " +
+        process.env.PROJECT +
+        " template in Postman to learn API basics! Import the collection in Postman by clicking " +
+        "New > Templates, and searching for '" +
+        process.env.PROJECT +
+        "'. Open the first request in the collection and click Send. " +
+        "To see the API code navigate to https://glitch.com/edit/#!/" +
+        process.env.PROJECT_DOMAIN +
+        " in your web browser!"
     });
-  else res.send("<h1>"+process.env.PROJECT+"</h1><p>Oh, hi! There's not much to see here - view the code instead:</p>" +
+  else
+    res.send(
+      "<h1>" +
+        process.env.PROJECT +
+        "</h1><p>Oh, hi! There's not much to see here - view the code instead:</p>" +
         '<script src="https://button.glitch.me/button.js" data-style="glitch"></script><div class="glitchButton" style="position:fixed;top:20px;right:20px;"></div>'
     );
 });
 
 var welcomeMsg =
-  "You're using the "+process.env.PROJECT+" training course! Check out the 'data' object below to see the values returned by this API request. " +
+  "You're using the " +
+  process.env.PROJECT +
+  " training course! Check out the 'data' object below to see the values returned by this API request. " +
   "Click **Visualize** to see the 'tutorial' guiding you through next steps - do this for every request in the collection!";
 
 app.get("/training", (req, res) => {
   var newDate = new Date();
-    db.get("calls")
-      .push({ when: newDate.toDateString()+" "+newDate.toTimeString(), where: "GET /training", what: req.get("match_key") })
-      .write();
+  db.get("calls")
+    .push({
+      when: newDate.toDateString() + " " + newDate.toTimeString(),
+      where: "GET /training",
+      what: req.get("match_key")
+    })
+    .write();
   res.status(200).json({
     welcome: welcomeMsg,
     data: {
       course: process.env.PROJECT
     },
     tutorial: {
-      title: "Welcome to "+process.env.PROJECT+" training! 🎒🎓",
+      title: "Welcome to " + process.env.PROJECT + " training! 🎒🎓",
       intro:
         "This API and the collection you imported into Postman will guide you through the steps required to become a student expert.",
       steps: [
@@ -170,23 +190,29 @@ app.get("/training", (req, res) => {
         },
         {
           step:
-            "Both requests use the same **base** URL `"+process.env.PROJECT_DOMAIN+".glitch.me`—instead of repeating this in every request, let's " +
-            "store it in a variable and reuse the value. In the 'Student expert' collection on the left, click **...** > **Edit**. In "+
-            "**Variables** add a new entry, with `training-api` in the **Variable** column and `"+process.env.PROJECT_DOMAIN+".glitch.me` "+
+            "Both requests use the same **base** URL `" +
+            process.env.PROJECT_DOMAIN +
+            ".glitch.me`—instead of repeating this in every request, let's " +
+            "store it in a variable and reuse the value. In the 'Student expert' collection on the left, click **...** > **Edit**. In " +
+            "**Variables** add a new entry, with `training-api` in the **Variable** column and `" +
+            process.env.PROJECT_DOMAIN +
+            ".glitch.me` " +
             "for both **Initial** and **Current Value**. Click **Update**. (We'll be working with other variables later.)",
-          pic: "https://assets.postman.com/postman-docs/student-expert-edit-var.jpg"
+          pic:
+            "https://assets.postman.com/postman-docs/student-expert-edit-var.jpg"
         },
         {
           step:
-            "In the request builder, edit the address, replacing `postman-student-expert.glitch.me` with `{{training_api}}`—this is how we "+
+            "In the request builder, edit the address, replacing `postman-student-expert.glitch.me` with `{{training_api}}`—this is how we " +
             "reference variables in requests. Click **Send** to make sure the request still behaves the same way and scroll back here.",
-          pic: "https://assets.postman.com/postman-docs/student-expert-url-var.jpg"
+          pic:
+            "https://assets.postman.com/postman-docs/student-expert-url-var.jpg"
         },
         {
           step:
-            "Before you move on click **Save** to save your request edits. Now open the next request in the collection `Get matches` and do "+
-            "the same for the URL in there, replacing the base part of address with the variable reference—it should now be "+
-            "`{{training_api}}/matches`. Click **Send** on the `Get matches` request and remember "+
+            "Before you move on click **Save** to save your request edits. Now open the next request in the collection `Get matches` and do " +
+            "the same for the URL in there, replacing the base part of address with the variable reference—it should now be " +
+            "`{{training_api}}/matches`. Click **Send** on the `Get matches` request and remember " +
             "to open the **Visualizer** on the response."
         }
       ]
@@ -195,22 +221,38 @@ app.get("/training", (req, res) => {
 });
 
 app.get("/matches", (req, res) => {
-  const apiSecret = req.get("match_key"); 
+  const apiSecret = req.get("match_key");
   var newDate = new Date();
-    db.get("calls")
-      .push({ when: newDate.toDateString()+" "+newDate.toTimeString(), where: "GET /matches", what: req.query.status+" "+apiSecret })
-      .write();
+  db.get("calls")
+    .push({
+      when: newDate.toDateString() + " " + newDate.toTimeString(),
+      where: "GET /matches",
+      what: req.query.status + " " + apiSecret
+    })
+    .write();
   if (req.query.status) {
     var matches;
     if (!["played", "pending"].includes(req.query.status)) {
-      //TODO flesh this out to full response like post one with email validation
-      res
-        .status(400)
-        .json({ error: "Status must be `played` or `pending`" });
-      /*Open **Params** and enter a new Query " +
-              "parameter, with `status` as the **Key** and `played` or `pending` as the **Value**. You will see the query parameter added to "+
-              "the end of the request address e.g. `/matches?status=pending`. Click **Send** again.
-              */
+      res.status(400).json({
+        welcome: welcomeMsg,
+        tutorial: {
+          title: "Your request is incomplete! ✋",
+          intro: "Status must be `played` or `pending`!",
+          steps: [
+            {
+              note:
+                "Open **Params** and enter `played` or `pending` as the **Value** for the parameter with `status` as the **Key**. " +
+                "You will see the query parameter added to the end of the request address e.g. `/matches?status=pending`."
+            }
+          ],
+          next: [
+            {
+              step:
+                "With a valid parameter value in place, click **Send** again."
+            }
+          ]
+        }
+      });
     } else if (req.query.status === "played") {
       matches = db
         .get("matches")
@@ -246,8 +288,8 @@ app.get("/matches", (req, res) => {
           },
           {
             note:
-              "You could have several query parameters, all of which will be appended to your request address by preceding each with"+
-              "`&` e.g. `/matches?status=pending&team=United`. This is a pattern you will see in the web browser address bar when you navigate "+
+              "You could have several query parameters, all of which will be appended to your request address by preceding each with" +
+              "`&` e.g. `/matches?status=pending&team=United`. This is a pattern you will see in the web browser address bar when you navigate " +
               "websites—APIs work the same way."
           },
           {
@@ -261,16 +303,18 @@ app.get("/matches", (req, res) => {
             step:
               "So far we've retrieved data from the API, but let's also add some new data. Add another request to the collection. In **Collections** " +
               "click the *...* on the **Student Expert** > **1. Begin training - Requests** folder and click **Add Request**.",
-            pic: "https://assets.postman.com/postman-docs/student-expert-add-request.jpg"
+            pic:
+              "https://assets.postman.com/postman-docs/student-expert-add-request.jpg"
           },
           {
             step:
               "Enter the name '2. Add match' and make sure the correct collection and folder are selected before you click **Save to...**.",
-            pic: "https://assets.postman.com/postman-docs/student-expert-request-name.jpg"
+            pic:
+              "https://assets.postman.com/postman-docs/student-expert-request-name.jpg"
           },
           {
             step:
-              "The new request will appear in the collection folder on the left—click to open it in the request builder. In the request URL, "+
+              "The new request will appear in the collection folder on the left—click to open it in the request builder. In the request URL, " +
               "enter `{{training_api}}/match` and select `POST` from the method drop-down list. Click **Send**.",
             pic:
               "https://assets.postman.com/postman-docs/student-expert-post-url.jpg"
@@ -318,7 +362,7 @@ app.get("/matches", (req, res) => {
           {
             step:
               "This request retrieved all matches, but you can also filter the matches using parameters. Open **Params** and enter a new Query " +
-              "parameter, with `status` as the **Key** and `played` or `pending` as the **Value**. You will see the query parameter added to "+
+              "parameter, with `status` as the **Key** and `played` or `pending` as the **Value**. You will see the query parameter added to " +
               "the end of the request address e.g. `/matches?status=pending`. Click **Send** again.",
             pic:
               "https://assets.postman.com/postman-docs/student-expert-add-query.jpg"
@@ -330,11 +374,15 @@ app.get("/matches", (req, res) => {
 });
 
 app.post("/match", (req, res) => {
-  const apiSecret = req.get("match_key"); 
+  const apiSecret = req.get("match_key");
   var newDate = new Date();
-    db.get("calls")
-      .push({ when: newDate.toDateString()+" "+newDate.toTimeString(), where: "POST /match", what: req.body.match+" "+apiSecret })
-      .write();
+  db.get("calls")
+    .push({
+      when: newDate.toDateString() + " " + newDate.toTimeString(),
+      where: "POST /match",
+      what: req.body.match + " " + apiSecret
+    })
+    .write();
   console.log(apiSecret);
   if (!apiSecret || apiSecret.length < 1 || apiSecret.startsWith("{")) {
     res.status(401).json({
@@ -347,16 +395,18 @@ app.post("/match", (req, res) => {
           {
             note:
               "You're going to add an auth key to this request, but instead of entering it manually let's use a variable—this helps " +
-              "minimize visibility of what could be sensitive credentials. Open the **Authorization** tab for the request—select "+
+              "minimize visibility of what could be sensitive credentials. Open the **Authorization** tab for the request—select " +
               "`Inherit auth from parent` from the **Type** drop-down list.",
-            pic: "https://assets.postman.com/postman-docs/student-expert-inherit-auth.jpg"
+            pic:
+              "https://assets.postman.com/postman-docs/student-expert-inherit-auth.jpg"
           },
           {
             note:
               "In **Collections** on the left, click the **...** for the **Student expert** collection and choose **Edit**. Open the " +
               "**Authorization** tab. Postman will add the API key details to the header for every request using the name `match_key` and " +
               "the value specified by the referenced `email_key` variable.",
-            pic: "https://assets.postman.com/postman-docs/student-expert-collection-auth.jpg"
+            pic:
+              "https://assets.postman.com/postman-docs/student-expert-collection-auth.jpg"
           }
         ],
         next: [
@@ -414,18 +464,19 @@ app.post("/match", (req, res) => {
           steps: [
             {
               note:
-                "Go back into the `Get matches` request, make sure your `status` query parameter is set to `pending` and **Send** it again "+
-                "before returning here—you should see your new addition in the array! _Note that this will only work if you're using the "+
+                "Go back into the `Get matches` request, make sure your `status` query parameter is set to `pending` and **Send** it again " +
+                "before returning here—you should see your new addition in the array! _Note that this will only work if you're using the " +
                 "Student Expert Postman template._"
             }
           ],
           next: [
             {
               step:
-                "**Save** your current request, then create another new request still inside the **1. Begin training - Requests** folder. "+
-                "Give it the name `3 Update score` and save it. Open it from the collection on the left. In the request builder select `PUT` "+
+                "**Save** your current request, then create another new request still inside the **1. Begin training - Requests** folder. " +
+                "Give it the name `3 Update score` and save it. Open it from the collection on the left. In the request builder select `PUT` " +
                 "method, and enter the URL `{{training_api}}/match`. Click **Send**.",
-              pic: "https://assets.postman.com/postman-docs/student-expert-put-url.jpg"
+              pic:
+                "https://assets.postman.com/postman-docs/student-expert-put-url.jpg"
             }
           ]
         }
@@ -446,7 +497,8 @@ app.post("/match", (req, res) => {
                 when: "{{$randomDateFuture}}",
                 against: "Academical"
               },
-              pic: "https://assets.postman.com/postman-docs/student-expert-body-added.jpg"
+              pic:
+                "https://assets.postman.com/postman-docs/student-expert-body-added.jpg"
             },
             {
               note:
@@ -467,11 +519,15 @@ app.post("/match", (req, res) => {
 
 //update score
 app.put("/match", function(req, res) {
-  const apiSecret = req.get("match_key"); 
+  const apiSecret = req.get("match_key");
   var newDate = new Date();
-    db.get("calls")
-      .push({ when: newDate.toDateString()+" "+newDate.toTimeString(), where: "PUT /match", what: req.query.match_id+" "+apiSecret })
-      .write();
+  db.get("calls")
+    .push({
+      when: newDate.toDateString() + " " + newDate.toTimeString(),
+      where: "PUT /match",
+      what: req.query.match_id + " " + apiSecret
+    })
+    .write();
   if (!apiSecret)
     res.status(401).json({
       welcome: welcomeMsg,
@@ -482,14 +538,13 @@ app.put("/match", function(req, res) {
         steps: [
           {
             note:
-              "You should already have your auth key set up, so you just need to select it here. Open the **Authorization** tab—select "+
+              "You should already have your auth key set up, so you just need to select it here. Open the **Authorization** tab—select " +
               "`Inherit auth from parent` from the **Type** drop-down list."
           }
         ],
         next: [
           {
-            step:
-              "Click **Send**."
+            step: "Click **Send**."
           }
         ]
       }
@@ -525,9 +580,10 @@ app.put("/match", function(req, res) {
           {
             note:
               "In **Params** add `match_id` in the **Key** column, and the `id` value from a match _you added_ to the customer list as the " +
-              "**Value**. ***You can only update a match you added—in the `1. Get matches` response, find the `id` for the match you added "+
+              "**Value**. ***You can only update a match you added—in the `1. Get matches` response, find the `id` for the match you added " +
               "using the `POST` request.***",
-            pic: "https://assets.postman.com/postman-docs/student-expert-put-id.jpg"
+            pic:
+              "https://assets.postman.com/postman-docs/student-expert-put-id.jpg"
           }
         ],
         next: [
@@ -553,7 +609,8 @@ app.put("/match", function(req, res) {
             raw_data: {
               points: 3
             },
-            pic: "https://assets.postman.com/postman-docs/student-expert-score-body.jpg"
+            pic:
+              "https://assets.postman.com/postman-docs/student-expert-score-body.jpg"
           }
         ],
         next: [
@@ -567,8 +624,13 @@ app.put("/match", function(req, res) {
     var updateMatch = db
       .get("matches")
       .find({ id: req.query.match_id })
-      .value(); console.log(updateMatch);
-    if (updateMatch && apiSecret != "postman" && updateMatch.creator == apiSecret) {
+      .value();
+    console.log(updateMatch);
+    if (
+      updateMatch &&
+      apiSecret != "postman" &&
+      updateMatch.creator == apiSecret
+    ) {
       db.get("matches")
         .find({ id: req.query.match_id })
         .assign({
@@ -591,14 +653,15 @@ app.put("/match", function(req, res) {
           next: [
             {
               step:
-                "Next create a final request in the folder, this time naming it `4. Remove match`. Open it and set the method to `DELETE`, and "+
+                "Next create a final request in the folder, this time naming it `4. Remove match`. Open it and set the method to `DELETE`, and " +
                 "the URL to `{{training_api}}/match/:match_id`.",
-              pic: "https://assets.postman.com/postman-docs/student-expert-delete-request.jpg"
+              pic:
+                "https://assets.postman.com/postman-docs/student-expert-delete-request.jpg"
             },
             {
               step:
                 "This request includes a path parameter with `/:match_id` at the end of the request address—open **Params** and as the value " +
-                "for the `match_id` parameter, enter the `id` of a match _you added_ when you sent the `POST` request. Copy the `id` from the "+
+                "for the `match_id` parameter, enter the `id` of a match _you added_ when you sent the `POST` request. Copy the `id` from the " +
                 "response in the `1. Get matches` request like you did for the `PUT` request then click **Send**."
             }
           ]
@@ -631,14 +694,18 @@ app.put("/match", function(req, res) {
 });
 
 //delete match
-  app.delete("/match/:match_id", function(req, res) {
-  const apiSecret = req.get("match_key"); 
-      var newDate = new Date();
-    db.get("calls")
-      .push({ when: newDate.toDateString()+" "+newDate.toTimeString(), where: "DEL /match", what: req.params.match_id+" "+apiSecret })
-      .write();
-    if (!apiSecret)
-      res.status(401).json({
+app.delete("/match/:match_id", function(req, res) {
+  const apiSecret = req.get("match_key");
+  var newDate = new Date();
+  db.get("calls")
+    .push({
+      when: newDate.toDateString() + " " + newDate.toTimeString(),
+      where: "DEL /match",
+      what: req.params.match_id + " " + apiSecret
+    })
+    .write();
+  if (!apiSecret)
+    res.status(401).json({
       welcome: welcomeMsg,
       tutorial: {
         title: "Oops - You got an unauthorized error response! 🚫",
@@ -647,19 +714,18 @@ app.put("/match", function(req, res) {
         steps: [
           {
             note:
-              "You already have your auth key set up, so you just need to select it here. Open the **Authorization** tab—select "+
+              "You already have your auth key set up, so you just need to select it here. Open the **Authorization** tab—select " +
               "`Inherit auth from parent` from the **Type** drop-down list."
           }
         ],
         next: [
           {
-            step:
-              "Click **Send**."
+            step: "Click **Send**."
           }
         ]
       }
     });
-    else if (!validator.validate(apiSecret))
+  else if (!validator.validate(apiSecret))
     res.status(401).json({
       welcome: welcomeMsg,
       tutorial: {
@@ -680,39 +746,39 @@ app.put("/match", function(req, res) {
         ]
       }
     });
-    else {
-      //check the record matches the user id
-      var match = db
+  else {
+    //check the record matches the user id
+    var match = db
       .get("matches")
       .find({ id: req.params.match_id })
-      .value(); 
+      .value();
     if (match && apiSecret != "postman" && match.creator == apiSecret) {
-        db.get("matches")
-          .remove({ id: req.params.match_id })
-          .write();
-        res.status(200).json({
-          welcome: welcomeMsg,
-          tutorial: {
-            title: "You deleted a match! 🏆",
-            intro: "Your match was removed from the database.",
-            steps: [
-              {
-                note:
-                  "Go back into the first request you opened `Get matches` and **Send** it again before returning here—" +
-                  "you should see that your deleted match is no longer in the array!"
-              }
-            ],
-            next: [
-              {
-                step:
-                  "🎊 You completed the first part of Postman Student Expert training! Next we're going to jump into the `2. Scripting and "+
-                  "Collection Runs` folder—open the folder, open the first request, and hit **Send**! 🚀"
-              }
-            ]
-          }
-        });
-      } else {
-        res.status(400).json({
+      db.get("matches")
+        .remove({ id: req.params.match_id })
+        .write();
+      res.status(200).json({
+        welcome: welcomeMsg,
+        tutorial: {
+          title: "You deleted a match! 🏆",
+          intro: "Your match was removed from the database.",
+          steps: [
+            {
+              note:
+                "Go back into the first request you opened `Get matches` and **Send** it again before returning here—" +
+                "you should see that your deleted match is no longer in the array!"
+            }
+          ],
+          next: [
+            {
+              step:
+                "🎊 You completed the first part of Postman Student Expert training! Next we're going to jump into the `2. Scripting and " +
+                "Collection Runs` folder—open the folder, open the first request, and hit **Send**! 🚀"
+            }
+          ]
+        }
+      });
+    } else {
+      res.status(400).json({
         welcome: welcomeMsg,
         tutorial: {
           title: "Your request is invalid! ⛔",
@@ -733,9 +799,9 @@ app.put("/match", function(req, res) {
           ]
         }
       });
-      }
     }
-  });
+  }
+});
 
 /*
 //generic get error
