@@ -1014,7 +1014,10 @@ app.post("/submission", upload.single("run"), (req, res) => {
           steps: [
             {
               note:
-                "In **Body** select **form-data**. ",
+                "In **Body** select **form-data**. Add `collection` in the **Key** field. For the value you're going to include the public "+
+                "link for this collection that you've been working through during the training. First make sure you have saved all of the open "+
+                "requests so that your submission will include your edits. In the collection on the left of Postman, click &#9658; then click "+
+                "**Share**. C",
               pic:
                 "https://assets.postman.com/postman-docs/student-expert-body-added.jpg"
             },
