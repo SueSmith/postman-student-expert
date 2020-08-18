@@ -119,7 +119,7 @@ app.get("/", (req, res) => {
     .write();
   if (req.headers["user-agent"].includes("Postman"))
     res.status(200).json({
-      
+      welcome: welcomeMsg,
       tutorial: {
         title: process.env.PROJECT,
         intro:
@@ -828,7 +828,7 @@ app.delete("/match/:match_id", function(req, res) {
 
 // removes entries from users and populates it with default users
 app.get("/reset", (req, res) => {
-  const apiSecret = req.get("admin_key"); //TODO standard response
+  const apiSecret = req.get("admin_key"); 
   if (!apiSecret || apiSecret !== process.env.SECRET) {
     res.status(401).json(unauthorizedMsg);
   } else {
@@ -882,7 +882,13 @@ app.get("/reset", (req, res) => {
         .write();
     });
     console.log("Default matches added");
-    res.redirect("/");
+    res.status(200).json({
+      welcome: welcomeMsg,
+      tutorial: {
+        title: "Database reset",
+        intro: "You reset the DB."
+      }
+    });
   }
 });
 
@@ -898,15 +904,68 @@ app.get("/clear", (req, res) => {
       .write();
     console.log("Database cleared");
     res.status(200).json({
-      title: "Database cleared",
-      intro: "You cleared the DB."
+      welcome: welcomeMsg,
+      tutorial: {
+        title: "Database cleared",
+        intro: "You cleared the DB."
+      }
     });
   }
 });
 
-//TODO add logging and admin calls to retrieve all matches / calls, to delete specific records
+//get all matches as admin
+app.get("/all", (req, res) => {
+  const apiSecret = req.get("admin_key");
+  if (!apiSecret || apiSecret !== process.env.SECRET) {
+    res.status(401).json(unauthorizedMsg);
+  } else {
+    // removes all entries from the collection
+    var allMatches = db.get("matches").value();
+    res.status(200).json({
+      welcome: welcomeMsg,
+      data: allMatches,
+      tutorial: {
+        title: "All matches",
+        intro: "The matches are as follows:",
+        steps: [{
+          raw_data: allMatches
+        }]
+      }
+    });
+  }
+});
 
-//TODO errors - these are unreachable now, make them standard schema
+//get calls
+app.get("/calls", (req, res) => {
+  const apiSecret = req.get("admin_key");
+  if (!apiSecret || apiSecret !== process.env.SECRET) {
+    res.status(401).json(unauthorizedMsg);
+  } else {
+    // removes all entries from the collection
+    var allCalls = db.get("calls").value();
+    res.status(200).json({
+      welcome: welcomeMsg,
+      data: allCalls,
+      tutorial: {
+        title: "All calls",
+        intro: "The calls are as follows:",
+        steps: [{
+          raw_data: allCalls
+        }]
+      }
+    });
+  }
+});
+
+//admin delete record
+app.delete("/records", function(req, res) {
+    db.get("customers")
+      .remove({ id: parseInt(req.query.cust_id) })
+      .write();
+    res.status(200).json({message: "deleted"});
+  });
+
+//TODO errors - make them standard schema
 //generic get error
 app.get("/*", (req, res) => {
   res.status(400).json({
