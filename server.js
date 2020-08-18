@@ -140,11 +140,31 @@ app.get("/", (req, res) => {
     );
 });
 
+//generic welcome message
 var welcomeMsg =
   "You're using the " +
   process.env.PROJECT +
   " training course! Check out the 'data' object below to see the values returned by this API request. " +
   "Click **Visualize** to see the 'tutorial' guiding you through next steps - do this for every request in the collection!";
+//admin unauthorized
+var unauthorizedMsg = {
+      welcome: welcomeMsg,
+      tutorial: {
+        title: "Your request is unauthorized! 🚫",
+        intro: "This endpoint requires admin authorization.",
+        steps: [
+          {
+            note:
+              "This endpoint is only accessible to admins for the API."
+          }
+        ],
+        next: [
+          {
+            step: "Use the admin key indicated in the project env as secret."
+          }
+        ]
+      }
+    };
 
 app.get("/training", (req, res) => {
   var newDate = new Date();
@@ -803,18 +823,8 @@ app.delete("/match/:match_id", function(req, res) {
   }
 });
 
-/*
-//generic get error
-app.get("/*", (request, response) => {
-  response.status(400).json({
-    error:
-      "🚧Oops this isn't a valid endpoint! " +
-      "Try undoing your changes or closing the request without saving and opening it again from the collection on the left."
-  });
-});*/
-
 //protect everything after this by checking for the secret - protect reset and clear here, above req personal key for post put del
-app.use((req, res, next) => {
+/*app.use((req, res, next) => {
   const apiSecret = req.get("admin_key");
   if (!apiSecret) {
     res.status(401).json({
@@ -845,96 +855,139 @@ app.use((req, res, next) => {
   } else {
     next();
   }
-});
+});*/
 
 // removes entries from users and populates it with default users
 app.get("/reset", (req, res) => {
-  // removes all entries from the collection
-  db.get("matches")
-    .remove()
-    .write();
-  console.log("Database cleared");
-
-  // default users inserted in the database
-  var matches = [
-    {
-      id: shortid.generate(),
-      creator: "postman",
-      matchType: "League Cup Semi Final",
-      opposition: "United",
-      date: "Wed Mar 24 2021 14: 00: 04 GMT+0000 (Coordinated Universal Time)",
-      points: -1
-    },
-    {
-      id: shortid.generate(),
-      creator: "postman",
-      matchType: "League Cup Quarter Final",
-      opposition: "City",
-      date: "Thu Jan 30 2020 20: 50: 46 GMT+0000 (Coordinated Universal Time)",
-      points: 3
-    },
-    {
-      id: shortid.generate(),
-      creator: "postman",
-      matchType: "Friendly",
-      opposition: "Athletic",
-      date: "Wed Jan 13 2021 23: 01: 26 GMT+0000 (Coordinated Universal Time)",
-      points: -1
-    }
-  ];
-
-  matches.forEach(match => {
+  const apiSecret = req.get("admin_key"); //TODO standard response
+  if (!apiSecret || apiSecret !== process.env.SECRET) {
+    res.status(401).json({
+      title: "You got an unauthorized error response!",
+      intro:
+        "🚫Unauthorized - your secret needs to match the one on the server!",
+      info: [
+        {
+          note: "tbc"
+        }
+      ],
+      next: "tbc",
+      pic: ""
+    });
+  } else {
+    // removes all entries from the collection
     db.get("matches")
-      .push({
-        id: match.id,
-        creator: match.creator,
-        matchType: match.matchType,
-        opposition: match.opposition,
-        date: match.date,
-        points: match.points
-      })
+      .remove()
       .write();
-  });
-  console.log("Default matches added");
-  res.redirect("/");
+    console.log("Database cleared");
+
+    // default users inserted in the database
+    var matches = [
+      {
+        id: shortid.generate(),
+        creator: "postman",
+        matchType: "League Cup Semi Final",
+        opposition: "United",
+        date:
+          "Wed Mar 24 2021 14: 00: 04 GMT+0000 (Coordinated Universal Time)",
+        points: -1
+      },
+      {
+        id: shortid.generate(),
+        creator: "postman",
+        matchType: "League Cup Quarter Final",
+        opposition: "City",
+        date:
+          "Thu Jan 30 2020 20: 50: 46 GMT+0000 (Coordinated Universal Time)",
+        points: 3
+      },
+      {
+        id: shortid.generate(),
+        creator: "postman",
+        matchType: "Friendly",
+        opposition: "Athletic",
+        date:
+          "Wed Jan 13 2021 23: 01: 26 GMT+0000 (Coordinated Universal Time)",
+        points: -1
+      }
+    ];
+
+    matches.forEach(match => {
+      db.get("matches")
+        .push({
+          id: match.id,
+          creator: match.creator,
+          matchType: match.matchType,
+          opposition: match.opposition,
+          date: match.date,
+          points: match.points
+        })
+        .write();
+    });
+    console.log("Default matches added");
+    res.redirect("/");
+  }
 });
 
 // removes all entries from the collection
-app.get("/clear", (request, response) => {
-  // removes all entries from the collection
-  db.get("matches")
-    .remove()
-    .write();
-  console.log("Database cleared");
-  response.redirect("/");
+app.get("/clear", (req, res) => {
+  const apiSecret = req.get("admin_key");//TODO standard response
+  if (!apiSecret || apiSecret !== process.env.SECRET) {
+    res.status(401).json({
+      title: "You got an unauthorized error response!",
+      intro:
+        "🚫Unauthorized - your secret needs to match the one on the server!",
+      info: [
+        {
+          note: "tbc"
+        }
+      ],
+      next: "tbc",
+      pic: ""
+    });
+  } else {
+    // removes all entries from the collection
+    db.get("matches")
+      .remove()
+      .write();
+    console.log("Database cleared");
+    res.redirect("/"); //TODO
+  }
 });
 
 //TODO add logging and admin calls to retrieve all matches / calls, to delete specific records
 
-//TODO errors - these are unreachable now
-app.post("/*", (request, response) => {
-  response.status(400).json({
+//TODO errors - these are unreachable now, make them standard schema
+//generic get error
+app.get("/*", (req, res) => {
+  res.status(400).json({
     error:
       "🚧Oops this isn't a valid endpoint! " +
       "Try undoing your changes or closing the request without saving and opening it again from the collection on the left."
   });
 });
-app.put("/*", (request, response) => {
-  response.status(400).json({
+app.post("/*", (req, res) => {
+  res.status(400).json({
     error:
       "🚧Oops this isn't a valid endpoint! " +
       "Try undoing your changes or closing the request without saving and opening it again from the collection on the left."
   });
 });
-app.patch("/*", (request, response) => {
-  response.status(400).json({
+app.put("/*", (req, res) => {
+  res.status(400).json({
     error:
       "🚧Oops this isn't a valid endpoint! " +
       "Try undoing your changes or closing the request without saving and opening it again from the collection on the left."
   });
 });
-app.delete("/*", (request, response) => {
-  response.status(400).json({
+app.patch("/*", (req, res) => {
+  res.status(400).json({
+    error:
+      "🚧Oops this isn't a valid endpoint! " +
+      "Try undoing your changes or closing the request without saving and opening it again from the collection on the left."
+  });
+});
+app.delete("/*", (req, res) => {
+  res.status(400).json({
     error:
       "🚧Oops this isn't a valid endpoint! " +
       "Try undoing your changes or closing the request without saving and opening it again from the collection on the left."
