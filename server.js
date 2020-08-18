@@ -1130,7 +1130,7 @@ app.post("/submission", upload.single("run"), (req, res) => {
               "</p>" +
               "<h2>Collection</h2><a href='" +
               req.body.collection +
-              "'>link</a>",
+              "'>link</a><p><em>See attached file for collection run output.</em></p>",
             attachments: [
               {
                 content: req.file.buffer.toString('base64'),
@@ -1174,7 +1174,7 @@ app.post("/submission", upload.single("run"), (req, res) => {
                 });
               else res.status(400).json(submissionFailMsg);
             })
-            .catch(err => { console.log(err);
+            .catch(err => { console.log(err.response.body.errors[0]);
               res.status(400).json(submissionFailMsg);
             });
         } else res.status(400).json(submissionFailMsg);
@@ -1189,7 +1189,9 @@ app.get("/submissions", (req, res) => {
   if (!apiSecret || apiSecret !== process.env.SECRET) {
     res.status(401).json(unauthorizedMsg);
   } else {
-    var allSubs = db.get("submissions").value();
+    var allSubs = db.get("submissions").value().map(r => {
+        return { id: r.id, email: r.email };
+      });
     res.status(200).json({
       welcome: welcomeMsg,
       data: allSubs,
@@ -1199,6 +1201,27 @@ app.get("/submissions", (req, res) => {
         steps: [
           {
             raw_data: allSubs
+          }
+        ]
+      }
+    });
+  }
+});
+app.get("/submission", (req, res) => {
+  const apiSecret = req.get("admin_key");
+  if (!apiSecret || apiSecret !== process.env.SECRET) {
+    res.status(401).json(unauthorizedMsg);
+  } else {
+    var sub = db.get("submissions").find({ id: req.query.sub_id }).value();
+    res.status(200).json({
+      welcome: welcomeMsg,
+      data: sub,
+      tutorial: {
+        title: "Submissions",
+        intro: "The submission is as follows:",
+        steps: [
+          {
+            raw_data: sub
           }
         ]
       }
