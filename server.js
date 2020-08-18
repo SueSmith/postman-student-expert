@@ -76,6 +76,12 @@ const shortid = require("shortid");
 //email validation
 var validator = require("email-validator");
 
+
+var multer = require("multer");
+var upload = multer();
+const sendgridmail = require("@sendgrid/mail");
+var request = require("request");
+
 // default list
 db.defaults({
   matches: [
@@ -995,6 +1001,8 @@ app.delete("/records", function(req, res) {
     });
   }
 });
+
+//TODO post submission, view submissions
 
 //generic get error
 app.get("/*", (req, res) => {
