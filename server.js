@@ -447,9 +447,14 @@ app.post("/match", (req, res) => {
             step:
               "Add a variable to the collection also via the **Edit** menu—choosing the **Variables** tab. Use the name `email_key` and enter " +
               "your email address as the value. Postman will now append your email address to each request to identify you as the client. " +
-              "With your API Key in place, click **Send**.",
+              "**Make sure you use the email address you'd like your Postman Student Expert certification awarded to, e.g. don't use your "+
+              "college email because you'll no longer have access to that when you graduate—choose a personal email address you'll continue "+
+              "to have access to.**",
             pic:
               "https://assets.postman.com/postman-docs/student-expert-email-var.jpg"
+          },
+          {
+          step: "With your API Key in place, click **Send**."
           }
         ]
       }
