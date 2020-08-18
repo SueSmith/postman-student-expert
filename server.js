@@ -76,7 +76,7 @@ const shortid = require("shortid");
 //email validation
 var validator = require("email-validator");
 
-
+//submissions
 var multer = require("multer");
 var upload = multer();
 const sendgridmail = require("@sendgrid/mail");
@@ -110,7 +110,8 @@ db.defaults({
       points: -1
     }
   ],
-  calls: []
+  calls: [],
+  submissions: []
 }).write();
 
 // http://expressjs.com/en/starter/basic-routing.html
@@ -1003,6 +1004,52 @@ app.delete("/records", function(req, res) {
 });
 
 //TODO post submission, view submissions
+app.post("/submission", upload.single("run"), (req, res) => {
+  var runfile = req.file.buffer.toString();
+  sendgridmail.setApiKey(process.env.SENDGRID_API_KEY);
+
+  request(req.body.collection, function(error, response, body) {
+    console.log("error:", error); // Print the error if one occurred
+    console.log("statusCode:", response && response.statusCode); // Print the response status code if a response was received
+    console.log("body:", body); 
+
+    //TODO error handling
+    
+    var countId = db.get("count") + 1;
+    db.get("submissions")
+      .push({
+        id: countId,
+        email: req.body.email,
+        collection: JSON.parse(body),
+        run: JSON.parse(runfile)
+      })
+      .write();
+    db.update("count", n => n + 1).write();
+    
+    const msg = {
+      to: "braindeadair@gmail.com",
+      from: "sue@benormal.info",
+      subject: "Course Submission",
+      html:
+        "<h2>Learner submission received from:</h2><p>" +
+        req.body.email +
+        "</p>"
+    };
+
+    sendgridmail
+      .send(msg)
+      .then(response => {
+        const success = response[0].statusCode === 202;
+        const payload = success ? "mail sent successfully" : "mail failed";
+        console.log(msg);
+        //    console.log(payload);
+        res.send({ result: { error: !success, payload } });
+      })
+      .catch(err => {
+        res.send({ result: { error: true, payload: JSON.stringify(err) } });
+      });
+  });
+});
 
 //generic get error
 app.get("/*", (req, res) => {
