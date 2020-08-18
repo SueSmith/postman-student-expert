@@ -166,6 +166,7 @@ var unauthorizedMsg = {
       }
     };
 
+//intro
 app.get("/training", (req, res) => {
   var newDate = new Date();
   db.get("calls")
@@ -861,18 +862,7 @@ app.delete("/match/:match_id", function(req, res) {
 app.get("/reset", (req, res) => {
   const apiSecret = req.get("admin_key"); //TODO standard response
   if (!apiSecret || apiSecret !== process.env.SECRET) {
-    res.status(401).json({
-      title: "You got an unauthorized error response!",
-      intro:
-        "🚫Unauthorized - your secret needs to match the one on the server!",
-      info: [
-        {
-          note: "tbc"
-        }
-      ],
-      next: "tbc",
-      pic: ""
-    });
+    res.status(401).json(unauthorizedMsg);
   } else {
     // removes all entries from the collection
     db.get("matches")
@@ -932,18 +922,7 @@ app.get("/reset", (req, res) => {
 app.get("/clear", (req, res) => {
   const apiSecret = req.get("admin_key");//TODO standard response
   if (!apiSecret || apiSecret !== process.env.SECRET) {
-    res.status(401).json({
-      title: "You got an unauthorized error response!",
-      intro:
-        "🚫Unauthorized - your secret needs to match the one on the server!",
-      info: [
-        {
-          note: "tbc"
-        }
-      ],
-      next: "tbc",
-      pic: ""
-    });
+    res.status(401).json(unauthorizedMsg);
   } else {
     // removes all entries from the collection
     db.get("matches")
