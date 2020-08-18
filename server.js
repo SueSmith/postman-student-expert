@@ -1121,14 +1121,14 @@ app.post("/submission", upload.single("run"), (req, res) => {
           steps: [
             {
               note:
-                "The Postman team will che"
+                "The Postman team will review your submission and be in touch (hopefully with your certification).. 🤞"
             }
           ],
           next: [
             {
               step:
-                "🎊 You completed the first part of Postman Student Expert training! Next we're going to jump into the `2. Scripting and " +
-                "Collection Runs` folder—open the folder, open the first request, and hit **Send**! 🚀"
+                "🚀 Thank you for working your way through "+process.env.PROJECT+" training! While you wait for your submission response "+
+                "check out the API network and templates for more inspiration by clicking **New**."
             }
           ]
         }
