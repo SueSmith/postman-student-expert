@@ -1007,6 +1007,29 @@ app.delete("/records", function(req, res) {
 app.post("/submission", upload.single("run"), (req, res) => {
   var runfile = req.file.buffer.toString();
   sendgridmail.setApiKey(process.env.SENDGRID_API_KEY);
+  var userKey = req.get("match_key");
+  if(!validator.validate(userKey))
+    res.status(400).json({
+        welcome: welcomeMsg,
+        tutorial: {
+          title: "Your submission is invalid! ⛔",
+          intro:
+            "Your ",
+          steps: [
+            {
+              note:
+                "In **Params** add `match_id` in the **Key** column, and the `id` values from a match _you added_ to the match list as the " +
+                "**Value**. ***You can only remove a match you added.***"
+            }
+          ],
+          next: [
+            {
+              step:
+                "With the ID parameter for a match _you added_ during this session in place, click **Send** again."
+            }
+          ]
+        }
+      });
 
   request(req.body.collection, function(error, response, body) {
     console.log("error:", error); // Print the error if one occurred
