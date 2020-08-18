@@ -1002,7 +1002,7 @@ app.delete("/records", function(req, res) {
   }
 });
 
-//TODO instruction on putting together the submission on post empty body
+//TODO response when you already made a submission?
 app.post("/submission", upload.single("run"), (req, res) => {
   if (!req.file || !req.body.collection) {
     res.status(400).json({
@@ -1017,23 +1017,28 @@ app.post("/submission", upload.single("run"), (req, res) => {
                 "In **Body** select **form-data**. Add `collection` in the **Key** field. For the value you're going to include the public "+
                 "link for this collection that you've been working through during the training. First make sure you have saved all of the open "+
                 "requests so that your submission will include your edits. In the collection on the left of Postman, open the overview &#9658; "+
-                "then click **Share**. Choose **Get public link** and generate or update your collection link. Copy it to your clipboard, then paste it "+
-                "as **Value** for the `collection` parameter you already added to the body.",
+                "then click **Share**.",
+              pic:
+                "https://assets.postman.com/postman-docs/student-expert-open-collection.jpg"
+            },{
+              note:
+                "Choose **Get public link** and generate or update your collection link. Copy the address to your "+
+                "clipboard, then paste it as **Value** for the `collection` parameter you already added to the body.",
               pic:
                 "https://assets.postman.com/postman-docs/student-expert-collection-copy-link.jpg"
             },
             {
               note:
-                "Add another parameter to the **Body**, this time naming it `run` and selecting **File** from the drop-down list next to the "+
+                "Add another parameter to the form-data **Body**, this time naming it `run` and selecting **File** from the drop-down list next to the "+
                 "name when you hover. Click **Select Files** and choose the collection run JSON file you exported.",
               pic:
-                "https://assets.postman.com/postman-docs/student-expert-submission-fields.jpg"
+                "https://assets.postman.com/postman-docs/student-expert-submission-body.jpg"
             }
           ],
           next: [
             {
-              step: "The API will link your submitted collection and run output to the email address you specified as the variable value used "+
-                "With your submission data in place, click **Send** again."
+              step: "The API will link your submitted collection / run output to the email address you specified as the variable value you used "+
+                "as your authorization key earlier. With your submission data in place, click **Send** again."
             }
           ]
         }
@@ -1108,13 +1113,47 @@ app.post("/submission", upload.single("run"), (req, res) => {
                 ? "mail sent successfully"
                 : "mail failed";
               console.log(msg);
-              //    console.log(payload);
-              res.send({ result: { error: !success, payload } });
+              res.status(200).json({
+        welcome: welcomeMsg,
+        tutorial: {
+          title: "You submitted your "+process.env.PROJECT+" completed training evidence! 🏆",
+          intro: "Your submission was successfully received.",
+          steps: [
+            {
+              note:
+                "The Postman team will che"
+            }
+          ],
+          next: [
+            {
+              step:
+                "🎊 You completed the first part of Postman Student Expert training! Next we're going to jump into the `2. Scripting and " +
+                "Collection Runs` folder—open the folder, open the first request, and hit **Send**! 🚀"
+            }
+          ]
+        }
+      });
             })
             .catch(err => {
-              res.send({
-                result: { error: true, payload: JSON.stringify(err) }
-              });
+              res.status(400).json({
+            welcome: welcomeMsg,
+            tutorial: {
+              title: "Your submission didn't make it! ⛔",
+              intro: "Oops! Something went wrong with your submission.",
+              steps: [
+                {
+                  note:
+                    "Check your request **Body**—it should contain two **form-data* fields: `collection` which should be the collection URL, " +
+                    "and `run` which should be a file you downloaded from the collection runner."
+                }
+              ],
+              next: [
+                {
+                  step: "With your body fields in place, click **Send** again."
+                }
+              ]
+            }
+          });
             });
         } else
           res.status(400).json({
