@@ -1016,19 +1016,24 @@ app.post("/submission", upload.single("run"), (req, res) => {
               note:
                 "In **Body** select **form-data**. Add `collection` in the **Key** field. For the value you're going to include the public "+
                 "link for this collection that you've been working through during the training. First make sure you have saved all of the open "+
-                "requests so that your submission will include your edits. In the collection on the left of Postman, click &#9658; then click "+
-                "**Share**. C",
+                "requests so that your submission will include your edits. In the collection on the left of Postman, open the overview &#9658; "+
+                "then click **Share**. Choose **Get public link** and generate or update your collection link. Copy it to your clipboard, then paste it "+
+                "as **Value** for the `collection` parameter you already added to the body.",
               pic:
-                "https://assets.postman.com/postman-docs/student-expert-body-added.jpg"
+                "https://assets.postman.com/postman-docs/student-expert-collection-copy-link.jpg"
             },
             {
               note:
-                ""
+                "Add another parameter to the **Body**, this time naming it `run` and selecting **File** from the drop-down list next to the "+
+                "name when you hover. Click **Select Files** and choose the collection run JSON file you exported.",
+              pic:
+                "https://assets.postman.com/postman-docs/student-expert-submission-fields.jpg"
             }
           ],
           next: [
             {
-              step: "With your submission data in place, click **Send** again."
+              step: "The API will link your submitted collection and run output to the email address you specified as the variable value used "+
+                "With your submission data in place, click **Send** again."
             }
           ]
         }
