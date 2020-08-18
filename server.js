@@ -123,15 +123,15 @@ app.get("/", (req, res) => {
       tutorial: {
         title: process.env.PROJECT,
         intro:
-        "Use the " +
-        process.env.PROJECT +
-        " template in Postman to learn API basics! Import the collection in Postman by clicking " +
-        "New > Templates, and searching for '" +
-        process.env.PROJECT +
-        "'. Open the first request in the collection and click Send. " +
-        "To see the API code navigate to https://glitch.com/edit/#!/" +
-        process.env.PROJECT_DOMAIN +
-        " in your web browser!"
+          "Use the " +
+          process.env.PROJECT +
+          " template in Postman to learn API basics! Import the collection in Postman by clicking " +
+          "New > Templates, and searching for '" +
+          process.env.PROJECT +
+          "'. Open the first request in the collection and click Send. " +
+          "To see the API code navigate to https://glitch.com/edit/#!/" +
+          process.env.PROJECT_DOMAIN +
+          " in your web browser!"
       }
     });
   else
@@ -165,6 +165,16 @@ var unauthorizedMsg = {
         step: "Use the admin key indicated in the project env as secret."
       }
     ]
+  }
+};
+//invalid route
+var invalidMsg = {
+  welcome: welcomeMsg,
+  tutorial: {
+    title: "Your request is invalid! 🚧",
+    intro:
+      "Oops this isn't a valid endpoint! " +
+      "Try undoing your changes or closing the request without saving and opening it again from the collection on the left of Postman."
   }
 };
 
@@ -828,7 +838,7 @@ app.delete("/match/:match_id", function(req, res) {
 
 // removes entries from users and populates it with default users
 app.get("/reset", (req, res) => {
-  const apiSecret = req.get("admin_key"); 
+  const apiSecret = req.get("admin_key");
   if (!apiSecret || apiSecret !== process.env.SECRET) {
     res.status(401).json(unauthorizedMsg);
   } else {
@@ -927,9 +937,11 @@ app.get("/all", (req, res) => {
       tutorial: {
         title: "All matches",
         intro: "The matches are as follows:",
-        steps: [{
-          raw_data: allMatches
-        }]
+        steps: [
+          {
+            raw_data: allMatches
+          }
+        ]
       }
     });
   }
@@ -949,9 +961,11 @@ app.get("/calls", (req, res) => {
       tutorial: {
         title: "All calls",
         intro: "The calls are as follows:",
-        steps: [{
-          raw_data: allCalls
-        }]
+        steps: [
+          {
+            raw_data: allCalls
+          }
+        ]
       }
     });
   }
@@ -959,48 +973,39 @@ app.get("/calls", (req, res) => {
 
 //admin delete record
 app.delete("/records", function(req, res) {
-    db.get("customers")
-      .remove({ id: parseInt(req.query.cust_id) })
+  const apiSecret = req.get("admin_key");
+  if (!apiSecret || apiSecret !== process.env.SECRET) {
+    res.status(401).json(unauthorizedMsg);
+  } else {
+    // removes all entries from the collection
+    db.get("matches")
+      .remove({ id: req.query.match_id })
       .write();
-    res.status(200).json({message: "deleted"});
-  });
+    res.status(200).json({
+      welcome: welcomeMsg,
+      tutorial: {
+        title: "Match deleted",
+        intro: "You deleted the match."
+      }
+    });
+  }
+});
 
-//TODO errors - make them standard schema
 //generic get error
 app.get("/*", (req, res) => {
-  res.status(400).json({
-    error:
-      "🚧Oops this isn't a valid endpoint! " +
-      "Try undoing your changes or closing the request without saving and opening it again from the collection on the left."
-  });
+  res.status(400).json(invalidMsg);
 });
 app.post("/*", (req, res) => {
-  res.status(400).json({
-    error:
-      "🚧Oops this isn't a valid endpoint! " +
-      "Try undoing your changes or closing the request without saving and opening it again from the collection on the left."
-  });
+  res.status(400).json(invalidMsg);
 });
 app.put("/*", (req, res) => {
-  res.status(400).json({
-    error:
-      "🚧Oops this isn't a valid endpoint! " +
-      "Try undoing your changes or closing the request without saving and opening it again from the collection on the left."
-  });
+  res.status(400).json(invalidMsg);
 });
 app.patch("/*", (req, res) => {
-  res.status(400).json({
-    error:
-      "🚧Oops this isn't a valid endpoint! " +
-      "Try undoing your changes or closing the request without saving and opening it again from the collection on the left."
-  });
+  res.status(400).json(invalidMsg);
 });
 app.delete("/*", (req, res) => {
-  res.status(400).json({
-    error:
-      "🚧Oops this isn't a valid endpoint! " +
-      "Try undoing your changes or closing the request without saving and opening it again from the collection on the left."
-  });
+  res.status(400).json(invalidMsg);
 });
 
 // listen for requests :)
