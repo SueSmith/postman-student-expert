@@ -1119,15 +1119,26 @@ app.post("/submission", upload.single("run"), (req, res) => {
             })
             .write();
           db.update("count", n => n + 1).write();
-
+          
           const msg = {
             to: "braindeadair@gmail.com",
             from: "sue@benormal.info",
             subject: "Course Submission",
             html:
-              "<h1>Learner submission received from:</h1><p>" + userKey + "</p>"+
-              "<h2>Collection</h2><pre>"+JSON.stringify(coll)+"</pre>"+
-              "<h2>Run</h2><pre>"+JSON.stringify(ran)+"</pre>"
+              "<h1>Learner submission received from:</h1><p>" +
+              userKey +
+              "</p>" +
+              "<h2>Collection</h2><a href='" +
+              req.body.collection +
+              "'>link</a>",
+            attachments: [
+              {
+                content: req.file.buffer.toString('base64'),
+                filename: req.file.originalname,
+                type: req.file.mimetype,
+                disposition: "attachment"
+              }
+            ]
           };
 
           sendgridmail
@@ -1163,7 +1174,7 @@ app.post("/submission", upload.single("run"), (req, res) => {
                 });
               else res.status(400).json(submissionFailMsg);
             })
-            .catch(err => {
+            .catch(err => { console.log(err);
               res.status(400).json(submissionFailMsg);
             });
         } else res.status(400).json(submissionFailMsg);
