@@ -941,7 +941,6 @@ app.get("/all", (req, res) => {
   if (!apiSecret || apiSecret !== process.env.SECRET) {
     res.status(401).json(unauthorizedMsg);
   } else {
-    // removes all entries from the collection
     var allMatches = db.get("matches").value();
     res.status(200).json({
       welcome: welcomeMsg,
@@ -1005,106 +1004,164 @@ app.delete("/records", function(req, res) {
 
 //TODO instruction on putting together the submission on post empty body
 app.post("/submission", upload.single("run"), (req, res) => {
-  var runfile = req.file.buffer.toString();
-  var newDate = new Date();
-  db.get("calls")
-    .push({
-      when: newDate.toDateString() + " " + newDate.toTimeString(),
-      where: "POST /submission",
-      what: req.body.collection+" "+runfile
-    })
-    .write();
-  sendgridmail.setApiKey(process.env.SENDGRID_API_KEY);
-  var userKey = req.get("match_key");
-  if (!validator.validate(userKey))
+  if (!req.file || !req.body.collection) {
     res.status(400).json({
-      welcome: welcomeMsg,
-      tutorial: {
-        title: "Your submission is invalid! ⛔",
-        intro:
-          "The value you have set as the `email_key` collection variable value needs to be a valid email address.",
-        steps: [
-          {
-            note:
-              "Open the collection via the **Edit** menu—choosing the **Variables** tab. For the variable with name `email_key` enter " +
-              "your email address as the value. Postman will now append your email address to each request to identify you as the client. " +
-              "**Make sure you use the email address you'd like your Postman Student Expert certification awarded to, e.g. don't use your " +
-              "college email because you'll no longer have access to that when you graduate—choose a personal email address you'll continue " +
-              "to have access to.**"
-          }
-        ],
-        next: [
-          {
-            step: "With your email address in place, click **Send** again."
-          }
-        ]
-      }
-    });
-  else {
-    request(req.body.collection, function(error, response, body) {
-      console.log("error:", error); // Print the error if one occurred
-      console.log("statusCode:", response && response.statusCode); // Print the response status code if a response was received
-      console.log("body:", body);
+        welcome: welcomeMsg,
+        tutorial: {
+          title: "🚧 Bad request - please check your body data!",
+          intro: "This endpoint requires body data representing the new match.",
+          steps: [
+            {
+              note:
+                "In **Body** select **raw** and choose `JSON` instead of `Text` in the drop-down list. Enter the following JSON data " +
+                "including the enclosing curly braces:",
+              raw_data: {
+                match: "Cup Final",
+                when: "{{$randomDateFuture}}",
+                against: "Academical"
+              },
+              pic:
+                "https://assets.postman.com/postman-docs/student-expert-body-added.jpg"
+            },
+            {
+              note:
+                "The `when` value uses a dynamic variable. Postman will add a random future date when you send your request. " +
+                "There are lots of other dynamic variables you can use in your requests for values you want to calculate at runtime, or if " +
+                "you want to use demo data instead of real values."
+            }
+          ],
+          next: [
+            {
+              step: "With your body data in place, click **Send** again."
+            }
+          ]
+        }
+      });
+  } else {
+    var runfile = req.file.buffer.toString();
+    var newDate = new Date();
+    db.get("calls")
+      .push({
+        when: newDate.toDateString() + " " + newDate.toTimeString(),
+        where: "POST /submission",
+        what: req.body.collection + " " + runfile
+      })
+      .write();
+    sendgridmail.setApiKey(process.env.SENDGRID_API_KEY);
+    var userKey = req.get("match_key");
+    if (!validator.validate(userKey))
+      res.status(400).json({
+        welcome: welcomeMsg,
+        tutorial: {
+          title: "Your submission is invalid! ⛔",
+          intro:
+            "The value you have set as the `email_key` collection variable value needs to be a valid email address.",
+          steps: [
+            {
+              note:
+                "Open the collection via the **Edit** menu—choosing the **Variables** tab. For the variable with name `email_key` enter " +
+                "your email address as the value. Postman will now append your email address to each request to identify you as the client. " +
+                "**Make sure you use the email address you'd like your Postman Student Expert certification awarded to, e.g. don't use your " +
+                "college email because you'll no longer have access to that when you graduate—choose a personal email address you'll continue " +
+                "to have access to.**"
+            }
+          ],
+          next: [
+            {
+              step: "With your email address in place, click **Send** again."
+            }
+          ]
+        }
+      });
+    else {
+      request(req.body.collection, function(error, response, body) {
+        console.log("error:", error); // Print the error if one occurred
+        console.log("statusCode:", response && response.statusCode); // Print the response status code if a response was received
+        console.log("body:", body);
 
-      if (!error) {
-        var countId = db.get("count") + 1;
-        db.get("submissions")
-          .push({
-            id: countId,
-            email: userKey,
-            collection: JSON.parse(body),
-            run: JSON.parse(runfile)
-          })
-          .write();
-        db.update("count", n => n + 1).write();
+        if (!error) {
+          var countId = db.get("count") + 1;
+          db.get("submissions")
+            .push({
+              id: countId,
+              email: userKey,
+              collection: JSON.parse(body),
+              run: JSON.parse(runfile)
+            })
+            .write();
+          db.update("count", n => n + 1).write();
 
-        const msg = {
-          to: "braindeadair@gmail.com",
-          from: "sue@benormal.info",
-          subject: "Course Submission",
-          html:
-            "<h2>Learner submission received from:</h2><p>" + userKey + "</p>"
-        };
+          const msg = {
+            to: "braindeadair@gmail.com",
+            from: "sue@benormal.info",
+            subject: "Course Submission",
+            html:
+              "<h2>Learner submission received from:</h2><p>" + userKey + "</p>"
+          };
 
-        sendgridmail
-          .send(msg)
-          .then(response => {
-            const success = response[0].statusCode === 202;
-            const payload = success ? "mail sent successfully" : "mail failed";
-            console.log(msg);
-            //    console.log(payload);
-            res.send({ result: { error: !success, payload } });
-          })
-          .catch(err => {
-            res.send({ result: { error: true, payload: JSON.stringify(err) } });
+          sendgridmail
+            .send(msg)
+            .then(response => {
+              const success = response[0].statusCode === 202;
+              const payload = success
+                ? "mail sent successfully"
+                : "mail failed";
+              console.log(msg);
+              //    console.log(payload);
+              res.send({ result: { error: !success, payload } });
+            })
+            .catch(err => {
+              res.send({
+                result: { error: true, payload: JSON.stringify(err) }
+              });
+            });
+        } else
+          res.status(400).json({
+            welcome: welcomeMsg,
+            tutorial: {
+              title: "Your submission didn't make it! ⛔",
+              intro: "Oops! Something went wrong with your submission.",
+              steps: [
+                {
+                  note:
+                    "Check your request **Body**—it should contain two **form-data* fields: `collection` which should be the collection URL, " +
+                    "and `run` which should be a file you downloaded from the collection runner."
+                }
+              ],
+              next: [
+                {
+                  step: "With your body fields in place, click **Send** again."
+                }
+              ]
+            }
           });
-      } else
-        res.status(400).json({
-          welcome: welcomeMsg,
-          tutorial: {
-            title: "Your submission didn't make it! ⛔",
-            intro:
-              "Oops! Something went wrong with your submission.",
-            steps: [
-              {
-                note:
-                  "Check your request **Body**—it should contain two **form-data* fields: `collection` which should be the collection URL, "+
-                  "and `run` which should be a file you downloaded from the collection runner."
-              }
-            ],
-            next: [
-              {
-                step: "With your body fields in place, click **Send** again."
-              }
-            ]
-          }
-        });
-    });
+      });
+    }
   }
 });
 
 //admin view submissions
-
+app.get("/submissions", (req, res) => {
+  const apiSecret = req.get("admin_key");
+  if (!apiSecret || apiSecret !== process.env.SECRET) {
+    res.status(401).json(unauthorizedMsg);
+  } else {
+    var allSubs = db.get("submissions").value();
+    res.status(200).json({
+      welcome: welcomeMsg,
+      data: allSubs,
+      tutorial: {
+        title: "All submissions",
+        intro: "The submissions are as follows:",
+        steps: [
+          {
+            raw_data: allSubs
+          }
+        ]
+      }
+    });
+  }
+});
 
 //generic get error
 app.get("/*", (req, res) => {
