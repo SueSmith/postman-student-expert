@@ -1200,6 +1200,7 @@ app.get("/submissions", (req, res) => {
         intro: "The submissions are as follows:",
         steps: [
           {
+            note: "Data",
             raw_data: allSubs
           }
         ]
@@ -1212,7 +1213,7 @@ app.get("/submission", (req, res) => {
   if (!apiSecret || apiSecret !== process.env.SECRET) {
     res.status(401).json(unauthorizedMsg);
   } else {
-    var sub = db.get("submissions").find({ id: req.query.sub_id }).value();
+    var sub = db.get("submissions").find({ id: parseInt(req.query.sub_id) }).value();
     res.status(200).json({
       welcome: welcomeMsg,
       data: sub,
@@ -1221,6 +1222,7 @@ app.get("/submission", (req, res) => {
         intro: "The submission is as follows:",
         steps: [
           {
+            note: "Data:",
             raw_data: sub
           }
         ]
