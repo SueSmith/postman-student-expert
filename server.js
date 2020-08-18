@@ -1193,18 +1193,7 @@ app.get("/submissions", (req, res) => {
         return { id: r.id, email: r.email };
       });
     res.status(200).json({
-      welcome: welcomeMsg,
-      data: allSubs,
-      tutorial: {
-        title: "All submissions",
-        intro: "The submissions are as follows:",
-        steps: [
-          {
-            note: "Data",
-            raw_data: allSubs
-          }
-        ]
-      }
+      data: allSubs
     });
   }
 });
@@ -1215,18 +1204,7 @@ app.get("/submission", (req, res) => {
   } else {
     var sub = db.get("submissions").find({ id: parseInt(req.query.sub_id) }).value();
     res.status(200).json({
-      welcome: welcomeMsg,
-      data: sub,
-      tutorial: {
-        title: "Submissions",
-        intro: "The submission is as follows:",
-        steps: [
-          {
-            note: "Data:",
-            raw_data: sub
-          }
-        ]
-      }
+      data: sub
     });
   }
 });
