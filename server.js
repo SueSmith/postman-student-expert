@@ -119,8 +119,10 @@ app.get("/", (req, res) => {
     .write();
   if (req.headers["user-agent"].includes("Postman"))
     res.status(200).json({
-      title: process.env.PROJECT,
-      intro:
+      
+      tutorial: {
+        title: process.env.PROJECT,
+        intro:
         "Use the " +
         process.env.PROJECT +
         " template in Postman to learn API basics! Import the collection in Postman by clicking " +
@@ -130,6 +132,7 @@ app.get("/", (req, res) => {
         "To see the API code navigate to https://glitch.com/edit/#!/" +
         process.env.PROJECT_DOMAIN +
         " in your web browser!"
+      }
     });
   else
     res.send(
@@ -148,23 +151,22 @@ var welcomeMsg =
   "Click **Visualize** to see the 'tutorial' guiding you through next steps - do this for every request in the collection!";
 //admin unauthorized
 var unauthorizedMsg = {
-      welcome: welcomeMsg,
-      tutorial: {
-        title: "Your request is unauthorized! 🚫",
-        intro: "This endpoint requires admin authorization.",
-        steps: [
-          {
-            note:
-              "This endpoint is only accessible to admins for the API."
-          }
-        ],
-        next: [
-          {
-            step: "Use the admin key indicated in the project env as secret."
-          }
-        ]
+  welcome: welcomeMsg,
+  tutorial: {
+    title: "Your request is unauthorized! 🚫",
+    intro: "This endpoint requires admin authorization.",
+    steps: [
+      {
+        note: "This endpoint is only accessible to admins for the API."
       }
-    };
+    ],
+    next: [
+      {
+        step: "Use the admin key indicated in the project env as secret."
+      }
+    ]
+  }
+};
 
 //intro
 app.get("/training", (req, res) => {
@@ -824,40 +826,6 @@ app.delete("/match/:match_id", function(req, res) {
   }
 });
 
-//protect everything after this by checking for the secret - protect reset and clear here, above req personal key for post put del
-/*app.use((req, res, next) => {
-  const apiSecret = req.get("admin_key");
-  if (!apiSecret) {
-    res.status(401).json({
-      title: "You got an unauthorized error response!",
-      intro:
-        "🚫Unauthorized - your secret needs to match the one on the server!",
-      info: [
-        {
-          note: "tbc"
-        }
-      ],
-      next: "tbc",
-      pic: ""
-    });
-  } else if (apiSecret !== process.env.SECRET) {
-    res.status(401).json({
-      title: "You got an unauthorized error response!",
-      intro:
-        "🚫Unauthorized - your secret needs to match the one on the server!",
-      info: [
-        {
-          note: "tbc"
-        }
-      ],
-      next: "",
-      pic: ""
-    });
-  } else {
-    next();
-  }
-});*/
-
 // removes entries from users and populates it with default users
 app.get("/reset", (req, res) => {
   const apiSecret = req.get("admin_key"); //TODO standard response
@@ -920,7 +888,7 @@ app.get("/reset", (req, res) => {
 
 // removes all entries from the collection
 app.get("/clear", (req, res) => {
-  const apiSecret = req.get("admin_key");//TODO standard response
+  const apiSecret = req.get("admin_key");
   if (!apiSecret || apiSecret !== process.env.SECRET) {
     res.status(401).json(unauthorizedMsg);
   } else {
@@ -929,7 +897,10 @@ app.get("/clear", (req, res) => {
       .remove()
       .write();
     console.log("Database cleared");
-    res.redirect("/"); //TODO
+    res.status(200).json({
+      title: "Database cleared",
+      intro: "You cleared the DB."
+    });
   }
 });
 
