@@ -1009,30 +1009,23 @@ app.post("/submission", upload.single("run"), (req, res) => {
         welcome: welcomeMsg,
         tutorial: {
           title: "🚧 Bad request - please check your body data!",
-          intro: "This endpoint requires body data representing the new match.",
+          intro: "This endpoint requires body data representing your "+process.env.PROJECT+" submission. Your submission is going to include "+
+            "a link to your completed collection and the collection run output you saved to a file.",
           steps: [
             {
               note:
-                "In **Body** select **raw** and choose `JSON` instead of `Text` in the drop-down list. Enter the following JSON data " +
-                "including the enclosing curly braces:",
-              raw_data: {
-                match: "Cup Final",
-                when: "{{$randomDateFuture}}",
-                against: "Academical"
-              },
+                "In **Body** select **form-data**. ",
               pic:
                 "https://assets.postman.com/postman-docs/student-expert-body-added.jpg"
             },
             {
               note:
-                "The `when` value uses a dynamic variable. Postman will add a random future date when you send your request. " +
-                "There are lots of other dynamic variables you can use in your requests for values you want to calculate at runtime, or if " +
-                "you want to use demo data instead of real values."
+                ""
             }
           ],
           next: [
             {
-              step: "With your body data in place, click **Send** again."
+              step: "With your submission data in place, click **Send** again."
             }
           ]
         }
