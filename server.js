@@ -235,7 +235,7 @@ app.get("/training", (req, res) => {
         {
           note:
             "The responses will include JSON data that you can see in the **Body > Pretty** area. The **Visualize** view will show you a " +
-            "more readable view of the 'tutorial' information in the response, including images that will help you understand each step."
+            "more readable view of the information in the response `tutorial` object, including images that will help you understand each step."
         },
         {
           note:
@@ -254,7 +254,7 @@ app.get("/training", (req, res) => {
             process.env.PROJECT_DOMAIN +
             ".glitch.me`—instead of repeating this in every request, let's " +
             "store it in a variable and reuse the value. In the 'Student expert' collection on the left, click **...** > **Edit**. In " +
-            "**Variables** add a new entry, with `training-api` in the **Variable** column and `" +
+            "**Variables** add a new entry, with `training_api` in the **Variable** column and `" +
             process.env.PROJECT_DOMAIN +
             ".glitch.me` " +
             "for both **Initial** and **Current Value**. Click **Update**. (We'll be working with other variables later.)",
@@ -263,7 +263,8 @@ app.get("/training", (req, res) => {
         },
         {
           step:
-            "In the request builder, edit the address, replacing `postman-student-expert.glitch.me` with `{{training_api}}`—this is how we " +
+            "In the request builder, edit the address, replacing only `postman-student-expert.glitch.me` (the part before `/training`) with "+
+            "`{{training_api}}`—this is how we " +
             "reference variables in requests. Click **Send** to make sure the request still behaves the same way and scroll back here.",
           pic:
             "https://assets.postman.com/postman-docs/student-expert-url-var.jpg"
