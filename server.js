@@ -838,7 +838,7 @@ app.delete("/match/:match_id", function(req, res) {
               note:
                 "Go back into the first request you opened `Get matches` and **Send** it again before returning here _making sure you use "+
                 "`played` as the `status` param, since you updated the score and the match is now classed as played—" +
-                "you should see that your deleted match is no longer in the array!"
+                "you should see that your deleted match is no longer in the array! **Save** this request before you continue."
             }
           ],
           next: [
