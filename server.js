@@ -1031,7 +1031,7 @@ app.delete("/records", function(req, res) {
 });
 
 //TODO response when you already made a submission?
-app.post("/submission", upload.single("run"), (req, res) => {
+app.post("/submission", upload.single("run"), (req, res) => { 
   if (!req.file || !req.body.collection) {
     res.status(400).json({
       welcome: welcomeMsg,
@@ -1045,24 +1045,25 @@ app.post("/submission", upload.single("run"), (req, res) => {
         steps: [
           {
             note:
-              "In **Body** select **form-data**. Add `collection` in the **Key** field. For the value you're going to include the public " +
-              "link for this collection that you've been working through during the training. First make sure you have saved all of the open " +
-              "requests so that your submission will include your edits. In the collection on the left of Postman, open the overview &#9658; " +
-              "then click **Share**.",
+              "In **Body** select **form-data**. You should see `collection` in the **Key** field. For the value you're going to include "+
+              "the public link for this collection that you've been working through during the training. First make sure you have saved all "+
+              "of the open requests so that your submission will include your edits. In the collection on the left of Postman, open the "+
+              "overview &#9658; then click **Share**.",
             pic:
               "https://assets.postman.com/postman-docs/student-expert-open-collection.jpg"
           },
           {
             note:
               "Choose **Get public link** and generate or update your collection link. Copy the address to your " +
-              "clipboard, then paste it as **Value** for the `collection` parameter you already added to the body.",
+              "clipboard, then paste it as **Value** for the `collection` parameter.",
             pic:
               "https://assets.postman.com/postman-docs/student-expert-collection-copy-link.jpg"
           },
           {
             note:
-              "Add another parameter to the form-data **Body**, this time naming it `run` and selecting **File** from the drop-down list next to the " +
-              "name when you hover. Click **Select Files** and choose the collection run JSON file you exported.",
+              "The other parameter in the form-data **Body**, is named `run` and is going to be your collection run. Select **File** from the "+
+              "drop-down list next to the name when you hover. Pop back into the **Runner**, select the most recent run in the list, and "+
+              "**Export results**, saving the file locally. Click **Select Files** and choose the collection run JSON file you exported.",
             pic:
               "https://assets.postman.com/postman-docs/student-expert-submission-body.jpg"
           }
