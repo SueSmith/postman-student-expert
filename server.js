@@ -656,7 +656,7 @@ app.put("/match", function(req, res) {
         next: [
           {
             step:
-              "With your parameter in place (you'll see e.g. `?match_id=101` added to the request address), click **Send** again."
+              "With your parameter in place (you'll see e.g. `?match_id=abc123` added to the request address), click **Send** again."
           }
         ]
       }
@@ -678,6 +678,11 @@ app.put("/match", function(req, res) {
             },
             pic:
               "https://assets.postman.com/postman-docs/student-expert-score-body.jpg"
+          },
+          {
+            note: "_When you enter body data Postman will add the appropriate headers to the request based on what you've entered (these would "+
+              "otherwise need to be entered manually). Take a look in the **Code** above and to the right of the request, check the `curl`  code "+
+              " to see the `Content-Type` header._"
           }
         ],
         next: [
@@ -714,7 +719,7 @@ app.put("/match", function(req, res) {
             {
               note:
                 "Go back into the `1. Get matches` request and **Send** it again before returning here—" +
-                "you should see your updated match in the array!"
+                "you should see your updated match in the array! **Save** this request before continuing."
             }
           ],
           next: [
@@ -831,14 +836,15 @@ app.delete("/match/:match_id", function(req, res) {
           steps: [
             {
               note:
-                "Go back into the first request you opened `Get matches` and **Send** it again before returning here—" +
+                "Go back into the first request you opened `Get matches` and **Send** it again before returning here _making sure you use "+
+                "`played` as the `status` param, since you updated the score and the match is now classed as played—" +
                 "you should see that your deleted match is no longer in the array!"
             }
           ],
           next: [
             {
               step:
-                "🎊 You completed the first part of Postman Student Expert training! Next we're going to jump into the `2. Scripting and " +
+                "🎊🎉 You completed the first part of Postman Student Expert training! Next we're going to jump into the `2. Scripting and " +
                 "Collection Runs` folder—open the folder, open the first request, and hit **Send**! 🚀"
             }
           ]
