@@ -1130,7 +1130,7 @@ app.post("/submission", upload.single("run"), (req, res) => {
           db.update("count", n => n + 1).write();
           
           const msg = {
-            to: "braindeadair@gmail.com",
+            to: "sue.smith@postman.com",
             from: "sue@benormal.info",
             subject: "Course Submission",
             html:
@@ -1166,7 +1166,7 @@ app.post("/submission", upload.single("run"), (req, res) => {
                     steps: [
                       {
                         note:
-                          "The Postman team will review your submission and be in touch (hopefully with your certification).. 🤞"
+                          "The Postman team will review your submission.. 🤞"
                       }
                     ],
                     next: [
@@ -1174,9 +1174,9 @@ app.post("/submission", upload.single("run"), (req, res) => {
                         step:
                           "🚀 Thank you for working your way through " +
                           process.env.PROJECT +
-                          " training! Stay tuned for more training " +
-                          "and certification programs. While you wait for your submission response, " +
-                          "check out the API network and templates for more inspiration by clicking **New** inside Postman. 🎉"
+                          " training! As the second part of your student expert evidence, import the "+
+                          "Skill Checker template and work through it, making sure you use the same email address you used for this template. "+
+                          "Once we receive both of your submissions and check through them we'll award your student expert certification! 📜🎓"
                       }
                     ]
                   }
