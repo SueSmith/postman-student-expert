@@ -474,7 +474,7 @@ app.post("/match", (req, res) => {
           {
             step:
               "Add a variable to the collection also via the **Edit** menu—choosing the **Variables** tab. Use the name `email_key` and enter " +
-              "your email address as the value. Postman will now append your email address to each request to identify you as the client. " +
+              "your email address in both value fields. Postman will now append your email address to each request to identify you as the client. " +
               "**Make sure you use the email address you'd like your Postman Student Expert certification awarded to, e.g. don't use your " +
               "college email because you'll no longer have access to that when you graduate—choose a personal email address you'll continue " +
               "to have access to.**",
@@ -482,7 +482,8 @@ app.post("/match", (req, res) => {
               "https://assets.postman.com/postman-docs/student-expert-email-var.jpg"
           },
           {
-            step: "With your API Key in place, click **Send**."
+            step: "If you pop back into the collection edit modal **Authorization** and hover over the `{{email_key}}` reference you should "+
+              "now see your email address. With your API Key in place, click **Send**."
           }
         ]
       }
@@ -539,7 +540,7 @@ app.post("/match", (req, res) => {
             {
               step:
                 "**Save** your current request, then create another new request still inside the **1. Begin training - Requests** folder. " +
-                "Give it the name `3 Update score` and save it. Open it from the collection on the left. In the request builder select `PUT` " +
+                "Give it the name `3. Update score` and save it. Open it from the collection on the left. In the request builder select `PUT` " +
                 "method, and enter the URL `{{training_api}}/match`. Click **Send**.",
               pic:
                 "https://assets.postman.com/postman-docs/student-expert-put-url.jpg"
