@@ -908,60 +908,7 @@ app.delete("/match", function(req, res) {
         ]
       }
     });
-  else if (!validator.validate(apiSecret))
-    res.status(401).json({
-      welcome: welcomeMsg,
-      tutorial: {
-        title: "You got an unauthorized error response!",
-        intro: "🚫Unauthorized - your key needs to be an email address!",
-        steps: [
-          {
-            note:
-              "The API will only authorize your requests if your key is a valid email address."
-          }
-        ],
-        next: [
-          {
-            step:
-              "Open your collection **Edit** menu and navigate to **Variables**. You should have a variable named `email_key`—make sure it's " +
-              "value is an email address and click **Send** again."
-          }
-        ]
-      }
-    });
   else {
-    //check the record matches the user id
-    var match = db
-      .get("matches")
-      .find({ id: req.params.match_id })
-      .value();
-    if (match && apiSecret != "postman" && match.creator == apiSecret) {
-      db.get("matches")
-        .remove({ id: req.params.match_id })
-        .write();
-      res.status(200).json({
-        welcome: welcomeMsg,
-        tutorial: {
-          title: "You deleted a match! 🏆",
-          intro: "Your match was removed from the database.",
-          steps: [
-            {
-              note:
-                "Go back into the first request you opened `Get matches` and **Send** it again before returning here _making sure you use "+
-                "`played` as the `status` param, since you updated the score and the match is now classed as played—" +
-                "you should see that your deleted match is no longer in the array! **Save** this request before you continue."
-            }
-          ],
-          next: [
-            {
-              step:
-                "🎊🎉 You completed the first part of Postman Student Expert training! Next we're going to jump into the `2. Scripting and " +
-                "Collection Runs` folder—open the folder, open the first request, and hit **Send**! 🚀"
-            }
-          ]
-        }
-      });
-    } else {
       res.status(400).json({
         welcome: welcomeMsg,
         tutorial: {
@@ -971,8 +918,8 @@ app.delete("/match", function(req, res) {
           steps: [
             {
               note:
-                "In **Params** add `match_id` in the **Key** column, and the `id` values from a match _you added_ to the match list as the " +
-                "**Value**. ***You can only remove a match you added.***"
+                "In **Params**, for the `match_id` path variable add an `id` value from a match _you added_ to the match list" +
+                " ***You can only remove a match you added.***"
             }
           ],
           next: [
@@ -983,8 +930,8 @@ app.delete("/match", function(req, res) {
           ]
         }
       });
-    }
   }
+  
 });
 
 // removes entries from users and populates it with default users
