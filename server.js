@@ -1,8 +1,9 @@
 /*
 POSTMAN STUDENT EXPERT
 
-This API works in conjunction with the API Starter collecction in Postman to walk you through API basics.
+This API works in conjunction with the Student expert collection in Postman to walk you through API basics.
 Import the collection into Postman and send a request to the setup endpoint to begin.
+https://explore.postman.com/templates/11859/student-expert
 
 This Glitch app is based on hello-express and low-db.
 
@@ -1233,7 +1234,7 @@ app.post("/submission", upload.single("run"), (req, res) => {
                           "🚀 Thank you for working your way through " +
                           process.env.PROJECT +
                           " training! As the second part of your student expert evidence, import the "+
-                          "**Student skill checker template and work through it, making sure you use the same email address you used for this template. "+
+                          "**Student skill checker** template and work through it, making sure you use the same email address you used for this template. "+
                           "Once we receive both of your submissions and check through them we'll award your student expert certification! 📜🎓"
                       }
                     ]

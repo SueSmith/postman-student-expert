@@ -1,6 +1,6 @@
-# Learn by API
+# Student expert
 
-[Remix the API and import it into Postman to learn all about making requests](https://glitch.com/~learn-by-api)
+[Import the template into Postman to become a student expert](https://explore.postman.com/templates/11859/student-expert)
 
 ## Credits
 
