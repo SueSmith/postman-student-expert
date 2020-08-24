@@ -646,9 +646,9 @@ app.put("/match", function(req, res) {
         steps: [
           {
             note:
-              "In **Params** add `match_id` in the **Key** column, and the `id` value from a match _you added_ to the customer list as the " +
-              "**Value**. ***You can only update a match you added—in the `1. Get matches` response, find the `id` for the match you added " +
-              "using the `POST` request.***",
+              "In **Params** add `match_id` in the **Key** column, and the `id` value from a match _you added_ to the customer list during this "+
+              "session as the **Value**. ***You can only update a match you added—in the `1. Get matches` response, find the `id` for the match "+
+              "you added using the `POST` request.***",
             pic:
               "https://assets.postman.com/postman-docs/student-expert-put-id.jpg"
           }
@@ -706,7 +706,7 @@ app.put("/match", function(req, res) {
       db.get("matches")
         .find({ id: req.query.match_id })
         .assign({
-          score: req.body.points
+          points: req.body.points
         })
         .write();
 
@@ -718,7 +718,7 @@ app.put("/match", function(req, res) {
           steps: [
             {
               note:
-                "Go back into the `1. Get matches` request and **Send** it again before returning here—" +
+                "Go back into the `1. Get matches` request, this time with `played` as the `status` and **Send** it again before returning here—" +
                 "you should see your updated match in the array! **Save** this request before continuing."
             }
           ],
@@ -733,8 +733,8 @@ app.put("/match", function(req, res) {
             {
               step:
                 "This request includes a path parameter with `/:match_id` at the end of the request address—open **Params** and as the value " +
-                "for the `match_id` parameter, enter the `id` of a match _you added_ when you sent the `POST` request. Copy the `id` from the " +
-                "response in the `1. Get matches` request like you did for the `PUT` request then click **Send**."
+                "for the `match_id` parameter, enter the `id` of a match _you added_ during this session when you sent the `POST` request. "+
+                "Copy the `id` from the response in the `1. Get matches` request like you did for the `PUT` request then click **Send**."
             }
           ]
         }
@@ -767,6 +767,117 @@ app.put("/match", function(req, res) {
 
 //delete match
 app.delete("/match/:match_id", function(req, res) {
+  const apiSecret = req.get("match_key");
+  var newDate = new Date();
+  db.get("calls")
+    .push({
+      when: newDate.toDateString() + " " + newDate.toTimeString(),
+      where: "DEL /match",
+      what: req.params.match_id + " " + apiSecret
+    })
+    .write();
+  if (!apiSecret)
+    res.status(401).json({
+      welcome: welcomeMsg,
+      tutorial: {
+        title: "Oops - You got an unauthorized error response! 🚫",
+        intro:
+          "You will need to authorize your request just as you did in the `POST` and `PUT` requests.",
+        steps: [
+          {
+            note:
+              "You already have your auth key set up, so you just need to select it here. Open the **Authorization** tab—select " +
+              "`Inherit auth from parent` from the **Type** drop-down list."
+          }
+        ],
+        next: [
+          {
+            step: "Click **Send**."
+          }
+        ]
+      }
+    });
+  else if (!validator.validate(apiSecret))
+    res.status(401).json({
+      welcome: welcomeMsg,
+      tutorial: {
+        title: "You got an unauthorized error response!",
+        intro: "🚫Unauthorized - your key needs to be an email address!",
+        steps: [
+          {
+            note:
+              "The API will only authorize your requests if your key is a valid email address."
+          }
+        ],
+        next: [
+          {
+            step:
+              "Open your collection **Edit** menu and navigate to **Variables**. You should have a variable named `email_key`—make sure it's " +
+              "value is an email address and click **Send** again."
+          }
+        ]
+      }
+    });
+  else {
+    //check the record matches the user id
+    var match = db
+      .get("matches")
+      .find({ id: req.params.match_id })
+      .value();
+    if (match && apiSecret != "postman" && match.creator == apiSecret) {
+      db.get("matches")
+        .remove({ id: req.params.match_id })
+        .write();
+      res.status(200).json({
+        welcome: welcomeMsg,
+        tutorial: {
+          title: "You deleted a match! 🏆",
+          intro: "Your match was removed from the database.",
+          steps: [
+            {
+              note:
+                "Go back into the first request you opened `Get matches` and **Send** it again before returning here _making sure you use "+
+                "`played` as the `status` param, since you updated the score and the match is now classed as played—" +
+                "you should see that your deleted match is no longer in the array! **Save** this request before you continue."
+            }
+          ],
+          next: [
+            {
+              step:
+                "🎊🎉 You completed the first part of Postman Student Expert training! Next we're going to jump into the `2. Scripting and " +
+                "Collection Runs` folder—open the folder, open the first request, and hit **Send**! 🚀"
+            }
+          ]
+        }
+      });
+    } else {
+      res.status(400).json({
+        welcome: welcomeMsg,
+        tutorial: {
+          title: "Your request is invalid! ⛔",
+          intro:
+            "You can only remove matches you added using the `POST` method during the current session (and that haven't been deleted yet).",
+          steps: [
+            {
+              note:
+                "In **Params** add `match_id` in the **Key** column, and the `id` values from a match _you added_ to the match list as the " +
+                "**Value**. ***You can only remove a match you added.***"
+            }
+          ],
+          next: [
+            {
+              step:
+                "With the ID parameter for a match _you added_ during this session in place, click **Send** again."
+            }
+          ]
+        }
+      });
+    }
+  }
+});
+
+//delete match missing path param
+app.delete("/match", function(req, res) {
   const apiSecret = req.get("match_key");
   var newDate = new Date();
   db.get("calls")
