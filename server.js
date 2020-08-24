@@ -401,8 +401,8 @@ app.get("/matches", (req, res) => {
         steps: [
           {
             note:
-              "Look at the request URL. It should look like this `{{training-api}}/matches`. The URL is partly made up from a variable, " +
-              " referenced using double curly braces around `training-api` - hover over it to see the value, it's part of the collection."
+              "Look at the request URL. It should look like this `{{training_api}}/matches`. The URL is partly made up from a variable, " +
+              " referenced using double curly braces around `training_api` - hover over it to see the value, it's part of the collection."
           },
           {
             note:
