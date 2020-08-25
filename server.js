@@ -1089,6 +1089,25 @@ app.delete("/records", function(req, res) {
   }
 });
 
+app.delete("/subs", function(req, res) {
+  const apiSecret = req.get("admin_key");
+  if (!apiSecret || apiSecret !== process.env.SECRET) {
+    res.status(401).json(unauthorizedMsg);
+  } else {
+    // removes all entries from the collection
+    db.get("submissions")
+      .remove()
+      .write();
+    res.status(200).json({
+      welcome: welcomeMsg,
+      tutorial: {
+        title: "Submissions deleted",
+        intro: "You deleted the submissions."
+      }
+    });
+  }
+});
+
 //TODO response when you already made a submission?
 app.post("/submission", upload.single("run"), (req, res) => { 
   if (!req.file || !req.body.collection) {
