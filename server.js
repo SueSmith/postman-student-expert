@@ -1075,7 +1075,7 @@ app.delete("/records", function(req, res) {
   if (!apiSecret || apiSecret !== process.env.SECRET) {
     res.status(401).json(unauthorizedMsg);
   } else {
-    // removes all entries from the collection
+    // removes entry from the collection
     db.get("matches")
       .remove({ id: req.query.match_id })
       .write();
@@ -1103,6 +1103,25 @@ app.delete("/subs", function(req, res) {
       tutorial: {
         title: "Submissions deleted",
         intro: "You deleted the submissions."
+      }
+    });
+  }
+});
+
+app.delete("/calls", function(req, res) {
+  const apiSecret = req.get("admin_key");
+  if (!apiSecret || apiSecret !== process.env.SECRET) {
+    res.status(401).json(unauthorizedMsg);
+  } else {
+    // removes all entries from the collection
+    db.get("calls")
+      .remove()
+      .write();
+    res.status(200).json({
+      welcome: welcomeMsg,
+      tutorial: {
+        title: "Calls deleted",
+        intro: "You deleted the calls."
       }
     });
   }
@@ -1157,16 +1176,17 @@ app.post("/submission", upload.single("run"), (req, res) => {
     });
   } else {
     var runfile = req.file.buffer.toString();
+    var userKey = req.get("match_key");
     var newDate = new Date();
     db.get("calls")
       .push({
         when: newDate.toDateString() + " " + newDate.toTimeString(),
         where: "POST /submission",
-        what: req.body.collection + " " + runfile
+        what: userKey
       })
       .write();
     sendgridmail.setApiKey(process.env.SENDGRID_API_KEY);
-    var userKey = req.get("match_key");
+    
     if (!validator.validate(userKey))
       res.status(400).json({
         welcome: welcomeMsg,
