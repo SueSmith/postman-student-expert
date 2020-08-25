@@ -402,17 +402,17 @@ app.get("/matches", (req, res) => {
         steps: [
           {
             note:
-              "Open the **Console** along the bottom of the Postman window to see the address the request sent to. You can click a request " +
-              "in the Console to see the full detail of what happened when it sent - this is helpful when you're troubleshooting. Close and " +
-              "open the Console area whenever you find it useful."
-          },
-          {
-            note:
               "The request you sent to `/matches` returned the following data. It's an array of the matches currently in the database, " +
               "including a few data values for each match.",
             raw_data: {
               matches: matches
             }
+          },
+          {
+            note:
+              "Open the **Console** along the bottom of the Postman window to see the address the request sent to. You can click a request " +
+              "in the Console to see the full detail of what happened when it sent - this is helpful when you're troubleshooting. Close and " +
+              "open the Console area whenever you find it useful."
           }
         ],
         next: [
