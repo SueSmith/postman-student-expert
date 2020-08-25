@@ -402,11 +402,6 @@ app.get("/matches", (req, res) => {
         steps: [
           {
             note:
-              "Look at the request URL. It should look like this `{{training_api}}/matches`. The URL is partly made up from a variable, " +
-              " referenced using double curly braces around `training_api` - hover over it to see the value, it's part of the collection."
-          },
-          {
-            note:
               "Open the **Console** along the bottom of the Postman window to see the address the request sent to. You can click a request " +
               "in the Console to see the full detail of what happened when it sent - this is helpful when you're troubleshooting. Close and " +
               "open the Console area whenever you find it useful."
