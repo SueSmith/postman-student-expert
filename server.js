@@ -1216,6 +1216,7 @@ app.post("/submission", upload.single("run"), (req, res) => {
             .push({
               id: countId,
               email: userKey,
+              collurl: req.body.collection,
               collection: coll,
               run: ran
             })
