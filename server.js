@@ -253,14 +253,15 @@ app.get("/training", (req, res) => {
           step:
             "Both requests use the same **base** URL `" +
             process.env.PROJECT_DOMAIN +
-            ".glitch.me`—instead of repeating this in every request, let's " +
-            "store it in a variable and reuse the value. In the 'Student expert' collection on the left, click **...** > **Edit**. In " +
-            "**Variables** add a new entry, with `training_api` in the **Variable** column and `" +
+            ".glitch.me`—instead of repeating this in every request, let's store it in a variable and reuse the value. Select the part of "+
+            "the address before `/training` and click **Set as variable** &gt; **Set as a new variable**. Enter `training_api` as the "+
+            "**Name** with `" +
             process.env.PROJECT_DOMAIN +
             ".glitch.me` " +
-            "for both **Initial** and **Current Value**. Click **Update**. (We'll be working with other variables later.)",
+            "as the **Value**. Select **Collection** for the **Scope**, making sure the **Student expert** collection is selected. Click "+
+            "**Set variable**.",
           pic:
-            "https://assets.postman.com/postman-docs/student-expert-edit-var.jpg"
+            "https://assets.postman.com/postman-docs/postman-training-set-as-var.jpg"
         },
         {
           step:
