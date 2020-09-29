@@ -1286,7 +1286,7 @@ app.post("/submission", upload.single("run"), (req, res) => {
   }
 });
 
-//admin view submissions
+//admin view submissions - deprecated
 app.get("/submissions", (req, res) => {
   const apiSecret = req.get("admin_key");
   if (!apiSecret || apiSecret !== process.env.SECRET) {
