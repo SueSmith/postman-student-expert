@@ -528,7 +528,8 @@ app.post("/match", (req, res) => {
           steps: [
             {
               note:
-                "Go back into the `Get matches` request, make sure your `status` query parameter is set to `pending` and **Send** it again " +
+                "Go back into the `Get matches` request, make sure your `status` query parameter is set to `pending`, and that you have **Inherit "+
+                "auth from parent** selected, then **Send** it again " +
                 "before returning here—you should see your new addition in the array! _Note that this will only work if you're using the " +
                 "Student Expert Postman template._"
             }
