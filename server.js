@@ -1270,8 +1270,8 @@ app.post("/submission", upload.single("run"), (req, res) => {
                         step:
                           "🚀 Thank you for working your way through " +
                           process.env.PROJECT +
-                          " training! As the second part of your student expert evidence, import the "+
-                          "**Student skill checker** template and work through it, making sure you use the same email address you used for this template. "+
+                          " training! As the second part of your student expert evidence, import the **Student skill checker** template "+
+                          "(hit **New** and search) and work through it, making sure you use the same email address you used for this template. "+
                           "Once we receive both of your submissions and check through them we'll award your student expert certification! 📜🎓"
                       }
                     ]
