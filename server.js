@@ -258,7 +258,7 @@ app.get("/training", (req, res) => {
             "**Name** with `" +
             process.env.PROJECT_DOMAIN +
             ".glitch.me` " +
-            "as the **Value**. Select **Collection** for the **Scope**, making sure the **Student expert** collection is selected. Click "+
+            "as the **Value**. Select **Collection** for the **Scope**, making sure the correct collection is selected. Click "+
             "**Set variable**.",
           pic:
             "https://assets.postman.com/postman-docs/postman-training-set-as-var.jpg"
@@ -365,7 +365,7 @@ app.get("/matches", (req, res) => {
           {
             step:
               "So far we've retrieved data from the API, but let's also add some new data. Add another request to the collection. In **Collections** " +
-              "click the *...* on the **Student Expert** > **1. Begin training - Requests** folder and click **Add Request**.",
+              "click the *...* on the **1. Begin training - Requests** folder and click **Add Request**.",
             pic:
               "https://assets.postman.com/postman-docs/student-expert-add-request.jpg"
           },
@@ -460,7 +460,7 @@ app.post("/match", (req, res) => {
           },
           {
             note:
-              "In **Collections** on the left, click the **...** for the **Student expert** collection and choose **Edit**. Open the " +
+              "In **Collections** on the left, click the **...** for the collection and choose **Edit**. Open the " +
               "**Authorization** tab. Postman will add the API key details to the header for every request using the name `match_key` and " +
               "the value specified by the referenced `email_key` variable.",
             pic:
@@ -531,7 +531,7 @@ app.post("/match", (req, res) => {
                 "Go back into the `Get matches` request, make sure your `status` query parameter is set to `pending`, and that you have **Inherit "+
                 "auth from parent** selected, then **Send** it again " +
                 "before returning here—you should see your new addition in the array! _Note that this will only work if you're using the " +
-                "Student Expert Postman template._"
+                "Postman template._"
             }
           ],
           next: [
