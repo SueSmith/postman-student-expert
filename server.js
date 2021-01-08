@@ -365,20 +365,14 @@ app.get("/matches", (req, res) => {
           {
             step:
               "So far we've retrieved data from the API, but let's also add some new data. Add another request to the collection. In **Collections** " +
-              "click the *...* on the **1. Begin training - Requests** folder and click **Add Request**.",
+              "click the *...* on the **1. Begin training - Requests** folder and click **Add Request**. Name the request '2. Add match'.",
             pic:
               "https://assets.postman.com/postman-docs/student-expert-add-request.jpg"
           },
           {
             step:
-              "Enter the name '2. Add match' and make sure the correct collection and folder are selected before you click **Save to...**.",
-            pic:
-              "https://assets.postman.com/postman-docs/student-expert-request-name.jpg"
-          },
-          {
-            step:
-              "The new request will appear in the collection folder on the left—click to open it in the request builder. In the request URL, " +
-              "enter `{{training_api}}/match` and select `POST` from the method drop-down list. Click **Send**.",
+              "The new request will appear in the collection folder on the left. In the request builder, enter the URL, " +
+              "`{{training_api}}/match` and select `POST` from the method drop-down list. Click **Send**.",
             pic:
               "https://assets.postman.com/postman-docs/student-expert-post-url.jpg"
           }
