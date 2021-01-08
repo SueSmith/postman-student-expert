@@ -471,7 +471,7 @@ app.post("/match", (req, res) => {
               "college email because you'll no longer have access to that when you graduate—choose a personal email address you'll continue " +
               "to have access to.**",
             pic:
-              "https://assets.postman.com/postman-docs/student-expert-email-var.jpg"
+              "https://assets.postman.com/postman-docs/student-expert-email-var-added.jpg"
           },
           {
             step: "If you pop back into the collection edit modal **Authorization** and hover over the `{{email_key}}` reference you should "+
@@ -533,10 +533,8 @@ app.post("/match", (req, res) => {
             {
               step:
                 "**Save** your current request, then create another new request still inside the **1. Begin training - Requests** folder. " +
-                "Give it the name `3. Update score` and save it. Open it from the collection on the left. In the request builder select `PUT` " +
-                "method, and enter the URL `{{training_api}}/match`. Click **Send**.",
-              pic:
-                "https://assets.postman.com/postman-docs/student-expert-put-url.jpg"
+                "Give it the name `3. Update score` and save it. In the request builder select `PUT` " +
+                "method, and enter the URL `{{training_api}}/match`. Click **Send**."
             }
           ]
         }
@@ -719,9 +717,7 @@ app.put("/match", function(req, res) {
             {
               step:
                 "Next create a final request in the folder, this time naming it `4. Remove match`. Open it and set the method to `DELETE`, and " +
-                "the URL to `{{training_api}}/match/:match_id`.",
-              pic:
-                "https://assets.postman.com/postman-docs/student-expert-delete-request.jpg"
+                "the URL to `{{training_api}}/match/:match_id`."
             },
             {
               step:
