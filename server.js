@@ -365,7 +365,8 @@ app.get("/matches", (req, res) => {
           {
             step:
               "So far we've retrieved data from the API, but let's also add some new data. Add another request to the collection. In **Collections** " +
-              "click the *...* on the **1. Begin training - Requests** folder and click **Add Request**. Name the request '2. Add match'.",
+              "click the *...* on the **1. Begin training - Requests** folder and click **Add Request**–it will open in the request builder. "+
+              "Name the request '2. Add match'.",
             pic:
               "https://assets.postman.com/postman-docs/student-expert-add-request.jpg"
           },
@@ -454,11 +455,11 @@ app.post("/match", (req, res) => {
           },
           {
             note:
-              "In **Collections** on the left, click the **...** for the collection and choose **Edit**. Open the " +
-              "**Authorization** tab. Postman will add the API key details to the header for every request using the name `match_key` and " +
+              "In **Collections** on the left, select the student expert collection (click **...** and choose **Edit** if you're in the app). "+
+              "Open the **Authorization** tab. Postman will add the API key details to the header for every request using the name `match_key` and " +
               "the value specified by the referenced `email_key` variable.",
             pic:
-              "https://assets.postman.com/postman-docs/student-expert-collection-auth.jpg"
+              "https://assets.postman.com/postman-docs/student-expert-auth-details.jpg"
           }
         ],
         next: [
@@ -494,7 +495,7 @@ app.post("/match", (req, res) => {
         next: [
           {
             step:
-              "Open your collection **Edit** menu and navigate to **Variables**. You should have a variable named `email_key`—make sure it's " +
+              "Open your collection (**Edit** menu on the desktop app) and navigate to **Variables**. You should have a variable named `email_key`—make sure it's " +
               "value is an email address and click **Send** again.",
             pic: ""
           }
