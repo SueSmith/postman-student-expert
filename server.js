@@ -637,7 +637,7 @@ app.put("/match", function(req, res) {
         steps: [
           {
             note:
-              "In **Params** add `match_id` in the **Key** column, and the `id` value from a match _you added_ to the customer list during this "+
+              "In **Params** add `match_id` in the **Key** column, and the `id` value from a match _you added_ to the list during this "+
               "session as the **Value**. ***You can only update a match you added—in the `1. Get matches` response, find the `id` for the match "+
               "you added using the `POST` request.***",
             pic:
@@ -738,7 +738,7 @@ app.put("/match", function(req, res) {
           steps: [
             {
               note:
-                "In **Params** add `match_id` in the **Key** column, and the `id` values from a match _you added_ to the customer list as the " +
+                "In **Params** add `match_id` in the **Key** column, and the `id` values from a match _you added_ to the list as the " +
                 "**Value**. ***You can only update a match you added.***"
             }
           ],
