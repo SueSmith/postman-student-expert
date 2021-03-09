@@ -1,6 +1,6 @@
 # Student expert
 
-[Import the template into Postman to become a student expert](https://explore.postman.com/templates/11859/student-expert)
+[Import the collection into Postman to become a student expert](https://bit.ly/student-workspace)
 
 ## Credits
 
